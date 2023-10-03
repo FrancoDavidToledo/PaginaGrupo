@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddEndpointsApiExplorer();  
 builder.Services.AddSwaggerGen();
 
 //aca se agrega el "singleton" de dependencia injectada, es como el addtransient
