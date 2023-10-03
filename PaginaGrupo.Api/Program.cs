@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Infra.Data;
 using PaginaGrupo.Infra.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -14,6 +15,14 @@ builder.Services.AddSwaggerGen();
 
 //aca se agrega el "singleton" de dependencia injectada, es como el addtransient
 builder.Services.AddScoped<INoticiasRepository, NoticiasRepository>();
+
+//con esto se conecta a la bbdd
+builder.Services.AddDbContext<PaginaGrupoContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PaginaGrupo"));
+
+});
+
 
 var app = builder.Build();
 
