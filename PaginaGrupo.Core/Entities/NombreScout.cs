@@ -14,7 +14,7 @@ public partial class NombreScout
 
     public int? IdScout { get; set; }
 
-    public virtual Unidade? CodigoUnidadNavigation { get; set; }
+    public virtual Unidad? CodigoUnidadNavigation { get; set; }
 
     public virtual Scout? IdScoutNavigation { get; set; }
 

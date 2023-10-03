@@ -10,7 +10,7 @@ public partial class ProgresionScout
 
     public DateTime Fecha { get; set; }
 
-    public virtual Progresione IdProgresionNavigation { get; set; } = null!;
+    public virtual Progresion IdProgresionNavigation { get; set; } = null!;
 
     public virtual Scout IdScoutNavigation { get; set; } = null!;
 }

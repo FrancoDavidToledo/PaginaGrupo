@@ -8,5 +8,5 @@ public partial class Adjuntos
 
     public int IdNoticia { get; set; }
 
-    public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
+    public virtual Noticia IdNoticiaNavigation { get; set; } = null!;
 }

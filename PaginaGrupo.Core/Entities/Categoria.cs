@@ -6,5 +6,5 @@ public partial class Categoria
 
     public string? Nombre { get; set; }
 
-    public virtual ICollection<LibroCategorium> LibroCategoria { get; set; } = new List<LibroCategorium>();
+    public virtual ICollection<LibroCategoria> LibroCategoria { get; set; } = new List<LibroCategoria>();
 }

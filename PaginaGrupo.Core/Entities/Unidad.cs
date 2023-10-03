@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Unidade
+public partial class Unidad
 {
     public string Codigo { get; set; } = null!;
 

@@ -6,5 +6,5 @@ public partial class Autores
 
     public string? Nombre { get; set; }
 
-    public virtual ICollection<LibroAutor> LibroAutors { get; set; } = new List<LibroAutor>();
+    public virtual ICollection<LibroAutor> LibroAutor { get; set; } = new List<LibroAutor>();
 }

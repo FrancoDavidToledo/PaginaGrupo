@@ -12,7 +12,7 @@ public partial class AsistenciaScout
 
     public string? CodigoUnidad { get; set; }
 
-    public virtual Unidade? CodigoUnidadNavigation { get; set; }
+    public virtual Unidad? CodigoUnidadNavigation { get; set; }
 
     public virtual Fecha? IdFechaNavigation { get; set; }
 

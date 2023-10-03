@@ -10,7 +10,7 @@ public partial class Rama
 
     public string Sexo { get; set; } = null!;
 
-    public virtual ICollection<Progresione> Progresiones { get; set; } = new List<Progresione>();
+    public virtual ICollection<Progresion> Progresiones { get; set; } = new List<Progresion>();
 
-    public virtual ICollection<Unidade> Unidades { get; set; } = new List<Unidade>();
+    public virtual ICollection<Unidad> Unidades { get; set; } = new List<Unidad>();
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
-using PaginaGrupo.Infra.Repositories;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -18,8 +19,15 @@ namespace PaginaGrupo.Api.Controllers
         {
 
             var noticia = _noticiasRepository.GetNoticias();
-            await Task.Delay(10);
             return Ok( await noticia);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetNoticia(int id)
+        {
+            var noticia = _noticiasRepository.GetNoticia(id);
+
+            return Ok(await noticia);
+           
         }
     }
 }

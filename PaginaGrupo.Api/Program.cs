@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 //aca se agrega el "singleton" de dependencia injectada, es como el addtransient
 builder.Services.AddScoped<INoticiasRepository, NoticiasRepository>();
 
-//con esto se conecta a la bbdd
+//con esto se conecta a la bbdd del appSettings
 builder.Services.AddDbContext<PaginaGrupoContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("PaginaGrupo"));

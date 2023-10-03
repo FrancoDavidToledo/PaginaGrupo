@@ -12,7 +12,7 @@ public partial class Comentario
 
     public int IdNoticia { get; set; }
 
-    public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
+    public virtual Noticia IdNoticiaNavigation { get; set; } = null!;
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 }

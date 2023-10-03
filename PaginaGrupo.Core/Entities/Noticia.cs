@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Noticias
+public partial class Noticia
 {
     public int Id { get; set; }
 

@@ -18,7 +18,7 @@ public partial class Libro
 
     public string UrlPortada { get; set; } = null!;
 
-    public virtual ICollection<LibroAutor> LibroAutors { get; set; } = new List<LibroAutor>();
+    public virtual ICollection<LibroAutor> LibroAutor { get; set; } = new List<LibroAutor>();
 
-    public virtual ICollection<LibroCategorium> LibroCategoria { get; set; } = new List<LibroCategorium>();
+    public virtual ICollection<LibroCategoria> LibroCategoria { get; set; } = new List<LibroCategoria>();
 }

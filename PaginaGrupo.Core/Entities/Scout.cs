@@ -26,7 +26,7 @@ public partial class Scout
 
     public virtual ICollection<AsistenciaScout> AsistenciaScouts { get; set; } = new List<AsistenciaScout>();
 
-    public virtual Unidade? CodigoUnidadNavigation { get; set; }
+    public virtual Unidad? CodigoUnidadNavigation { get; set; }
 
     public virtual ICollection<NombreScout> NombreScouts { get; set; } = new List<NombreScout>();
 

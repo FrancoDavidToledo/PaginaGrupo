@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Progresione
+public partial class Progresion
 {
     public int Id { get; set; }
 
