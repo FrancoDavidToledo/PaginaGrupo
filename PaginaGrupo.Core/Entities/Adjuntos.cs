@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Adjuntos
+public class Adjuntos
 {
     public int Id { get; set; }
 
@@ -8,5 +8,5 @@ public partial class Adjuntos
 
     public int IdNoticia { get; set; }
 
-    public virtual Noticia IdNoticiaNavigation { get; set; } = null!;
+    public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
 }

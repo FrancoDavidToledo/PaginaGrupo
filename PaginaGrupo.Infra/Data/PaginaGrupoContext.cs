@@ -40,7 +40,7 @@ public partial class PaginaGrupoContext : DbContext
 
     public virtual DbSet<NombreScout> NombreScouts { get; set; }
 
-    public virtual DbSet<Noticia> Noticias { get; set; }
+    public virtual DbSet<Noticias> Noticias { get; set; }
 
     public virtual DbSet<ProgresionScout> ProgresionScouts { get; set; }
 

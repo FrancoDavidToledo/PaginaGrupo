@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Rama
+public class Rama
 {
     public string Codigo { get; set; } = null!;
 

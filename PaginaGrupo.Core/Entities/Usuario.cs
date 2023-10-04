@@ -18,9 +18,9 @@ public partial class Usuario
 
     public virtual ICollection<HistoricoUsuario> HistoricoUsuarios { get; set; } = new List<HistoricoUsuario>();
 
-    public virtual ICollection<Noticia> NoticiaIdUsuarioBajaNavigations { get; set; } = new List<Noticia>();
+    public virtual ICollection<Noticias> NoticiaIdUsuarioBajaNavigations { get; set; } = new List<Noticias>();
 
-    public virtual ICollection<Noticia> NoticiaIdUsuarioNavigations { get; set; } = new List<Noticia>();
+    public virtual ICollection<Noticias> NoticiaIdUsuarioNavigations { get; set; } = new List<Noticias>();
 
     public virtual ICollection<RolesUsuario> RolesUsuarios { get; set; } = new List<RolesUsuario>();
 }

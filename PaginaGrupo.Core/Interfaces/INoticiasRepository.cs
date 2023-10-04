@@ -4,7 +4,8 @@ namespace PaginaGrupo.Core.Interfaces
 {
     public interface INoticiasRepository
     {
-        Task<IEnumerable<Noticia>> GetNoticias();
-        Task<Noticia> GetNoticia(int id);
+        Task<IEnumerable<Noticias>> GetNoticias();
+        Task<Noticias> GetNoticia(int id);
+        Task<Noticias> InsertarNoticia (Noticias noticia);
     }
 }

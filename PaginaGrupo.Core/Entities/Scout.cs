@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Scout
+public class Scout
 {
     public int Id { get; set; }
 

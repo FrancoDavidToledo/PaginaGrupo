@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Libro
+public class Libro
 {
     public int Id { get; set; }
 

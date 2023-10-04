@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Autores
+public class Autores
 {
     public int Id { get; set; }
 

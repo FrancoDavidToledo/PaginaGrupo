@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class HistoricoUsuario
+public class HistoricoUsuario
 {
     public string Id { get; set; } = null!;
 

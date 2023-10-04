@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Comentario
+public class Comentario
 {
     public int Id { get; set; }
 
@@ -12,7 +12,7 @@ public partial class Comentario
 
     public int IdNoticia { get; set; }
 
-    public virtual Noticia IdNoticiaNavigation { get; set; } = null!;
+    public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 }

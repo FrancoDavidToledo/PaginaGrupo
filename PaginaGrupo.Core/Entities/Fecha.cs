@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Fecha
+public class Fecha
 {
     public int Id { get; set; }
 

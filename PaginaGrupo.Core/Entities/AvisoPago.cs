@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class AvisoPago
+public class AvisoPago
 {
     public int Id { get; set; }
 

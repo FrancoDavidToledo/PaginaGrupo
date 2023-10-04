@@ -15,7 +15,7 @@ namespace PaginaGrupo.Infra.Repositories
         }
 
         //devuelve todas las noticias
-        public async Task<IEnumerable<Noticia>> GetNoticias()
+        public async Task<IEnumerable<Noticias>> GetNoticias()
         {
             var noticias =await _context.Noticias.ToListAsync();
             
@@ -23,10 +23,18 @@ namespace PaginaGrupo.Infra.Repositories
         }
 
         //devuelve una noticia
-        public async Task<Noticia> GetNoticia(int id)
+        public async Task<Noticias> GetNoticia(int id)
         {
             var noticia = await _context.Noticias.FirstOrDefaultAsync(x=> x.Id == id);
 
+            return noticia;
+        }
+
+        //Crea una noticia
+        public async Task<Noticias> InsertarNoticia(Noticias noticia)
+        {
+            _context.Noticias.AddAsync(noticia);
+            await _context.SaveChangesAsync();
             return noticia;
         }
     }

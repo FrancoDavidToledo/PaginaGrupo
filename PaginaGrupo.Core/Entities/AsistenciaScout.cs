@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class AsistenciaScout
+public class AsistenciaScout
 {
     public int Id { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Roles
+public class Roles
 {
     public int Id { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class ProgresionScout
+public class ProgresionScout
 {
     public int Id { get; set; }
 

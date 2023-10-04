@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class TipoNombre
+public class TipoNombre
 {
     public int Id { get; set; }
 

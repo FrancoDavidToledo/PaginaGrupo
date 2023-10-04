@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace PaginaGrupo.Infra.Data.Configurations
 {
-    public class NoticiaConfiguration: IEntityTypeConfiguration<Noticia>
+    public class NoticiaConfiguration: IEntityTypeConfiguration<Noticias>
     {
-        public void Configure(EntityTypeBuilder<Noticia> entity)
+        public void Configure(EntityTypeBuilder<Noticias> entity)
         {
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Autor)
@@ -22,7 +22,8 @@ namespace PaginaGrupo.Infra.Data.Configurations
                 .IsUnicode(false);
             entity.Property(e => e.Cuerpo)
                 .HasMaxLength(3000)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasColumnName("Cuerpo");
             entity.Property(e => e.FechaBaja).HasColumnType("datetime");
             entity.Property(e => e.FechaNoticia).HasColumnType("date");
             entity.Property(e => e.Titulo)

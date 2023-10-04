@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Categoria
+public class Categoria
 {
     public int Id { get; set; }
 
