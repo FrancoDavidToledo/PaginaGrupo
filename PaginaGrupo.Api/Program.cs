@@ -6,8 +6,15 @@ using PaginaGrupo.Infra.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    //esto es para evitar las referencias circulares
+    options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+}
+);
 
+//automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();  
@@ -22,6 +29,7 @@ builder.Services.AddDbContext<PaginaGrupoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PaginaGrupo"));
 
 });
+
 
 
 var app = builder.Build();
