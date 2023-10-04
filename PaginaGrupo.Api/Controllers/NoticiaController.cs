@@ -6,7 +6,7 @@ using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
 {
-    public class NoticiaController : ControllerBase
+    public class NoticiaController : Controller
     {
         private readonly INoticiasRepository _noticiasRepository;
         private readonly IMapper _mapper;
@@ -37,6 +37,8 @@ namespace PaginaGrupo.Api.Controllers
         [HttpPost("InsertarNoticia")]
         public async Task<IActionResult> InsertarNoticia(NoticiaDto noticiaDto)
         {
+
+
             var noticia = _mapper.Map<Noticias>(noticiaDto);
             await _noticiasRepository.InsertarNoticia(noticia);
             

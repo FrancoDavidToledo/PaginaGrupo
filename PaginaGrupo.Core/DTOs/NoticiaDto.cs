@@ -4,13 +4,13 @@
     {
         public int Id { get; set; }
 
-        public string? Titulo { get; set; }
+        public string Titulo { get; set; }
 
-        public string? Autor { get; set; }
+        public string Autor { get; set; }
 
-        public string? Copete { get; set; }
+        public string Copete { get; set; }
 
-        public string? Cuerpo { get; set; }
+        public string Cuerpo { get; set; }
 
         public DateTime FechaNoticia { get; set; }
 

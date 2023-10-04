@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
+using PaginaGrupo.Infra.Filters;
 using PaginaGrupo.Infra.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -30,7 +33,14 @@ builder.Services.AddDbContext<PaginaGrupoContext>(options =>
 
 });
 
-
+//para el filter
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+}).AddFluentValidation(options =>
+{
+    options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+});
 
 var app = builder.Build();
 
