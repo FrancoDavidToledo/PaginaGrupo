@@ -24,7 +24,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //aca se agrega el "singleton" de dependencia injectada, es como el addtransient
+builder.Services.AddScoped<IAdjuntosRepository, AdjuntosRepository>();
+builder.Services.AddScoped<IAsistenciaScoutRepository, AsistenciaScoutRepository>();
+builder.Services.AddScoped<IAutoresRepository, AutorRepository>();
+builder.Services.AddScoped<IAvisoPagoRepository, AvisoPagoRepository>();
+builder.Services.AddScoped<ICategoriasRepository, CategoriaRepository>();
+builder.Services.AddScoped<IComentarioRepository, ComentarioRepository>();
+builder.Services.AddScoped<IFechaRepository, FechaRepository>();
+builder.Services.AddScoped<ILibroAutorRepository, LibroAutorRepository>();
+builder.Services.AddScoped<ILibroCategoriaRepository, LibroCategoriaRepository>();
+builder.Services.AddScoped<ILibroRepository, LibroRepository>();
+builder.Services.AddScoped<INombreScoutRepository, NombreScoutRepository>();
 builder.Services.AddScoped<INoticiasRepository, NoticiasRepository>();
+builder.Services.AddScoped<IProgresionRepository, ProgresionRepository>();
+builder.Services.AddScoped<IProgresionScoutRepository, ProgresionScoutRepository>();
+builder.Services.AddScoped<IRamaRepository, RamaRepository>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IRolesUsuarioRepository, RolesUsuarioRepository>();
+builder.Services.AddScoped<IScoutRepository, ScoutRepository>();
+builder.Services.AddScoped<ITipoAdjuntoRepository, TipoAdjuntoRepository>();
+builder.Services.AddScoped<ITipoNombreRepository, TipoNombreRepository>();
+builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
 
 //con esto se conecta a la bbdd del appSettings
 builder.Services.AddDbContext<PaginaGrupoContext>(options =>

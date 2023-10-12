@@ -34,7 +34,7 @@ public partial class PaginaGrupoContext : DbContext
 
     public virtual DbSet<Libro> Libros { get; set; }
 
-    public virtual DbSet<LibroAutor> LibroAutors { get; set; }
+    public virtual DbSet<LibroAutor> LibrosAutores { get; set; }
 
     public virtual DbSet<LibroCategoria> LibroCategoria { get; set; }
 
