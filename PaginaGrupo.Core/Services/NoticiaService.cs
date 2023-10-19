@@ -27,6 +27,7 @@ namespace PaginaGrupo.Core.Services
         //Crea una noticia
         public async Task<Noticias> InsertarNoticia(Noticias noticia)
         {
+            //aca hacer validaciones
             var user = await _usuarioRepository.GetUsuario(noticia.IdUsuario);
             if (user == null)
             {
