@@ -25,9 +25,9 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve un usuario
         public async Task<Usuario> GetUsuario(int id)
         {
-            var noticia = await _context.Usuarios.FirstOrDefaultAsync(x=> x.Id == id);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x=> x.Id == id);
 
-            return noticia;
+            return usuario;
         }
 
         //Crea un usuario

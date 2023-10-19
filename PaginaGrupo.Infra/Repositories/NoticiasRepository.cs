@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
@@ -37,5 +39,30 @@ namespace PaginaGrupo.Infra.Repositories
             await _context.SaveChangesAsync();
             return noticia;
         }
+
+
+        //Updatea una noticia
+        public async Task<bool> ActualizarNoticia(Noticias noticia)
+        {
+            var currentNoticia = await GetNoticia(noticia.Id);
+            //aca poner todos los campos
+            currentNoticia.Estado = noticia.Estado;
+
+            int rows = await _context.SaveChangesAsync();
+            
+            return rows > 0;
+        }
+
+        //Borra una noticia
+        public async Task<bool> BorrarNoticia(int id)
+        {
+            var currentNoticia = await GetNoticia(id);
+
+            _context.Noticias.Remove(currentNoticia);
+
+            int rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using PaginaGrupo.Infra.Filters;
 using PaginaGrupo.Infra.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using PaginaGrupo.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -47,6 +48,7 @@ builder.Services.AddScoped<ITipoNombreRepository, TipoNombreRepository>();
 builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
+builder.Services.AddScoped<INoticiasService, NoticiasService>();
 
 //con esto se conecta a la bbdd del appSettings
 builder.Services.AddDbContext<PaginaGrupoContext>(options =>
