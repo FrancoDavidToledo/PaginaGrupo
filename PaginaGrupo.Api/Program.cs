@@ -10,7 +10,10 @@ using PaginaGrupo.Core.Services;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson(options =>
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+}).AddNewtonsoftJson(options =>
 {
     //esto es para evitar las referencias circulares
     options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -49,6 +52,8 @@ builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddScoped<INoticiasService, NoticiasService>();
+builder.Services.AddScoped(typeof(IRepository<>),typeof(BaseRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 //con esto se conecta a la bbdd del appSettings
 builder.Services.AddDbContext<PaginaGrupoContext>(options =>

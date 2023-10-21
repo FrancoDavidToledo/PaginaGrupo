@@ -1,8 +1,7 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public partial class Usuario
+public partial class Usuario : BaseEntity
 {
-    public int Id { get; set; }
 
     public string Nombre { get; set; } = null!;
 

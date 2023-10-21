@@ -1,8 +1,8 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class Noticias
+public class Noticias : BaseEntity
 {
-    public int Id { get; set; }
+//    public int Id { get; set; }
 
     public string Titulo { get; set; }
                  

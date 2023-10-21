@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PaginaGrupo.Api.Responses;
+using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Core.QueryFilters;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -17,10 +19,18 @@ namespace PaginaGrupo.Api.Controllers
             _mapper= mapper;
     }
         [HttpGet("GetNoticias")]
-        public async Task<IActionResult> GetNoticias() 
+        public IActionResult GetNoticias(NoticiasQueryFilter filters) 
         {
+            var noticias =  _noticiasService.GetNoticias(filters);
+            var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
+            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
+            return Ok(response);
+        }
 
-            var noticias = await _noticiasService.GetNoticias();
+        [HttpGet("GetNoticiasEstado/{estado}")]
+        public IActionResult GetNoticiasEstado(int estado)
+        {
+            var noticias = _noticiasService.GetNoticiasEstado(estado);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
             var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
             return Ok(response);

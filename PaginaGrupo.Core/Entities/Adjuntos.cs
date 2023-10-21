@@ -1,8 +1,7 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class Adjuntos
+public class Adjuntos : BaseEntity
 {
-    public int Id { get; set; }
 
     public string Adjunto { get; set; } = null!;
 
