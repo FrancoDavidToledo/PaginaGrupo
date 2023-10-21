@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.DTOs;
@@ -24,6 +25,16 @@ namespace PaginaGrupo.Api.Controllers
             var noticias =  _noticiasService.GetNoticias(filters);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
             var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
+            var metadata = new
+            {
+                noticias.TotalCount,
+                noticias.PageSize,
+                noticias.CurrentPage,
+                noticias.TotalPages,
+                noticias.HasNextPage,
+                noticias.HasPreviousPage
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return Ok(response);
         }
 
