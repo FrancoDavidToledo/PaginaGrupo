@@ -1,4 +1,6 @@
-﻿namespace PaginaGrupo.Api.Responses
+﻿using PaginaGrupo.Core.CustomEntitys;
+
+namespace PaginaGrupo.Api.Responses
 {
     public class ApiResponse <T>
     {
@@ -8,5 +10,7 @@
         }
 
         public T Data { get; set; }
+
+        public Metadata Meta { get; set; }
     }
 }

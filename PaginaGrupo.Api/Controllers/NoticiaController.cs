@@ -7,6 +7,7 @@ using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
+using PaginaGrupo.Infra.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -14,26 +15,36 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly INoticiasService _noticiasService;
         private readonly IMapper _mapper;
-        public NoticiaController(INoticiasService noticiasService, IMapper mapper) 
+        private readonly IUriService _uriService;
+        public NoticiaController(INoticiasService noticiasService, IMapper mapper, IUriService uriService) 
         {
             _noticiasService = noticiasService;
             _mapper= mapper;
+            _uriService = uriService;
     }
         [HttpGet("GetNoticias")]
         public IActionResult GetNoticias(NoticiasQueryFilter filters) 
         {
             var noticias =  _noticiasService.GetNoticias(filters);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
-            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
-            var metadata = new
+            
+            var metadata = new Metadata
             {
-                noticias.TotalCount,
-                noticias.PageSize,
-                noticias.CurrentPage,
-                noticias.TotalPages,
-                noticias.HasNextPage,
-                noticias.HasPreviousPage
+               TotalCount=  noticias.TotalCount,
+                PageSize= noticias.PageSize,
+                CurrentPage= noticias.CurrentPage,
+                TotalPages = noticias.TotalPages,
+                HasNextPage = noticias.HasNextPage,
+               HasPreviousPage= noticias.HasPreviousPage,
+               NextPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString(),
+               PreviousPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString()
             };
+
+            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto)
+            {
+                Meta = metadata
+            }
+            ;
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return Ok(response);
         }

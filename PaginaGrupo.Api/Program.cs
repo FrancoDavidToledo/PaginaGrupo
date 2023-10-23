@@ -6,6 +6,9 @@ using PaginaGrupo.Infra.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using PaginaGrupo.Core.Services;
+using PaginaGrupo.Infra.Interfaces;
+using PaginaGrupo.Infra.Services;
+using PaginaGrupo.Core.CustomEntitys;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -17,6 +20,7 @@ builder.Services.AddControllers(options =>
 {
     //esto es para evitar las referencias circulares
     options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
 }
 );
 
@@ -54,6 +58,14 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<INoticiasService, NoticiasService>();
 builder.Services.AddScoped(typeof(IRepository<>),typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//esto es para los paginados, pagina anterior y posterior
+builder.Services.AddSingleton<IUriService>(provider =>
+{
+    var accesor = provider.GetRequiredService<IHttpContextAccessor>();
+    var request = accesor.HttpContext.Request;
+    var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
+    return new UriService(absoluteUri); 
+});
 
 //con esto se conecta a la bbdd del appSettings
 builder.Services.AddDbContext<PaginaGrupoContext>(options =>
@@ -71,11 +83,15 @@ builder.Services.AddMvc(options =>
     options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 });
 
+//paginacion
+builder.Services.Configure<PaginationOptions>(builder.Configuration.GetSection("Pagination"));
+
+
 var app = builder.Build();
 
 
 
-//var noticia = app.Services.GetServices<PaginaGrupo.Core.Interfaces.INoticiasRepository>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

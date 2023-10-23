@@ -1,4 +1,6 @@
-﻿using PaginaGrupo.Core.CustomEntitys;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.VisualBasic.FileIO;
+using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Exceptions;
 using PaginaGrupo.Core.Interfaces;
@@ -17,9 +19,12 @@ namespace PaginaGrupo.Core.Services
         //    _usuarioRepository = usuarioRepository;
         //}
 
-        public NoticiasService(IUnitOfWork unitOfWork)
+        private readonly PaginationOptions _paginationOptions;
+
+        public NoticiasService(IUnitOfWork unitOfWork, IOptions<PaginationOptions> options)
         {
             _unitOfWork = unitOfWork;
+            _paginationOptions = options.Value;
         }
 
 
@@ -32,6 +37,11 @@ namespace PaginaGrupo.Core.Services
         public PagesList<Noticias> GetNoticias(NoticiasQueryFilter filters)
         {
             var noticias = _unitOfWork.NoticiasRepository.GetAll();
+
+            //paginado
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
             if (filters.IdUsuario != null)
             {
                 noticias = noticias.Where(x => x.IdUsuario == filters.IdUsuario);
