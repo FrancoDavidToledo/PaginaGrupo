@@ -9,6 +9,8 @@ using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Interfaces;
 using PaginaGrupo.Infra.Services;
 using PaginaGrupo.Core.CustomEntitys;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -85,6 +87,17 @@ builder.Services.AddMvc(options =>
 
 //paginacion
 builder.Services.Configure<PaginationOptions>(builder.Configuration.GetSection("Pagination"));
+
+
+//swagger
+builder.Services.AddSwaggerGen(doc =>
+{
+    doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Pagina Grupo API", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    doc.IncludeXmlComments(xmlPath);
+});
+
 
 
 var app = builder.Build();

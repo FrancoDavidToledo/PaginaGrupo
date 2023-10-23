@@ -8,6 +8,7 @@ using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.Infra.Interfaces;
+using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -22,6 +23,18 @@ namespace PaginaGrupo.Api.Controllers
             _mapper= mapper;
             _uriService = uriService;
     }
+
+        //lo siguiente es para documentar
+        /// <summary>
+        /// Muestra todas las noticias
+        /// </summary>
+        /// 
+        //lo siguiente para documentar cada uno en particular
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo anterior era para documentar
+
+
         [HttpGet("GetNoticias")]
         public IActionResult GetNoticias(NoticiasQueryFilter filters) 
         {
