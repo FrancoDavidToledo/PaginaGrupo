@@ -1,16 +1,19 @@
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Data;
 using PaginaGrupo.Infra.Filters;
-using PaginaGrupo.Infra.Repositories;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Interfaces;
+using PaginaGrupo.Infra.Repositories;
 using PaginaGrupo.Infra.Services;
-using PaginaGrupo.Core.CustomEntitys;
-using Microsoft.OpenApi.Models;
+using System.Diagnostics.SymbolStore;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -76,6 +79,26 @@ builder.Services.AddDbContext<PaginaGrupoContext>(options =>
 
 });
 
+//para el JWT
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Authentication:Issuer"],
+        ValidAudience = builder.Configuration["Authentication:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"]))
+    };
+}
+);
+
 //para el filter
 builder.Services.AddMvc(options =>
 {
@@ -115,7 +138,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//usar jwt
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

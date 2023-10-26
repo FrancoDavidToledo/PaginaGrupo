@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PaginaGrupo.Api.Responses;
@@ -12,6 +13,7 @@ using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Authorize]
     public class NoticiaController : Controller
     {
         private readonly INoticiasService _noticiasService;
