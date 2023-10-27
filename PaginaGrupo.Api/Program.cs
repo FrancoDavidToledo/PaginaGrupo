@@ -24,7 +24,7 @@ builder.Services.AddControllers(options =>
 }).AddNewtonsoftJson(options =>
 {
     //esto es para evitar las referencias circulares
-    options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
 }
 );
@@ -33,7 +33,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();  
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //aca se agrega el "singleton" de dependencia injectada, es como el addtransient
@@ -52,8 +52,6 @@ builder.Services.AddScoped<INoticiasRepository, NoticiasRepository>();
 builder.Services.AddScoped<IProgresionRepository, ProgresionRepository>();
 builder.Services.AddScoped<IProgresionScoutRepository, ProgresionScoutRepository>();
 builder.Services.AddScoped<IRamaRepository, RamaRepository>();
-builder.Services.AddScoped<IRolesRepository, RolesRepository>();
-builder.Services.AddScoped<IRolesUsuarioRepository, RolesUsuarioRepository>();
 builder.Services.AddScoped<IScoutRepository, ScoutRepository>();
 builder.Services.AddScoped<ITipoAdjuntoRepository, TipoAdjuntoRepository>();
 builder.Services.AddScoped<ITipoNombreRepository, TipoNombreRepository>();
@@ -61,7 +59,7 @@ builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 builder.Services.AddScoped<INoticiasService, NoticiasService>();
-builder.Services.AddScoped(typeof(IRepository<>),typeof(BaseRepository<>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //esto es para los paginados, pagina anterior y posterior
 builder.Services.AddSingleton<IUriService>(provider =>
@@ -69,7 +67,7 @@ builder.Services.AddSingleton<IUriService>(provider =>
     var accesor = provider.GetRequiredService<IHttpContextAccessor>();
     var request = accesor.HttpContext.Request;
     var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
-    return new UriService(absoluteUri); 
+    return new UriService(absoluteUri);
 });
 
 //con esto se conecta a la bbdd del appSettings

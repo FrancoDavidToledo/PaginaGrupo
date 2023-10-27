@@ -14,7 +14,7 @@ namespace PaginaGrupo.Infra.Mappings
     {
 
 
-        public AutomapperProfile() 
+        public AutomapperProfile()
         {
             CreateMap<Adjuntos, AdjuntosDto>();
             CreateMap<AdjuntosDto, Adjuntos>();
@@ -64,14 +64,8 @@ namespace PaginaGrupo.Infra.Mappings
             CreateMap<Rama, RamaDto>();
             CreateMap<RamaDto, Rama>();
 
-            CreateMap<Roles, RolesDto>();
-            CreateMap<RolesDto, Roles>();
-
-            CreateMap<RolesUsuario, RolesUsuarioDto>();
-            CreateMap<RolesUsuarioDto, RolesUsuario>();
-
             CreateMap<Scout, ScoutDto>();
-            CreateMap<ScoutDto, Scout> ();
+            CreateMap<ScoutDto, Scout>();
 
             CreateMap<TipoAdjunto, TipoAdjuntoDto>();
             CreateMap<TipoAdjuntoDto, TipoAdjunto>();

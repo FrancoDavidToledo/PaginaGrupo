@@ -3,15 +3,17 @@
 public partial class Usuario : BaseEntity
 {
 
-    public string Nombre { get; set; } = null!;
+    public string Nombre { get; set; }
 
-    public string Correo { get; set; } = null!;
+    public string Correo { get; set; }
 
-    public string Clave { get; set; } = null!;
+    public string Clave { get; set; }
 
     public DateTime? FechaAlta { get; set; }
 
     public DateTime? FechaUltimoIngreso { get; set; }
+
+    public string Rol { get; set; }
 
     public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
@@ -21,5 +23,4 @@ public partial class Usuario : BaseEntity
 
     public virtual ICollection<Noticias> NoticiaIdUsuarioNavigations { get; set; } = new List<Noticias>();
 
-    public virtual ICollection<RolesUsuario> RolesUsuarios { get; set; } = new List<RolesUsuario>();
 }

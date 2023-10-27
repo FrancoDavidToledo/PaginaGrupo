@@ -23,6 +23,9 @@ namespace PaginaGrupo.Infra.Data.Configurations
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Rol)
+            .HasMaxLength(20)
+            .IsUnicode(false);
         }
     }
 

@@ -48,10 +48,6 @@ public partial class PaginaGrupoContext : DbContext
 
     public virtual DbSet<Rama> Ramas { get; set; }
 
-    public virtual DbSet<Roles> Roles { get; set; }
-
-    public virtual DbSet<RolesUsuario> RolesUsuarios { get; set; }
-
     public virtual DbSet<Scout> Scouts { get; set; }
 
     public virtual DbSet<TipoAdjunto> TipoAdjuntos { get; set; }
@@ -82,8 +78,6 @@ public partial class PaginaGrupoContext : DbContext
         modelBuilder.ApplyConfiguration(new ProgresionConfiguration());
         modelBuilder.ApplyConfiguration(new ProgresionScoutConfiguration());
         modelBuilder.ApplyConfiguration(new RamaConfiguration());
-        modelBuilder.ApplyConfiguration(new RolesConfiguration());
-        modelBuilder.ApplyConfiguration(new RolesUsuarioConfiguration());
         modelBuilder.ApplyConfiguration(new ScoutConfiguration());
         modelBuilder.ApplyConfiguration(new TipoAdjuntoConfiguration());
         modelBuilder.ApplyConfiguration(new TipoNombreConfiguration());
