@@ -61,6 +61,10 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<INoticiasService, NoticiasService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+
+
 //esto es para los paginados, pagina anterior y posterior
 builder.Services.AddSingleton<IUriService>(provider =>
 {

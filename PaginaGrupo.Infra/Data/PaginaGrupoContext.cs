@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Infra.Data.Configurations;
+using System.Reflection;
 
 namespace PaginaGrupo.Infra.Data;
 
@@ -61,28 +62,31 @@ public partial class PaginaGrupoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-        //se pasa el builder a externo
-        modelBuilder.ApplyConfiguration(new AdjuntoConfiguration());
-        modelBuilder.ApplyConfiguration(new AsistenciaScoutConfiguration());
-        modelBuilder.ApplyConfiguration(new AutoresConfiguration());
-        modelBuilder.ApplyConfiguration(new AvisoPagoConfiguration());
-        modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
-        modelBuilder.ApplyConfiguration(new ComentarioConfiguration());
-        modelBuilder.ApplyConfiguration(new FechaConfiguration());
-        modelBuilder.ApplyConfiguration(new HistoricoUsuarioConfiguration());
-        modelBuilder.ApplyConfiguration(new LibroAutorConfiguration());
-        modelBuilder.ApplyConfiguration(new LibroCategoriaConfiguration());
-        modelBuilder.ApplyConfiguration(new LibroConfiguration());
-        modelBuilder.ApplyConfiguration(new NombreScoutConfiguration());
-        modelBuilder.ApplyConfiguration(new NoticiaConfiguration());
-        modelBuilder.ApplyConfiguration(new ProgresionConfiguration());
-        modelBuilder.ApplyConfiguration(new ProgresionScoutConfiguration());
-        modelBuilder.ApplyConfiguration(new RamaConfiguration());
-        modelBuilder.ApplyConfiguration(new ScoutConfiguration());
-        modelBuilder.ApplyConfiguration(new TipoAdjuntoConfiguration());
-        modelBuilder.ApplyConfiguration(new TipoNombreConfiguration());
-        modelBuilder.ApplyConfiguration(new UnidadConfiguration());
-        modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
+        //Este hace todo lo de abajo junto
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        ////se pasa el builder a externo
+        //modelBuilder.ApplyConfiguration(new AdjuntoConfiguration());
+        //modelBuilder.ApplyConfiguration(new AsistenciaScoutConfiguration());
+        //modelBuilder.ApplyConfiguration(new AutoresConfiguration());
+        //modelBuilder.ApplyConfiguration(new AvisoPagoConfiguration());
+        //modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
+        //modelBuilder.ApplyConfiguration(new ComentarioConfiguration());
+        //modelBuilder.ApplyConfiguration(new FechaConfiguration());
+        //modelBuilder.ApplyConfiguration(new HistoricoUsuarioConfiguration());
+        //modelBuilder.ApplyConfiguration(new LibroAutorConfiguration());
+        //modelBuilder.ApplyConfiguration(new LibroCategoriaConfiguration());
+        //modelBuilder.ApplyConfiguration(new LibroConfiguration());
+        //modelBuilder.ApplyConfiguration(new NombreScoutConfiguration());
+        //modelBuilder.ApplyConfiguration(new NoticiaConfiguration());
+        //modelBuilder.ApplyConfiguration(new ProgresionConfiguration());
+        //modelBuilder.ApplyConfiguration(new ProgresionScoutConfiguration());
+        //modelBuilder.ApplyConfiguration(new RamaConfiguration());
+        //modelBuilder.ApplyConfiguration(new ScoutConfiguration());
+        //modelBuilder.ApplyConfiguration(new TipoAdjuntoConfiguration());
+        //modelBuilder.ApplyConfiguration(new TipoNombreConfiguration());
+        //modelBuilder.ApplyConfiguration(new UnidadConfiguration());
+        //modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
 
     }
 }

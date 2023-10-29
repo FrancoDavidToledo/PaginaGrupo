@@ -1,41 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
+using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Infra.Repositories
 {
-    public class UsuarioRepository : IUsuarioRepository
+    public class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository
     {
 
-        private readonly PaginaGrupoContext _context;
-        public UsuarioRepository(PaginaGrupoContext context) {
+        //  private readonly PaginaGrupoContext _context;
+        public UsuarioRepository(PaginaGrupoContext context) : base(context) { }
 
-            _context = context;
-        }
-
-        //devuelve todos los usuarios
-        public async Task<IEnumerable<Usuario>> GetUsuarios()
+        //devuelve todas las noticias de un estado
+        public async Task<Usuario> GetLoginByCredentials(UserLogin login)
         {
-            var noticias =await _context.Usuarios.ToListAsync();
-            
-            return noticias;
-        }
-
-        //devuelve un usuario
-        public async Task<Usuario> GetUsuario(int id)
-        {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(x=> x.Id == id);
-
-            return usuario;
-        }
-
-        //Crea un usuario
-        public async Task<Usuario> InsertarUsuario(Usuario noticia)
-        {
-            _context.Usuarios.AddAsync(noticia);
-            await _context.SaveChangesAsync();
-            return noticia;
+            return await _entities.FirstOrDefaultAsync(x => x.Correo == login.Correo && x.Clave == login.Clave);
         }
     }
 }

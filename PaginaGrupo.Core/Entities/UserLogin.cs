@@ -8,7 +8,7 @@ namespace PaginaGrupo.Core.Entities
 {
     public class UserLogin
     {
-        public string CorreoElectronico { get; set; }
-        public string Password { get; set; }
+        public string Correo { get; set; }
+        public string Clave { get; set; }
     }
 }

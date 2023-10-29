@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 
 namespace PaginaGrupo.Infra.Data.Configurations
 {
@@ -25,7 +26,9 @@ namespace PaginaGrupo.Infra.Data.Configurations
                 .IsUnicode(false);
             entity.Property(e => e.Rol)
             .HasMaxLength(20)
-            .IsUnicode(false);
+            .HasConversion(
+                x=> x.ToString(),
+                x=> (RolType)Enum.Parse(typeof(RolType),x));
         }
     }
 

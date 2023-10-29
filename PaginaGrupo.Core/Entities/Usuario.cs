@@ -1,4 +1,6 @@
-﻿namespace PaginaGrupo.Core.Entities;
+﻿using PaginaGrupo.Core.Enumerations;
+
+namespace PaginaGrupo.Core.Entities;
 
 public partial class Usuario : BaseEntity
 {
@@ -13,7 +15,7 @@ public partial class Usuario : BaseEntity
 
     public DateTime? FechaUltimoIngreso { get; set; }
 
-    public string Rol { get; set; }
+    public RolType Rol { get; set; }
 
     public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 

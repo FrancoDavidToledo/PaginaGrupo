@@ -10,10 +10,13 @@ using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.Infra.Interfaces;
 using System.Net;
+using PaginaGrupo.Core.Enumerations;
 
 namespace PaginaGrupo.Api.Controllers
 {
-    [Authorize]
+    //  [Authorize]
+    //[Authorize(Roles =nameof(RolType.Administrador)+ ","+nameof(RolType.Dirigente))]
+
     public class NoticiaController : Controller
     {
         private readonly INoticiasService _noticiasService;

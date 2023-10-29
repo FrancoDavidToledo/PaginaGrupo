@@ -1,12 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Core.Interfaces;
+﻿using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PaginaGrupo.Infra.Repositories
 {
@@ -15,7 +8,8 @@ namespace PaginaGrupo.Infra.Repositories
 
         private readonly PaginaGrupoContext _context; 
         private readonly INoticiasRepository _noticiasRepository;
-        private readonly IRepository<Usuario> _usuarioRepository;
+        //   private readonly IRepository<Usuario> _usuarioRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
         public  UnitOfWork(PaginaGrupoContext context)
         {
@@ -24,7 +18,7 @@ namespace PaginaGrupo.Infra.Repositories
 
         public INoticiasRepository NoticiasRepository => _noticiasRepository ?? new NoticiasRepository(_context);
 
-        public IRepository<Usuario> UsuarioRepository => _usuarioRepository ?? new BaseRepository<Usuario>(_context);
+        public IUsuarioRepository UsuarioRepository => _usuarioRepository ?? new UsuarioRepository(_context);
 
         public void Dispose()
         {

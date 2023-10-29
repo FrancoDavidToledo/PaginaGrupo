@@ -2,10 +2,8 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IUsuarioRepository
+    public interface IUsuarioRepository: IRepository<Usuario>
     {
-        Task<IEnumerable<Usuario>> GetUsuarios();
-        Task<Usuario> GetUsuario(int id);
-        Task<Usuario> InsertarUsuario(Usuario usuario);
+        Task<Usuario> GetLoginByCredentials(UserLogin login);
     }
 }

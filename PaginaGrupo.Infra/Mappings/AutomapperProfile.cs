@@ -16,68 +16,68 @@ namespace PaginaGrupo.Infra.Mappings
 
         public AutomapperProfile()
         {
-            CreateMap<Adjuntos, AdjuntosDto>();
-            CreateMap<AdjuntosDto, Adjuntos>();
+            CreateMap<Adjuntos, AdjuntosDto>().ReverseMap();
+          //  CreateMap<AdjuntosDto, Adjuntos>();
 
-            CreateMap<AsistenciaScout, AsistenciaScoutDto>();
-            CreateMap<AsistenciaScoutDto, AsistenciaScout>();
+            CreateMap<AsistenciaScout, AsistenciaScoutDto>().ReverseMap();
+            //   CreateMap<AsistenciaScoutDto, AsistenciaScout>();
 
-            CreateMap<Autores, AutoresDto>();
-            CreateMap<AutoresDto, Autores>();
+            CreateMap<Autores, AutoresDto>().ReverseMap();
+            //  CreateMap<AutoresDto, Autores>();
 
-            CreateMap<AvisoPago, AvisoPagoDto>();
-            CreateMap<AvisoPagoDto, AvisoPago>();
+            CreateMap<AvisoPago, AvisoPagoDto>().ReverseMap();
+            // CreateMap<AvisoPagoDto, AvisoPago>();
 
-            CreateMap<Categoria, CategoriaDto>();
-            CreateMap<CategoriaDto, Categoria>();
+            CreateMap<Categoria, CategoriaDto>().ReverseMap();
+            // CreateMap<CategoriaDto, Categoria>();
 
-            CreateMap<Comentario, ComentarioDto>();
-            CreateMap<ComentarioDto, Comentario>();
+            CreateMap<Comentario, ComentarioDto>().ReverseMap();
+            // CreateMap<ComentarioDto, Comentario>();
 
-            CreateMap<Fecha, FechaDto>();
-            CreateMap<FechaDto, Fecha>();
+            CreateMap<Fecha, FechaDto>().ReverseMap();
+            // CreateMap<FechaDto, Fecha>();
 
-            CreateMap<HistoricoUsuario, HistoricoUsuarioDto>();
-            CreateMap<HistoricoUsuarioDto, HistoricoUsuario>();
+            CreateMap<HistoricoUsuario, HistoricoUsuarioDto>().ReverseMap();
+            // CreateMap<HistoricoUsuarioDto, HistoricoUsuario>();
 
-            CreateMap<Libro, LibroDto>();
-            CreateMap<LibroDto, Libro>();
+            CreateMap<Libro, LibroDto>().ReverseMap();
+            // CreateMap<LibroDto, Libro>();
 
-            CreateMap<LibroAutor, LibroAutorDto>();
-            CreateMap<LibroAutorDto, LibroAutor>();
+            CreateMap<LibroAutor, LibroAutorDto>().ReverseMap();
+            // CreateMap<LibroAutorDto, LibroAutor>();
 
-            CreateMap<LibroCategoria, LibroCategoriaDto>();
-            CreateMap<LibroCategoriaDto, LibroCategoria>();
+            CreateMap<LibroCategoria, LibroCategoriaDto>().ReverseMap();
+            // CreateMap<LibroCategoriaDto, LibroCategoria>();
 
-            CreateMap<NombreScout, NombreScoutDto>();
-            CreateMap<NombreScoutDto, NombreScout>();
+            CreateMap<NombreScout, NombreScoutDto>().ReverseMap();
+            // CreateMap<NombreScoutDto, NombreScout>();
 
-            CreateMap<Noticias, NoticiaDto>();
-            CreateMap<NoticiaDto, Noticias>();
+            CreateMap<Noticias, NoticiaDto>().ReverseMap();
+            //CreateMap<NoticiaDto, Noticias>();
 
-            CreateMap<Progresion, ProgresionDto>();
-            CreateMap<ProgresionDto, Progresion>();
+            CreateMap<Progresion, ProgresionDto>().ReverseMap();
+            //CreateMap<ProgresionDto, Progresion>();
 
-            CreateMap<ProgresionScout, ProgresionScoutDto>();
-            CreateMap<ProgresionScoutDto, ProgresionScout>();
+            CreateMap<ProgresionScout, ProgresionScoutDto>().ReverseMap();
+            //CreateMap<ProgresionScoutDto, ProgresionScout>();
 
-            CreateMap<Rama, RamaDto>();
-            CreateMap<RamaDto, Rama>();
+            CreateMap<Rama, RamaDto>().ReverseMap();
+            //CreateMap<RamaDto, Rama>();
 
-            CreateMap<Scout, ScoutDto>();
-            CreateMap<ScoutDto, Scout>();
+            CreateMap<Scout, ScoutDto>().ReverseMap();
+            //CreateMap<ScoutDto, Scout>();
 
-            CreateMap<TipoAdjunto, TipoAdjuntoDto>();
-            CreateMap<TipoAdjuntoDto, TipoAdjunto>();
+            CreateMap<TipoAdjunto, TipoAdjuntoDto>().ReverseMap();
+            // CreateMap<TipoAdjuntoDto, TipoAdjunto>();
 
-            CreateMap<TipoNombre, TipoNombreDto>();
-            CreateMap<TipoNombreDto, TipoNombre>();
+            CreateMap<TipoNombre, TipoNombreDto>().ReverseMap();
+            // CreateMap<TipoNombreDto, TipoNombre>();
 
-            CreateMap<Unidad, UnidadDto>();
-            CreateMap<UnidadDto, Unidad>();
+            CreateMap<Unidad, UnidadDto>().ReverseMap();
+            // CreateMap<UnidadDto, Unidad>();
 
-            CreateMap<Usuario, UsuarioDto>();
-            CreateMap<UsuarioDto, Usuario>();
+            CreateMap<Usuario, UsuarioDto>().ReverseMap();
+            // CreateMap<UsuarioDto, Usuario>();
         }
     }
 }
