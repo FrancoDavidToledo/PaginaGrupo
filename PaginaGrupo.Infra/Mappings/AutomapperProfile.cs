@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Infra.Data.Configurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PaginaGrupo.Infra.Mappings
 {
@@ -17,7 +11,7 @@ namespace PaginaGrupo.Infra.Mappings
         public AutomapperProfile()
         {
             CreateMap<Adjuntos, AdjuntosDto>().ReverseMap();
-          //  CreateMap<AdjuntosDto, Adjuntos>();
+            //  CreateMap<AdjuntosDto, Adjuntos>();
 
             CreateMap<AsistenciaScout, AsistenciaScoutDto>().ReverseMap();
             //   CreateMap<AsistenciaScoutDto, AsistenciaScout>();

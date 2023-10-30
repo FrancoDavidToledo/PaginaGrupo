@@ -6,12 +6,12 @@ namespace PaginaGrupo.Infra.Repositories
     public class UnitOfWork : IUnitOfWork
     {
 
-        private readonly PaginaGrupoContext _context; 
+        private readonly PaginaGrupoContext _context;
         private readonly INoticiasRepository _noticiasRepository;
         //   private readonly IRepository<Usuario> _usuarioRepository;
         private readonly IUsuarioRepository _usuarioRepository;
 
-        public  UnitOfWork(PaginaGrupoContext context)
+        public UnitOfWork(PaginaGrupoContext context)
         {
             _context = context;
         }
@@ -22,20 +22,20 @@ namespace PaginaGrupo.Infra.Repositories
 
         public void Dispose()
         {
-            if (_context != null) 
+            if (_context != null)
             {
                 _context.Dispose();
-             } ;
+            };
         }
 
         public void SaveChanges()
         {
-           _context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public async Task SaveChangesAsync()
         {
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

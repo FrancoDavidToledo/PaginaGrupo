@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public ScoutRepository(PaginaGrupoContext context) {
+        public ScoutRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<Scout>> GetScouts()
         {
-            var scouts =await _context.Scouts.ToListAsync();
-            
+            var scouts = await _context.Scouts.ToListAsync();
+
             return scouts;
         }
 
         //devuelve un usuario
         public async Task<Scout> GetScout(int id)
         {
-            var scout = await _context.Scouts.FirstOrDefaultAsync(x=> x.Id == id);
+            var scout = await _context.Scouts.FirstOrDefaultAsync(x => x.Id == id);
 
             return scout;
         }

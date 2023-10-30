@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly ILibroRepository _libroRepository;
         private readonly IMapper _mapper;
-        public LibroController(ILibroRepository libroRepository, IMapper mapper) 
+        public LibroController(ILibroRepository libroRepository, IMapper mapper)
         {
             _libroRepository = libroRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetLibros")]
-        public async Task<IActionResult> GetLibros() 
+        public async Task<IActionResult> GetLibros()
         {
 
             var libro = await _libroRepository.GetLibros();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var libro = await _libroRepository.GetLibro(id);
             var libroDto = _mapper.Map<LibroDto>(libro);
             return Ok(libroDto);
-           
+
         }
 
         [HttpPost("InsertarLibro")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var libro = _mapper.Map<Libro>(libroDto);
             await _libroRepository.InsertarLibro(libro);
-            
+
             return Ok(libro);
 
         }

@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public AdjuntosRepository(PaginaGrupoContext context) {
+        public AdjuntosRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -18,14 +19,14 @@ namespace PaginaGrupo.Infra.Repositories
         public async Task<IEnumerable<Adjuntos>> GetAdjuntos()
         {
             var adjuntos = await _context.Adjuntos.ToListAsync();
-            
+
             return adjuntos;
         }
 
         //devuelve un adjunto
         public async Task<Adjuntos> GetAdjunto(int id)
         {
-            var adjunto = await _context.Adjuntos.FirstOrDefaultAsync(x=> x.Id == id);
+            var adjunto = await _context.Adjuntos.FirstOrDefaultAsync(x => x.Id == id);
 
             return adjunto;
         }

@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IAsistenciaScoutRepository _asistenciaScoutRepository;
         private readonly IMapper _mapper;
-        public AsistenciaScoutController(IAsistenciaScoutRepository asistenciaScoutRepository, IMapper mapper) 
+        public AsistenciaScoutController(IAsistenciaScoutRepository asistenciaScoutRepository, IMapper mapper)
         {
             _asistenciaScoutRepository = asistenciaScoutRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetAsistenciasScouts")]
-        public async Task<IActionResult> GetAsistenciasScouts() 
+        public async Task<IActionResult> GetAsistenciasScouts()
         {
 
             var asistenciaScout = await _asistenciaScoutRepository.GetAsistenciasScouts();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var asistenciaScout = await _asistenciaScoutRepository.GetAsistenciaScout(id);
             var asistenciaScoutDto = _mapper.Map<AsistenciaScoutDto>(asistenciaScout);
             return Ok(asistenciaScoutDto);
-           
+
         }
 
         [HttpPost("InsertarAsistenciaScout")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var asistenciaScout = _mapper.Map<AsistenciaScout>(asistenciaScoutDto);
             await _asistenciaScoutRepository.InsertarAsistenciaScout(asistenciaScout);
-            
+
             return Ok(asistenciaScout);
 
         }

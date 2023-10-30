@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public ProgresionScoutRepository(PaginaGrupoContext context) {
+        public ProgresionScoutRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<ProgresionScout>> GetProgresionesScouts()
         {
-            var progresionesScouts =await _context.ProgresionScouts.ToListAsync();
-            
+            var progresionesScouts = await _context.ProgresionScouts.ToListAsync();
+
             return progresionesScouts;
         }
 
         //devuelve un usuario
         public async Task<ProgresionScout> GetProgresionScout(int id)
         {
-            var progresionScout = await _context.ProgresionScouts.FirstOrDefaultAsync(x=> x.Id == id);
+            var progresionScout = await _context.ProgresionScouts.FirstOrDefaultAsync(x => x.Id == id);
 
             return progresionScout;
         }

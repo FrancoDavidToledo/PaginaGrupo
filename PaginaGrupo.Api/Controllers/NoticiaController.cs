@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PaginaGrupo.Api.Responses;
@@ -10,7 +9,6 @@ using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.Infra.Interfaces;
 using System.Net;
-using PaginaGrupo.Core.Enumerations;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -22,12 +20,12 @@ namespace PaginaGrupo.Api.Controllers
         private readonly INoticiasService _noticiasService;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
-        public NoticiaController(INoticiasService noticiasService, IMapper mapper, IUriService uriService) 
+        public NoticiaController(INoticiasService noticiasService, IMapper mapper, IUriService uriService)
         {
             _noticiasService = noticiasService;
-            _mapper= mapper;
+            _mapper = mapper;
             _uriService = uriService;
-    }
+        }
 
         //lo siguiente es para documentar
         /// <summary>
@@ -41,21 +39,21 @@ namespace PaginaGrupo.Api.Controllers
 
 
         [HttpGet("GetNoticias")]
-        public IActionResult GetNoticias(NoticiasQueryFilter filters) 
+        public IActionResult GetNoticias(NoticiasQueryFilter filters)
         {
-            var noticias =  _noticiasService.GetNoticias(filters);
+            var noticias = _noticiasService.GetNoticias(filters);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
-            
+
             var metadata = new Metadata
             {
-               TotalCount=  noticias.TotalCount,
-                PageSize= noticias.PageSize,
-                CurrentPage= noticias.CurrentPage,
+                TotalCount = noticias.TotalCount,
+                PageSize = noticias.PageSize,
+                CurrentPage = noticias.CurrentPage,
                 TotalPages = noticias.TotalPages,
                 HasNextPage = noticias.HasNextPage,
-               HasPreviousPage= noticias.HasPreviousPage,
-               NextPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString(),
-               PreviousPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString()
+                HasPreviousPage = noticias.HasPreviousPage,
+                NextPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString(),
+                PreviousPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticias))).ToString()
             };
 
             var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto)
@@ -84,7 +82,7 @@ namespace PaginaGrupo.Api.Controllers
             var response = new ApiResponse<NoticiaDto>(noticiaDto);
 
             return Ok(response);
-           
+
         }
 
         [HttpPost("InsertarNoticia")]

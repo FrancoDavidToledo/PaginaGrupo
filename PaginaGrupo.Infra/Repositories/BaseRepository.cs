@@ -18,7 +18,7 @@ namespace PaginaGrupo.Infra.Repositories
 
         public IEnumerable<T> GetAll()
         {
-          return _entities.AsEnumerable();
+            return _entities.AsEnumerable();
         }
 
         public async Task<T> GetById(int id)
@@ -27,7 +27,7 @@ namespace PaginaGrupo.Infra.Repositories
         }
         public async Task Add(T entity)
         {
-           await  _entities.AddAsync(entity);
+            await _entities.AddAsync(entity);
 
         }
 

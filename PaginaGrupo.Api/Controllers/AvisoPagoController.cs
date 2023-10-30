@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IAvisoPagoRepository _avisoPagoRepository;
         private readonly IMapper _mapper;
-        public AvisoPagoController(IAvisoPagoRepository avisoPagoRepository, IMapper mapper) 
+        public AvisoPagoController(IAvisoPagoRepository avisoPagoRepository, IMapper mapper)
         {
             _avisoPagoRepository = avisoPagoRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetAvisosPagos")]
-        public async Task<IActionResult> GetAvisosPagos() 
+        public async Task<IActionResult> GetAvisosPagos()
         {
 
             var avisoPago = await _avisoPagoRepository.GetAvisosPagos();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var avisoPago = await _avisoPagoRepository.GetAvisoPago(id);
             var avisoPagoDto = _mapper.Map<AvisoPagoDto>(avisoPago);
             return Ok(avisoPagoDto);
-           
+
         }
 
         [HttpPost("InsertarAvisoPago")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var avisoPago = _mapper.Map<AvisoPago>(avisoPagoDto);
             await _avisoPagoRepository.InsertarAvisoPago(avisoPago);
-            
+
             return Ok(avisoPago);
 
         }

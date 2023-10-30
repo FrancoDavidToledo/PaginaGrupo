@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PaginaGrupo.Core.DTOs;
-using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
@@ -10,13 +9,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly ICategoriasRepository _categoriaRepository;
         private readonly IMapper _mapper;
-        public CategoriaController(ICategoriasRepository categoriaRepository, IMapper mapper) 
+        public CategoriaController(ICategoriasRepository categoriaRepository, IMapper mapper)
         {
             _categoriaRepository = categoriaRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetCategorias")]
-        public async Task<IActionResult> GetCategorias() 
+        public async Task<IActionResult> GetCategorias()
         {
 
             var categoria = await _categoriaRepository.GetCategorias();
@@ -31,7 +30,7 @@ namespace PaginaGrupo.Api.Controllers
             var categoria = await _categoriaRepository.GetCategoria(id);
             var categoriaDto = _mapper.Map<CategoriaDto>(categoria);
             return Ok(categoriaDto);
-           
+
         }
 
     }

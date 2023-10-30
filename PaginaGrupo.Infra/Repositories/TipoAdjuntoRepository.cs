@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public TipoAdjuntoRepository(PaginaGrupoContext context) {
+        public TipoAdjuntoRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<TipoAdjunto>> GetTiposAdjuntos()
         {
-            var tiposAdjuntos =await _context.TipoAdjuntos.ToListAsync();
-            
+            var tiposAdjuntos = await _context.TipoAdjuntos.ToListAsync();
+
             return tiposAdjuntos;
         }
 
         //devuelve un usuario
         public async Task<TipoAdjunto> GetTipoAdjunto(int id)
         {
-            var tipoAdjunto = await _context.TipoAdjuntos.FirstOrDefaultAsync(x=> x.Id == id);
+            var tipoAdjunto = await _context.TipoAdjuntos.FirstOrDefaultAsync(x => x.Id == id);
 
             return tipoAdjunto;
         }

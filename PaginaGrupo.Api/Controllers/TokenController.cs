@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Infra.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,17 +13,20 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUsuarioService _usuarioService;
-        public TokenController(IConfiguration configuration, IUsuarioService usuarioService) {
+        private readonly IPasswordService _passwordService;
+        public TokenController(IConfiguration configuration, IUsuarioService usuarioService, IPasswordService passwordService)
+        {
             _configuration = configuration;
             _usuarioService = usuarioService;
+            _passwordService = passwordService;
         }
 
         [HttpPost("autenticar")]
         public async Task<IActionResult> Autentication(UserLogin login)
         {
             //si es un usuario valido
-         var validation = await IsValidUser(login);
-            if (validation.Item1) 
+            var validation = await IsValidUser(login);
+            if (validation.Item1)
             {
                 var token = GenerateToken(validation.Item2);
                 return Ok(new { token });
@@ -31,10 +35,11 @@ namespace PaginaGrupo.Api.Controllers
             return NotFound();
         }
 
-        private async Task<(bool,Usuario)> IsValidUser(UserLogin login)
+        private async Task<(bool, Usuario)> IsValidUser(UserLogin login)
         {
             var user = await _usuarioService.GetLoginByCredentials(login);
-            return (user!= null,user);
+            var isValid = _passwordService.Check(user.Clave, login.Clave);
+            return (isValid, user);
         }
 
         private string GenerateToken(Usuario usuario)
@@ -64,7 +69,7 @@ namespace PaginaGrupo.Api.Controllers
               DateTime.UtcNow.AddMinutes(10)
             );
 
-            var token = new JwtSecurityToken(header,payload);
+            var token = new JwtSecurityToken(header, payload);
 
 
 

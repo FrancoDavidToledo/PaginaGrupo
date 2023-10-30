@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic.FileIO;
 using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Exceptions;
@@ -80,21 +79,22 @@ namespace PaginaGrupo.Core.Services
 
         public async Task<bool> ActualizarNoticia(Noticias noticia)
         {
-            //await _unitOfWork.NoticiasRepository.Update(noticia);
+             _unitOfWork.NoticiasRepository.Update(noticia);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> BorrarNoticia(int id)
         {
-             await _unitOfWork.NoticiasRepository.Delete(id);
+            await _unitOfWork.NoticiasRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
 
-        public  IEnumerable<Noticias> GetNoticiasEstado(int estado)
+        public IEnumerable<Noticias> GetNoticiasEstado(int estado)
         {
 
-            var listadoNoticias =  _unitOfWork.NoticiasRepository.GetNoticiasEstado(estado);
+            var listadoNoticias = _unitOfWork.NoticiasRepository.GetNoticiasEstado(estado);
             return listadoNoticias;
         }
     }

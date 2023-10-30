@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public FechaRepository(PaginaGrupoContext context) {
+        public FechaRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<Fecha>> GetFechas()
         {
-            var fechas =await _context.Fechas.ToListAsync();
-            
+            var fechas = await _context.Fechas.ToListAsync();
+
             return fechas;
         }
 
         //devuelve un usuario
         public async Task<Fecha> GetFecha(int id)
         {
-            var fecha = await _context.Fechas.FirstOrDefaultAsync(x=> x.Id == id);
+            var fecha = await _context.Fechas.FirstOrDefaultAsync(x => x.Id == id);
 
             return fecha;
         }

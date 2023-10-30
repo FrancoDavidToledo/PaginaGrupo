@@ -6,6 +6,6 @@ namespace PaginaGrupo.Core.Interfaces
     {
         Task<IEnumerable<Autores>> GetAutores();
         Task<Autores> GetAutor(int id);
-        Task<Autores> InsertarAutor (Autores noticia);
+        Task<Autores> InsertarAutor(Autores noticia);
     }
 }

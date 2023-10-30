@@ -1,17 +1,12 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PaginaGrupo.Core.CustomEntitys;
-using PaginaGrupo.Core.Interfaces;
-using PaginaGrupo.Core.Services;
-using PaginaGrupo.Infra.Data;
+using PaginaGrupo.Infra.Extensions;
 using PaginaGrupo.Infra.Filters;
 using PaginaGrupo.Infra.Interfaces;
-using PaginaGrupo.Infra.Repositories;
 using PaginaGrupo.Infra.Services;
-using System.Diagnostics.SymbolStore;
+using SocialMedia.Infrastructure.Services;
 using System.Reflection;
 using System.Text;
 
@@ -36,34 +31,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//aca se agrega el "singleton" de dependencia injectada, es como el addtransient
-builder.Services.AddScoped<IAdjuntosRepository, AdjuntosRepository>();
-builder.Services.AddScoped<IAsistenciaScoutRepository, AsistenciaScoutRepository>();
-builder.Services.AddScoped<IAutoresRepository, AutorRepository>();
-builder.Services.AddScoped<IAvisoPagoRepository, AvisoPagoRepository>();
-builder.Services.AddScoped<ICategoriasRepository, CategoriaRepository>();
-builder.Services.AddScoped<IComentarioRepository, ComentarioRepository>();
-builder.Services.AddScoped<IFechaRepository, FechaRepository>();
-builder.Services.AddScoped<ILibroAutorRepository, LibroAutorRepository>();
-builder.Services.AddScoped<ILibroCategoriaRepository, LibroCategoriaRepository>();
-builder.Services.AddScoped<ILibroRepository, LibroRepository>();
-builder.Services.AddScoped<INombreScoutRepository, NombreScoutRepository>();
-builder.Services.AddScoped<INoticiasRepository, NoticiasRepository>();
-builder.Services.AddScoped<IProgresionRepository, ProgresionRepository>();
-builder.Services.AddScoped<IProgresionScoutRepository, ProgresionScoutRepository>();
-builder.Services.AddScoped<IRamaRepository, RamaRepository>();
-builder.Services.AddScoped<IScoutRepository, ScoutRepository>();
-builder.Services.AddScoped<ITipoAdjuntoRepository, TipoAdjuntoRepository>();
-builder.Services.AddScoped<ITipoNombreRepository, TipoNombreRepository>();
-builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
-builder.Services.AddScoped<INoticiasService, NoticiasService>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
-
+builder.AddServices();
 
 //esto es para los paginados, pagina anterior y posterior
 builder.Services.AddSingleton<IUriService>(provider =>
@@ -75,11 +43,7 @@ builder.Services.AddSingleton<IUriService>(provider =>
 });
 
 //con esto se conecta a la bbdd del appSettings
-builder.Services.AddDbContext<PaginaGrupoContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PaginaGrupo"));
-
-});
+builder.AddDbContext(builder.Configuration);
 
 //para el JWT
 builder.Services.AddAuthentication(options =>
@@ -109,10 +73,8 @@ builder.Services.AddMvc(options =>
 {
     options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 });
-
-//paginacion
-builder.Services.Configure<PaginationOptions>(builder.Configuration.GetSection("Pagination"));
-
+builder.AddOptions();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 //swagger
 builder.Services.AddSwaggerGen(doc =>

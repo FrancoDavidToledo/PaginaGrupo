@@ -2,7 +2,7 @@
 
 namespace PaginaGrupo.Api.Responses
 {
-    public class ApiResponse <T>
+    public class ApiResponse<T>
     {
         public ApiResponse(T data)
         {

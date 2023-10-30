@@ -1,10 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic.FileIO;
-using PaginaGrupo.Core.CustomEntitys;
-using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Core.Exceptions;
+﻿using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
-using PaginaGrupo.Core.QueryFilters;
 
 namespace PaginaGrupo.Core.Services
 {

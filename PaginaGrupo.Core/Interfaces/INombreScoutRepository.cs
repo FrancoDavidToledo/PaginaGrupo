@@ -6,6 +6,6 @@ namespace PaginaGrupo.Core.Interfaces
     {
         Task<IEnumerable<NombreScout>> GetNombresScouts();
         Task<NombreScout> GetNombreScout(int id);
-        Task<NombreScout> InsertarNombreScout (NombreScout nombreScout);
+        Task<NombreScout> InsertarNombreScout(NombreScout nombreScout);
     }
 }

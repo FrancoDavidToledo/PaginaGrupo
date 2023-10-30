@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IComentarioRepository _comentarioRepository;
         private readonly IMapper _mapper;
-        public ComentarioController(IComentarioRepository comentarioRepository, IMapper mapper) 
+        public ComentarioController(IComentarioRepository comentarioRepository, IMapper mapper)
         {
             _comentarioRepository = comentarioRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetComentarios")]
-        public async Task<IActionResult> GetComentarios() 
+        public async Task<IActionResult> GetComentarios()
         {
 
             var comentario = await _comentarioRepository.GetComentarios();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var comentario = await _comentarioRepository.GetComentario(id);
             var comentarioDto = _mapper.Map<ComentarioDto>(comentario);
             return Ok(comentarioDto);
-           
+
         }
 
         [HttpPost("InsertarComentario")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var comentario = _mapper.Map<Comentario>(comentarioDto);
             await _comentarioRepository.InsertarComentario(comentario);
-            
+
             return Ok(comentario);
 
         }

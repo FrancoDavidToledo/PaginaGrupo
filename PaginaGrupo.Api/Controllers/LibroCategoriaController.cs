@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly ILibroCategoriaRepository _libroCategoriaRepository;
         private readonly IMapper _mapper;
-        public LibroCategoriaController(ILibroCategoriaRepository libroCategoriaRepository, IMapper mapper) 
+        public LibroCategoriaController(ILibroCategoriaRepository libroCategoriaRepository, IMapper mapper)
         {
             _libroCategoriaRepository = libroCategoriaRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetLibrosCategorias")]
-        public async Task<IActionResult> GetLibrosCategorias() 
+        public async Task<IActionResult> GetLibrosCategorias()
         {
 
             var libroCategoria = await _libroCategoriaRepository.GetLibrosCategorias();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var libroCategoria = await _libroCategoriaRepository.GetLibroCategoria(id);
             var libroCategoriaDto = _mapper.Map<LibroCategoriaDto>(libroCategoria);
             return Ok(libroCategoriaDto);
-           
+
         }
 
         [HttpPost("InsertarLibroCategoria")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var libroCategoria = _mapper.Map<LibroCategoria>(libroCategoriaDto);
             await _libroCategoriaRepository.InsertarLibroCategoria(libroCategoria);
-            
+
             return Ok(libroCategoria);
 
         }

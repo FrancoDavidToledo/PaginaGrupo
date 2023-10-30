@@ -27,8 +27,8 @@ namespace PaginaGrupo.Infra.Data.Configurations
             entity.Property(e => e.Rol)
             .HasMaxLength(20)
             .HasConversion(
-                x=> x.ToString(),
-                x=> (RolType)Enum.Parse(typeof(RolType),x));
+                x => x.ToString(),
+                x => (RolType)Enum.Parse(typeof(RolType), x));
         }
     }
 

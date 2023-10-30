@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IScoutRepository _scoutRepository;
         private readonly IMapper _mapper;
-        public ScoutController(IScoutRepository scoutRepository, IMapper mapper) 
+        public ScoutController(IScoutRepository scoutRepository, IMapper mapper)
         {
             _scoutRepository = scoutRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetScouts")]
-        public async Task<IActionResult> GetScouts() 
+        public async Task<IActionResult> GetScouts()
         {
 
             var scout = await _scoutRepository.GetScouts();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var scout = await _scoutRepository.GetScout(id);
             var scoutDto = _mapper.Map<ScoutDto>(scout);
             return Ok(scoutDto);
-           
+
         }
 
         [HttpPost("InsertarScout")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var scout = _mapper.Map<Scout>(scoutDto);
             await _scoutRepository.InsertarScout(scout);
-            
+
             return Ok(scout);
 
         }

@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly INombreScoutRepository _nombreScoutRepository;
         private readonly IMapper _mapper;
-        public NombreScoutController(INombreScoutRepository nombreScoutRepository, IMapper mapper) 
+        public NombreScoutController(INombreScoutRepository nombreScoutRepository, IMapper mapper)
         {
             _nombreScoutRepository = nombreScoutRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetNombresScouts")]
-        public async Task<IActionResult> GetNombresScouts() 
+        public async Task<IActionResult> GetNombresScouts()
         {
 
             var nombreScout = await _nombreScoutRepository.GetNombresScouts();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var nombreScout = await _nombreScoutRepository.GetNombreScout(id);
             var nombreScoutDto = _mapper.Map<NombreScoutDto>(nombreScout);
             return Ok(nombreScoutDto);
-           
+
         }
 
         [HttpPost("InsertarNombreScout")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var nombreScout = _mapper.Map<NombreScout>(nombreScoutDto);
             await _nombreScoutRepository.InsertarNombreScout(nombreScout);
-            
+
             return Ok(nombreScout);
 
         }

@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IFechaRepository _fechaRepository;
         private readonly IMapper _mapper;
-        public FechaController(IFechaRepository fechaRepository, IMapper mapper) 
+        public FechaController(IFechaRepository fechaRepository, IMapper mapper)
         {
             _fechaRepository = fechaRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetFechas")]
-        public async Task<IActionResult> GetFechas() 
+        public async Task<IActionResult> GetFechas()
         {
 
             var fecha = await _fechaRepository.GetFechas();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var fecha = await _fechaRepository.GetFecha(id);
             var fechaDto = _mapper.Map<FechaDto>(fecha);
             return Ok(fechaDto);
-           
+
         }
 
         [HttpPost("InsertarFecha")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var fecha = _mapper.Map<Fecha>(fechaDto);
             await _fechaRepository.InsertarFecha(fecha);
-            
+
             return Ok(fecha);
 
         }

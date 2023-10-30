@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Infra.Data;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Infra.Data;
 
 namespace PaginaGrupo.Infra.Repositories
 {
@@ -14,7 +14,7 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todas las noticias de un estado
         public async Task<Usuario> GetLoginByCredentials(UserLogin login)
         {
-            return await _entities.FirstOrDefaultAsync(x => x.Correo == login.Correo && x.Clave == login.Clave);
+            return await _entities.FirstOrDefaultAsync(x => x.Correo == login.Correo);
         }
     }
 }

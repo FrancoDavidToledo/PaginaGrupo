@@ -2,7 +2,7 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface INoticiasRepository :IRepository<Noticias>
+    public interface INoticiasRepository : IRepository<Noticias>
     {
         IEnumerable<Noticias> GetNoticiasEstado(int estado);
     }

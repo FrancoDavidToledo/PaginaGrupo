@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public AsistenciaScoutRepository(PaginaGrupoContext context) {
+        public AsistenciaScoutRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -18,14 +19,14 @@ namespace PaginaGrupo.Infra.Repositories
         public async Task<IEnumerable<AsistenciaScout>> GetAsistenciasScouts()
         {
             var asistenciasScouts = await _context.AsistenciaScouts.ToListAsync();
-            
+
             return asistenciasScouts;
         }
 
         //devuelve una asistenciaScouts
         public async Task<AsistenciaScout> GetAsistenciaScout(int id)
         {
-            var asistenciaScout = await _context.AsistenciaScouts.FirstOrDefaultAsync(x=> x.Id == id);
+            var asistenciaScout = await _context.AsistenciaScouts.FirstOrDefaultAsync(x => x.Id == id);
 
             return asistenciaScout;
         }

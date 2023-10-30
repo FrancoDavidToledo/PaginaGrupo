@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PaginaGrupo.Core.CustomEntitys
+﻿namespace PaginaGrupo.Core.CustomEntitys
 {
     public class PagesList<T> : List<T>
     {
@@ -16,15 +10,15 @@ namespace PaginaGrupo.Core.CustomEntitys
 
         public bool HasPreviousPage => CurrentPage > 1;
         public bool HasNextPage => CurrentPage < TotalPages;
-        public int? NextPageNumber => HasNextPage ? CurrentPage+1 : (int?)null;
+        public int? NextPageNumber => HasNextPage ? CurrentPage + 1 : (int?)null;
         public int? PreviousPageNumber => HasPreviousPage ? CurrentPage - 1 : (int?)null;
 
-        public PagesList(List<T> items, int count, int pageNumber, int pageSize) 
+        public PagesList(List<T> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = count;
             PageSize = pageSize;
             CurrentPage = pageNumber;
-            TotalPages = (int)Math.Ceiling(count/(double)pageSize);
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
             AddRange(items);
         }
@@ -32,7 +26,7 @@ namespace PaginaGrupo.Core.CustomEntitys
         public static PagesList<T> Create(IEnumerable<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();
-            var items = source.Skip((pageNumber-1)*pageSize).Take(pageSize).ToList();
+            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagesList<T>(items, count, pageNumber, pageSize);
         }
     }

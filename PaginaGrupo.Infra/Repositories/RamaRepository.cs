@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public RamaRepository(PaginaGrupoContext context) {
+        public RamaRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<Rama>> GetRamas()
         {
-            var ramas =await _context.Ramas.ToListAsync();
-            
+            var ramas = await _context.Ramas.ToListAsync();
+
             return ramas;
         }
 
         //devuelve un usuario
         public async Task<Rama> GetRama(string codigo)
         {
-            var rama = await _context.Ramas.FirstOrDefaultAsync(x=> x.Codigo == codigo);
+            var rama = await _context.Ramas.FirstOrDefaultAsync(x => x.Codigo == codigo);
 
             return rama;
         }

@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public LibroAutorRepository(PaginaGrupoContext context) {
+        public LibroAutorRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -18,14 +19,14 @@ namespace PaginaGrupo.Infra.Repositories
         public async Task<IEnumerable<LibroAutor>> GetLibrosAutores()
         {
             var librosAutores = await _context.LibrosAutores.ToListAsync();
-            
+
             return librosAutores;
         }
 
         //devuelve un usuario
         public async Task<LibroAutor> GetLibroAutor(int id)
         {
-            var libroAutor = await _context.LibrosAutores.FirstOrDefaultAsync(x=> x.Id == id);
+            var libroAutor = await _context.LibrosAutores.FirstOrDefaultAsync(x => x.Id == id);
 
             return libroAutor;
         }

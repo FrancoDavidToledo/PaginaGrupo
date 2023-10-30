@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public CategoriaRepository(PaginaGrupoContext context) {
+        public CategoriaRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<Categoria>> GetCategorias()
         {
-            var categorias =await _context.Categorias.ToListAsync();
-            
+            var categorias = await _context.Categorias.ToListAsync();
+
             return categorias;
         }
 
         //devuelve un usuario
         public async Task<Categoria> GetCategoria(int id)
         {
-            var categoria = await _context.Categorias.FirstOrDefaultAsync(x=> x.Id == id);
+            var categoria = await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
 
             return categoria;
         }

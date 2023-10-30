@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IAutoresRepository _autorRepository;
         private readonly IMapper _mapper;
-        public AutorController(IAutoresRepository autorRepository, IMapper mapper) 
+        public AutorController(IAutoresRepository autorRepository, IMapper mapper)
         {
             _autorRepository = autorRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetAutores")]
-        public async Task<IActionResult> GetAutores() 
+        public async Task<IActionResult> GetAutores()
         {
 
             var autor = await _autorRepository.GetAutores();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var autor = await _autorRepository.GetAutor(id);
             var autorDto = _mapper.Map<AutoresDto>(autor);
             return Ok(autorDto);
-           
+
         }
 
         [HttpPost("InsertarAutor")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var autor = _mapper.Map<Autores>(autorDto);
             await _autorRepository.InsertarAutor(autor);
-            
+
             return Ok(autor);
 
         }

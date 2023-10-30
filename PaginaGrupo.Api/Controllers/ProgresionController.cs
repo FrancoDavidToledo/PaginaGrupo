@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PaginaGrupo.Core.DTOs;
-using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
@@ -10,13 +9,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IProgresionRepository _progresionRepository;
         private readonly IMapper _mapper;
-        public ProgresionController(IProgresionRepository progresionRepository, IMapper mapper) 
+        public ProgresionController(IProgresionRepository progresionRepository, IMapper mapper)
         {
             _progresionRepository = progresionRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetProgresiones")]
-        public async Task<IActionResult> GetProgresiones() 
+        public async Task<IActionResult> GetProgresiones()
         {
 
             var progresion = await _progresionRepository.GetProgresiones();
@@ -31,7 +30,7 @@ namespace PaginaGrupo.Api.Controllers
             var progresion = await _progresionRepository.GetProgresion(id);
             var progresionDto = _mapper.Map<ProgresionDto>(progresion);
             return Ok(progresionDto);
-           
+
         }
     }
 }

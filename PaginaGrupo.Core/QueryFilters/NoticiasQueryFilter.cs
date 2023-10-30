@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PaginaGrupo.Core.QueryFilters
+﻿namespace PaginaGrupo.Core.QueryFilters
 {
     public class NoticiasQueryFilter
     {
@@ -12,7 +6,7 @@ namespace PaginaGrupo.Core.QueryFilters
         public DateTime? FechaNoticia { get; set; }
         public string? Titulo { get; set; }
         public int PageSize { get; set; }
-        public int PageNumber { get; set;}
+        public int PageNumber { get; set; }
 
 
 

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PaginaGrupo.Core.DTOs;
-using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
@@ -10,13 +9,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IRamaRepository _ramaRepository;
         private readonly IMapper _mapper;
-        public RamaController(IRamaRepository ramaRepository, IMapper mapper) 
+        public RamaController(IRamaRepository ramaRepository, IMapper mapper)
         {
             _ramaRepository = ramaRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetRamas")]
-        public async Task<IActionResult> GetRamas() 
+        public async Task<IActionResult> GetRamas()
         {
 
             var rama = await _ramaRepository.GetRamas();
@@ -31,7 +30,7 @@ namespace PaginaGrupo.Api.Controllers
             var rama = await _ramaRepository.GetRama(codigo);
             var ramaDto = _mapper.Map<RamaDto>(rama);
             return Ok(ramaDto);
-           
+
         }
 
     }

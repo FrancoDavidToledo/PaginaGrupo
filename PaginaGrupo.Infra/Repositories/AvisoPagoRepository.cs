@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public AvisoPagoRepository(PaginaGrupoContext context) {
+        public AvisoPagoRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<AvisoPago>> GetAvisosPagos()
         {
-            var avisosPagos =await _context.AvisoPagos.ToListAsync();
-            
+            var avisosPagos = await _context.AvisoPagos.ToListAsync();
+
             return avisosPagos;
         }
 
         //devuelve un usuario
         public async Task<AvisoPago> GetAvisoPago(int id)
         {
-            var avisoPago = await _context.AvisoPagos.FirstOrDefaultAsync(x=> x.Id == id);
+            var avisoPago = await _context.AvisoPagos.FirstOrDefaultAsync(x => x.Id == id);
 
             return avisoPago;
         }

@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IAdjuntosRepository _adjuntoRepository;
         private readonly IMapper _mapper;
-        public AdjuntoController(IAdjuntosRepository adjuntoRepository, IMapper mapper) 
+        public AdjuntoController(IAdjuntosRepository adjuntoRepository, IMapper mapper)
         {
             _adjuntoRepository = adjuntoRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetAdjuntos")]
-        public async Task<IActionResult> GetAdjuntos() 
+        public async Task<IActionResult> GetAdjuntos()
         {
 
             var adjunto = await _adjuntoRepository.GetAdjuntos();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var adjunto = await _adjuntoRepository.GetAdjunto(id);
             var adjuntoDto = _mapper.Map<AdjuntosDto>(adjunto);
             return Ok(adjuntoDto);
-           
+
         }
 
         [HttpPost("InsertarAdjunto")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
             await _adjuntoRepository.InsertarAdjunto(adjunto);
-            
+
             return Ok(adjunto);
 
         }

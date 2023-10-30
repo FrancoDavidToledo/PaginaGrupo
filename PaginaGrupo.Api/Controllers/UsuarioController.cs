@@ -4,7 +4,7 @@ using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
-using PaginaGrupo.Core.Services;
+using PaginaGrupo.Infra.Interfaces;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -12,16 +12,19 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IMapper _mapper;
-        public UsuarioController(IUsuarioService usuarioService, IMapper mapper) 
+        private readonly IPasswordService _passwordService;
+        public UsuarioController(IUsuarioService usuarioService, IMapper mapper, IPasswordService passwordService)
         {
             _usuarioService = usuarioService;
-            _mapper= mapper;
+            _mapper = mapper;
+            _passwordService = passwordService;
         }
 
         [HttpPost("InsertarUsuario")]
         public async Task<IActionResult> InsertarUsuario(UsuarioDto usuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(usuarioDto);
+            usuario.Clave = _passwordService.Hash(usuario.Clave);
             await _usuarioService.RegisterUser(usuario);
 
             //nuevo, se reconvierte a dto para responder

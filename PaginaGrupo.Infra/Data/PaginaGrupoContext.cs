@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using PaginaGrupo.Core.Entities;
-using PaginaGrupo.Infra.Data.Configurations;
 using System.Reflection;
 
 namespace PaginaGrupo.Infra.Data;

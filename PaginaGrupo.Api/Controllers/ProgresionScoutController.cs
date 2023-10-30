@@ -10,13 +10,13 @@ namespace PaginaGrupo.Api.Controllers
     {
         private readonly IProgresionScoutRepository _progresionScoutRepository;
         private readonly IMapper _mapper;
-        public ProgresionScoutController(IProgresionScoutRepository progresionScoutRepository, IMapper mapper) 
+        public ProgresionScoutController(IProgresionScoutRepository progresionScoutRepository, IMapper mapper)
         {
             _progresionScoutRepository = progresionScoutRepository;
-            _mapper= mapper;
-    }
+            _mapper = mapper;
+        }
         [HttpGet("GetProgresionesScouts")]
-        public async Task<IActionResult> GetProgresionesScouts() 
+        public async Task<IActionResult> GetProgresionesScouts()
         {
 
             var progresionScout = await _progresionScoutRepository.GetProgresionesScouts();
@@ -31,7 +31,7 @@ namespace PaginaGrupo.Api.Controllers
             var progresionScout = await _progresionScoutRepository.GetProgresionScout(id);
             var progresionScoutDto = _mapper.Map<ProgresionScoutDto>(progresionScout);
             return Ok(progresionScoutDto);
-           
+
         }
 
         [HttpPost("InsertarProgresionScout")]
@@ -41,7 +41,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var progresionScout = _mapper.Map<ProgresionScout>(progresionScoutDto);
             await _progresionScoutRepository.InsertarProgresionScout(progresionScout);
-            
+
             return Ok(progresionScout);
 
         }

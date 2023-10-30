@@ -9,7 +9,8 @@ namespace PaginaGrupo.Infra.Repositories
     {
 
         private readonly PaginaGrupoContext _context;
-        public NombreScoutRepository(PaginaGrupoContext context) {
+        public NombreScoutRepository(PaginaGrupoContext context)
+        {
 
             _context = context;
         }
@@ -17,15 +18,15 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los usuarios
         public async Task<IEnumerable<NombreScout>> GetNombresScouts()
         {
-            var nombresScouts =await _context.NombreScouts.ToListAsync();
-            
+            var nombresScouts = await _context.NombreScouts.ToListAsync();
+
             return nombresScouts;
         }
 
         //devuelve un usuario
         public async Task<NombreScout> GetNombreScout(int id)
         {
-            var nombreScout = await _context.NombreScouts.FirstOrDefaultAsync(x=> x.Id == id);
+            var nombreScout = await _context.NombreScouts.FirstOrDefaultAsync(x => x.Id == id);
 
             return nombreScout;
         }

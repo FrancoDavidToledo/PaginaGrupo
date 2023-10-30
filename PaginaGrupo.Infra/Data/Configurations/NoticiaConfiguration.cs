@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PaginaGrupo.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PaginaGrupo.Infra.Data.Configurations
 {
-    public class NoticiaConfiguration: IEntityTypeConfiguration<Noticias>
+    public class NoticiaConfiguration : IEntityTypeConfiguration<Noticias>
     {
         public void Configure(EntityTypeBuilder<Noticias> entity)
         {

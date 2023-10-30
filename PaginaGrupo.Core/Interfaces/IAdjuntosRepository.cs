@@ -2,10 +2,10 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IAdjuntosRepository    
+    public interface IAdjuntosRepository
     {
         Task<IEnumerable<Adjuntos>> GetAdjuntos();
         Task<Adjuntos> GetAdjunto(int id);
-        Task<Adjuntos> InsertarAdjunto (Adjuntos adjuntos);
+        Task<Adjuntos> InsertarAdjunto(Adjuntos adjuntos);
     }
 }

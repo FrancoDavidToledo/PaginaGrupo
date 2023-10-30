@@ -6,6 +6,6 @@ namespace PaginaGrupo.Core.Interfaces
     {
         Task<IEnumerable<AvisoPago>> GetAvisosPagos();
         Task<AvisoPago> GetAvisoPago(int id);
-        Task<AvisoPago> InsertarAvisoPago (AvisoPago avisoPago);
+        Task<AvisoPago> InsertarAvisoPago(AvisoPago avisoPago);
     }
 }
