@@ -119,5 +119,18 @@ namespace PaginaGrupo.Api.Controllers
 
         }
 
+        [HttpPut("ActualizarNoticia2")]
+        public async Task<IActionResult> ActualizarNoticia2(NoticiaDto noticiaDto)
+        {
+
+            var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
+            //aca actualizar todo lo que quieras
+            noticia.Autor = noticiaDto.Autor;
+            var result = await _noticiasService.ActualizarNoticia(noticia);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+
+        }
+
     }
 }

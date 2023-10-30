@@ -9,7 +9,13 @@ namespace PaginaGrupo.Infra.Validators
         {
             RuleFor(noticia => noticia.Titulo)
             .NotNull()
-            .Length(10, 60);
+            .WithMessage("El titulo no debe ser nulo")
+            ;
+            RuleFor(noticia => noticia.Titulo)
+            .Length(10,60)
+            .WithMessage("El titulo debe tener entre 10 y 60 caracteres")
+;
+
         }
     }
 }
