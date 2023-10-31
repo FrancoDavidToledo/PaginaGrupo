@@ -46,7 +46,7 @@ namespace PaginaGrupo.Api.Controllers
         {
 
             //Header
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:SecretKey"]));
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(signingCredentials);
 
@@ -62,8 +62,8 @@ namespace PaginaGrupo.Api.Controllers
             //payload
             var payload = new JwtPayload
             (
-              _configuration["Autentication:Issuer"],
-              _configuration["Autentication:Audience"],
+              _configuration["Jwt:Issuer"],
+              _configuration["Jwt:Audience"],
               claims,
               DateTime.Now,
               DateTime.UtcNow.AddMinutes(10)

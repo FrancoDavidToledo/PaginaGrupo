@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PaginaGrupo.Api.Responses;
@@ -12,7 +13,7 @@ using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
-    //  [Authorize]
+      [Authorize]
     //[Authorize(Roles =nameof(RolType.Administrador)+ ","+nameof(RolType.Dirigente))]
 
     public class NoticiaController : Controller
