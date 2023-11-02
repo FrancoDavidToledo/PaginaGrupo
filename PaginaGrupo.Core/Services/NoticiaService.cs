@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Exceptions;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
@@ -36,6 +37,37 @@ namespace PaginaGrupo.Core.Services
         public PagesList<Noticias> GetNoticias(NoticiasQueryFilter filters)
         {
             var noticias = _unitOfWork.NoticiasRepository.GetAll();
+
+            //paginado
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
+            if (filters.IdUsuario != null)
+            {
+                noticias = noticias.Where(x => x.IdUsuario == filters.IdUsuario);
+            }
+
+            if (filters.FechaNoticia != null)
+            {
+                noticias = noticias.Where(x => x.FechaNoticia.ToShortDateString() == filters.FechaNoticia?.ToShortDateString());
+            }
+
+            if (filters.Titulo != null)
+            {
+                noticias = noticias.Where(x => x.Titulo.ToLower().Contains(filters.Titulo.ToLower()));
+            }
+
+            //la paginacion va despues de los filtros
+            var noticiaPaginada = PagesList<Noticias>.Create(noticias, filters.PageNumber, filters.PageSize);
+
+
+            return noticiaPaginada;
+        }
+
+
+        public PagesList<Noticias> GetNoticiasActivas(NoticiasQueryFilter filters)
+        {
+            var noticias = _unitOfWork.NoticiasRepository.GetNoticiasEstado(Convert.ToInt32(EstadoNoticias.Autorizado));
 
             //paginado
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;

@@ -45,26 +45,6 @@ builder.Services.AddSingleton<IUriService>(provider =>
 //con esto se conecta a la bbdd del appSettings
 builder.AddDbContext(builder.Configuration);
 
-//para el JWT
-////builder.Services.AddAuthentication(options =>
-////{
-////    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-////    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-////}).AddJwtBearer(options =>
-////{
-////    options.TokenValidationParameters = new TokenValidationParameters
-////    {
-////        ValidateIssuer = true,
-////        ValidateAudience = true,
-////        ValidateLifetime = true,
-////        ValidateIssuerSigningKey = true,
-////        ValidIssuer = builder.Configuration["Authentication:Issuer"],
-////        ValidAudience = builder.Configuration["Authentication:Audience"],
-////        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:SecretKey"]))
-////    };
-////}
-////);
-
 //para el filter
 builder.Services.AddMvc(options =>
 {
@@ -77,19 +57,12 @@ builder.AddOptions();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 //swagger
-////builder.Services.AddSwaggerGen(doc =>
-////{
-////    doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Pagina Grupo API", Version = "v1" });
-////    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-////    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-////    doc.IncludeXmlComments(xmlPath);
-////});
-
-
-
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "JWT", Version = "v1" });
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    option.IncludeXmlComments(xmlPath);
     option.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
@@ -98,6 +71,7 @@ builder.Services.AddSwaggerGen(option =>
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
         BearerFormat = "JWT",
         Scheme = "Bearer"
+
     });
     option.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement()
         {
@@ -113,7 +87,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
-//--------------------------------------------------------------------------------
+
 //-----------------------------JWT---------------------------------------------
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -122,6 +96,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.TokenValidationParameters = new TokenValidationParameters()
     {
         ValidateIssuer = true,
+        ValidateLifetime = true,
         ValidateAudience = true,
         ValidAudience = builder.Configuration["Jwt:Audience"],
         ValidIssuer = builder.Configuration["Jwt:Issuer"],

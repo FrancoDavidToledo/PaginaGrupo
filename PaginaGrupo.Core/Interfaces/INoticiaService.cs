@@ -8,6 +8,7 @@ namespace PaginaGrupo.Core.Interfaces
     {
 
         PagesList<Noticias> GetNoticias(NoticiasQueryFilter filters);
+        PagesList<Noticias> GetNoticiasActivas(NoticiasQueryFilter filters);
         Task<Noticias> GetNoticia(int id);
         Task<Noticias> InsertarNoticia(Noticias noticia);
         Task<bool> ActualizarNoticia(Noticias noticia);

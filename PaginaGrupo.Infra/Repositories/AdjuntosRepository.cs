@@ -1,42 +1,38 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
 
 namespace PaginaGrupo.Infra.Repositories
 {
-    public class AdjuntosRepository : IAdjuntosRepository
+    public class AdjuntosRepository : BaseRepository<Adjuntos>, IAdjuntosRepository
     {
 
-        private readonly PaginaGrupoContext _context;
-        public AdjuntosRepository(PaginaGrupoContext context)
+        public AdjuntosRepository(PaginaGrupoContext context) : base(context) { }
+
+        //devuelve todos los adjuntos de una noticia
+        public async Task<IEnumerable<Adjuntos>> GetAdjuntosNoticia(int idNoticia)
         {
-
-            _context = context;
-        }
-
-        //devuelve todos los adjuntos
-        public async Task<IEnumerable<Adjuntos>> GetAdjuntos()
-        {
-            var adjuntos = await _context.Adjuntos.ToListAsync();
-
+         //   var adjuntos = await _entities.ToListAsync();
+            var adjuntos = await _entities.Where(x => x.IdNoticia == idNoticia).ToListAsync();
             return adjuntos;
         }
 
-        //devuelve un adjunto
-        public async Task<Adjuntos> GetAdjunto(int id)
-        {
-            var adjunto = await _context.Adjuntos.FirstOrDefaultAsync(x => x.Id == id);
+        ////devuelve un adjunto
+        //public async Task<Adjuntos> GetAdjunto(int id)
+        //{
+        //    var adjunto = await _context.Adjuntos.FirstOrDefaultAsync(x => x.Id == id);
 
-            return adjunto;
-        }
+        //    return adjunto;
+        //}
 
-        //inserta un adjunto
-        public async Task<Adjuntos> InsertarAdjunto(Adjuntos adjunto)
-        {
-            _context.Adjuntos.AddAsync(adjunto);
-            await _context.SaveChangesAsync();
-            return adjunto;
-        }
+        ////inserta un adjunto
+        //public async Task<Adjuntos> InsertarAdjunto(Adjuntos adjunto)
+        //{
+        //    _context.Adjuntos.AddAsync(adjunto);
+        //    await _context.SaveChangesAsync();
+        //    return adjunto;
+        //}
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace PaginaGrupo.Core.Entities;
+﻿using PaginaGrupo.Core.Enumerations;
 
-public class Comentario
+namespace PaginaGrupo.Core.Entities;
+
+public class Comentario : BaseEntity
 {
     public int Id { get; set; }
 
@@ -11,6 +13,7 @@ public class Comentario
     public int IdUsuario { get; set; }
 
     public int IdNoticia { get; set; }
+    public Int16 Estado { get; set; }
 
     public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
 

@@ -1,42 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Data;
 
 namespace PaginaGrupo.Infra.Repositories
 {
-    public class ComentarioRepository : IComentarioRepository
+    public class ComentarioRepository : BaseRepository<Comentario>, IComentarioRepository
     {
-
-        private readonly PaginaGrupoContext _context;
-        public ComentarioRepository(PaginaGrupoContext context)
+        public ComentarioRepository(PaginaGrupoContext context) : base(context) { }
+        //devuelve todos los comentarios activos de una publicacion
+        public async Task<IEnumerable<Comentario>> GetComentariosNoticiasActivas(int idNoticia)
         {
-
-            _context = context;
-        }
-
-        //devuelve todos los usuarios
-        public async Task<IEnumerable<Comentario>> GetComentarios()
-        {
-            var comentarios = await _context.Comentarios.ToListAsync();
+            var comentarios = await _entities.Where(x => x.IdNoticia == idNoticia && x.Estado ==Convert.ToInt16(EstadoComentarios.Aceptado)).ToListAsync();
 
             return comentarios;
         }
 
-        //devuelve un usuario
-        public async Task<Comentario> GetComentario(int id)
+        //devuelve todos los comentarios con un estado en particular
+        public async Task<IEnumerable<Comentario>> GetComentariosEstado(int estado)
         {
-            var comentario = await _context.Comentarios.FirstOrDefaultAsync(x => x.Id == id);
+            var comentarios = await _entities.Where(x => x.Estado == estado).ToListAsync();
 
-            return comentario;
+            return comentarios;
         }
 
-        //Crea un usuario
-        public async Task<Comentario> InsertarComentario(Comentario comentario)
-        {
-            _context.Comentarios.AddAsync(comentario);
-            await _context.SaveChangesAsync();
-            return comentario;
-        }
+
     }
 }

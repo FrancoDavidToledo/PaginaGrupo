@@ -6,6 +6,10 @@
         //IRepository<Usuario> UsuarioRepository { get; }
         IUsuarioRepository UsuarioRepository { get; }
 
+        IComentarioRepository ComentarioRepository { get; }
+
+        IAdjuntosRepository AdjuntosRepository { get; }
+
         void SaveChanges();
         Task SaveChangesAsync();
 

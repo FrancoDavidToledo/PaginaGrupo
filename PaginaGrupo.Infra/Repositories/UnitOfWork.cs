@@ -10,6 +10,8 @@ namespace PaginaGrupo.Infra.Repositories
         private readonly INoticiasRepository _noticiasRepository;
         //   private readonly IRepository<Usuario> _usuarioRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IComentarioRepository _comentarioRepository;
+        private readonly IAdjuntosRepository _adjuntosRepository;
 
         public UnitOfWork(PaginaGrupoContext context)
         {
@@ -19,6 +21,10 @@ namespace PaginaGrupo.Infra.Repositories
         public INoticiasRepository NoticiasRepository => _noticiasRepository ?? new NoticiasRepository(_context);
 
         public IUsuarioRepository UsuarioRepository => _usuarioRepository ?? new UsuarioRepository(_context);
+
+        public IComentarioRepository ComentarioRepository => _comentarioRepository ?? new ComentarioRepository(_context);
+
+        public IAdjuntosRepository AdjuntosRepository => _adjuntosRepository ?? new AdjuntosRepository(_context);
 
         public void Dispose()
         {

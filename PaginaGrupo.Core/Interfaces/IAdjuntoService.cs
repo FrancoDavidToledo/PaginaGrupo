@@ -2,9 +2,8 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IAdjuntosRepository : IRepository<Adjuntos>
+    public interface IAdjuntoService
     {
         Task<IEnumerable<Adjuntos>> GetAdjuntosNoticia(int idNoticia);
-        //Task<Adjuntos> InsertarAdjunto(Adjuntos adjuntos);
     }
 }

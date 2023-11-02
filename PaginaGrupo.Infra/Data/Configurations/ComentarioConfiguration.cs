@@ -24,6 +24,7 @@ namespace PaginaGrupo.Infra.Data.Configurations
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Comentarios_Usuarios");
+            entity.Property(e => e.Estado).HasColumnName("Estado");
         }
     }
 

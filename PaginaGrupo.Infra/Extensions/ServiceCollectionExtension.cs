@@ -58,7 +58,8 @@ namespace PaginaGrupo.Infra.Extensions
             builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
+            builder.Services.AddScoped<IComentarioService, ComentarioService>();
+            builder.Services.AddScoped<IAdjuntoService,AdjuntoService>();
 
             return builder;
         }

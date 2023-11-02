@@ -10,5 +10,6 @@ public class ComentarioDto
     public int IdUsuario { get; set; }
 
     public int IdNoticia { get; set; }
+    public Int16 Estado { get; set; }
 
 }

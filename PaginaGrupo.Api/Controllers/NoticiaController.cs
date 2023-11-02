@@ -6,6 +6,7 @@ using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.Infra.Interfaces;
@@ -13,11 +14,12 @@ using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
-      [Authorize]
-    //[Authorize(Roles =nameof(RolType.Administrador)+ ","+nameof(RolType.Dirigente))]
+    //  [Authorize]
+    //  [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
 
     public class NoticiaController : Controller
     {
+
         private readonly INoticiasService _noticiasService;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
@@ -30,16 +32,56 @@ namespace PaginaGrupo.Api.Controllers
 
         //lo siguiente es para documentar
         /// <summary>
-        /// Muestra todas las noticias
+        /// Muestra todas las noticias ACTIVAS, no requiere login
         /// </summary>
-        /// 
-        //lo siguiente para documentar cada uno en particular
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //lo anterior era para documentar
 
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetNoticiasActivas")]
 
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+        public IActionResult GetNoticiasActivas(NoticiasQueryFilter filters)
+        {
+            var noticias = _noticiasService.GetNoticiasActivas(filters);
+            var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
+
+            var metadata = new Metadata
+            {
+                TotalCount = noticias.TotalCount,
+                PageSize = noticias.PageSize,
+                CurrentPage = noticias.CurrentPage,
+                TotalPages = noticias.TotalPages,
+                HasNextPage = noticias.HasNextPage,
+                HasPreviousPage = noticias.HasPreviousPage,
+                NextPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticiasActivas))).ToString(),
+                PreviousPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticiasActivas))).ToString()
+            };
+
+            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto)
+            {
+                Meta = metadata
+            }
+            ;
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(response);
+        }
+
+        //lo siguiente es para documentar
+        /// <summary>
+        /// Muestra todas las noticias, requiere rol Dirigente o Admin
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo anterior era para documentar
+       
+        //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticias")]
+
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
         public IActionResult GetNoticias(NoticiasQueryFilter filters)
         {
             var noticias = _noticiasService.GetNoticias(filters);
@@ -66,16 +108,17 @@ namespace PaginaGrupo.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetNoticiasEstado/{estado}")]
-        public IActionResult GetNoticiasEstado(int estado)
-        {
-            var noticias = _noticiasService.GetNoticiasEstado(estado);
-            var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
-            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
-            return Ok(response);
-        }
-
+        //lo siguiente para documentar
+        /// <summary>
+        /// Permite mostrar una noticia, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<NoticiaDto>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticia/{id}")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetNoticia(int id)
         {
             var noticia = await _noticiasService.GetNoticia(id);
@@ -85,6 +128,25 @@ namespace PaginaGrupo.Api.Controllers
             return Ok(response);
 
         }
+
+        //lo siguiente para documentar
+        /// <summary>
+        /// Permite mostrar todas las noticias con un estado en particular, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetNoticiasEstado/{estado}")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        public IActionResult GetNoticiasEstado(int estado)
+        {
+            var noticias = _noticiasService.GetNoticiasEstado(estado);
+            var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
+            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
+            return Ok(response);
+        }
+
 
         [HttpPost("InsertarNoticia")]
         public async Task<IActionResult> InsertarNoticia(NoticiaDto noticiaDto)
