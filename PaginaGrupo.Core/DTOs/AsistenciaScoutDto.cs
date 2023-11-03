@@ -8,7 +8,7 @@ public class AsistenciaScoutDto
 
     public int? IdFecha { get; set; }
 
-    public string? Asistencia { get; set; }
+    public char? Asistencia { get; set; }
 
     public string? CodigoUnidad { get; set; }
 
