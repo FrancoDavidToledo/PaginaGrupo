@@ -1,7 +1,7 @@
 ﻿namespace PaginaGrupo.Core.DTOs;
 public class HistoricoUsuarioDto
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
 
     public int IdUsuario { get; set; }
 

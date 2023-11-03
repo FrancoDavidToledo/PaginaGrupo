@@ -52,6 +52,10 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'Estado' no debe ser nulo");
 
+            RuleFor(noticia => noticia.IdUsuario)
+                .NotNull()
+                .WithMessage("El campo 'IDUsuario' no debe ser nulo");
+
             // Usé el estado 2 como dado de baja pero podria ser otro numero, solo habria que cambiar estos when:
 
             RuleFor(noticia => noticia.FechaBaja)
@@ -59,10 +63,7 @@ namespace PaginaGrupo.Infra.Validators
                 .When(noticia => noticia.Estado == 2)
                 .WithMessage("El campo 'FechaBaja' es requerido cuando el estado es 2 (baja)");
 
-            RuleFor(noticia => noticia.IdUsuario)
-                .NotEmpty()
-                .When(noticia => noticia.Estado == 2)
-                .WithMessage("El campo 'IdUsuario' es requerido cuando el estado es 2 (baja)");
+
 
             RuleFor(noticia => noticia.IdUsuarioBaja)
                 .NotEmpty()

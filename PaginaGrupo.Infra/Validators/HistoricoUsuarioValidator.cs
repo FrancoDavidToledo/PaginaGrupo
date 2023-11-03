@@ -11,9 +11,6 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'ID' no debe ser nulo");
 
-            RuleFor(historico => historico.Id)
-                .Length(1, 10)
-                .WithMessage("El campo 'ID' debe tener entre 1 y 10 caracteres");
 
             RuleFor(historico => historico.IdUsuario)
                 .NotNull()
