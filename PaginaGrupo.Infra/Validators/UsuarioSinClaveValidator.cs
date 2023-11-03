@@ -3,9 +3,9 @@ using PaginaGrupo.Core.DTOs;
 
 namespace PaginaGrupo.Infra.Validators
 {
-    public class UsuarioValidator : AbstractValidator<UsuarioDto>
+    public class UsuarioSinClaveValidator : AbstractValidator<UsuarioDtoSinClave>
     {
-        public UsuarioValidator()
+        public UsuarioSinClaveValidator()
         {
             RuleFor(usuario => usuario.Id)
                 .NotNull()
@@ -26,13 +26,6 @@ namespace PaginaGrupo.Infra.Validators
                 .Length(1, 60)
                 .WithMessage("El campo 'Correo' debe tener entre 1 y 60 caracteres");
 
-            RuleFor(usuario => usuario.Clave)
-                .NotNull()
-                .WithMessage("El campo 'Clave' no debe ser nulo");
-
-            RuleFor(usuario => usuario.Clave)
-                .Length(1, 500)
-                .WithMessage("El campo 'Clave' debe tener entre 1 y 500 caracteres");
 
             RuleFor(usuario => usuario.FechaAlta)
                 .NotNull()

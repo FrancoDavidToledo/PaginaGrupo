@@ -23,13 +23,15 @@ namespace PaginaGrupo.Infra.Validators
                 .Length(0, 50)
                 .WithMessage("El campo 'Idioma' no debe exceder los 50 caracteres");
 
-            RuleFor(libro => libro.Anio)
-                .NotNull()
-                .WithMessage("El campo 'Anio' no debe ser nulo");
+            //TODO se comenta por casos de uso real.
 
-            RuleFor(libro => libro.Paginas)
-                .NotNull()
-                .WithMessage("El campo 'Paginas' no debe ser nulo");
+            //RuleFor(libro => libro.Anio)
+            //    .NotNull()
+            //    .WithMessage("El campo 'Anio' no debe ser nulo");
+
+            //RuleFor(libro => libro.Paginas)
+            //    .NotNull()
+            //    .WithMessage("El campo 'Paginas' no debe ser nulo");
 
             RuleFor(libro => libro.Formato)
                 .Length(0, 10)

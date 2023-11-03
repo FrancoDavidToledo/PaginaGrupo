@@ -7,9 +7,9 @@ public partial class UsuarioDtoSinClave
 
     public string Correo { get; set; } = null!;
 
-    public DateTime? FechaAlta { get; set; }
+    public DateTime FechaAlta { get; set; }
 
     public DateTime? FechaUltimoIngreso { get; set; }
-    public string Rol { get; set; }
+    public string Rol { get; set; } = null!;
 
 }

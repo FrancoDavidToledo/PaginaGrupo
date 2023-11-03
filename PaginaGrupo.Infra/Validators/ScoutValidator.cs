@@ -7,20 +7,33 @@ namespace PaginaGrupo.Infra.Validators
     {
         public ScoutValidator()
         {
-            RuleFor(scout => scout.Id)
+            RuleFor(scout => scout.Nombre)
                 .NotNull()
-                .WithMessage("El campo 'ID' no debe ser nulo");
+                .WithMessage("El campo 'Nombre' no debe ser nulo");
+
             RuleFor(scout => scout.Nombre)
                 .Length(0, 30)
                 .WithMessage("El campo 'Nombre' no debe exceder los 30 caracteres");
 
             RuleFor(scout => scout.Apellido)
+                 .NotNull()
+                 .WithMessage("El campo 'Apellido' no debe ser nulo");
+
+            RuleFor(scout => scout.Apellido)
                 .Length(0, 30)
                 .WithMessage("El campo 'Apellido' no debe exceder los 30 caracteres");
+
+            RuleFor(scout => scout.Id)
+                 .NotNull()
+                 .WithMessage("El campo 'ID' no debe ser nulo");
 
             RuleFor(scout => scout.Dni)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("El campo 'DNI' debe ser un número positivo");
+
+            RuleFor(scout => scout.Dni)
+                .NotNull()
+                .WithMessage("El campo 'Dni' no debe ser nulo");
 
             RuleFor(scout => scout.FechaNacimiento)
                 .NotNull()

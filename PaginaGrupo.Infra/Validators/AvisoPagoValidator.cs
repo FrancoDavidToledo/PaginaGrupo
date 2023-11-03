@@ -26,6 +26,7 @@ namespace PaginaGrupo.Infra.Validators
             RuleFor(aviso => aviso.Comprobante)
                 .Length(0, 400)
                 .WithMessage("El campo 'Comprobante' no debe exceder los 400 caracteres");
+            //TODO Al final esto seria un adjunto realmente, hay que revisar este punto 
 
             RuleFor(aviso => aviso.IdUsuario)
                 .NotNull()

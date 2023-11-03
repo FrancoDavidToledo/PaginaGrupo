@@ -52,23 +52,24 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'Estado' no debe ser nulo");
 
-            RuleFor(noticia => noticia.IdUsuario)
-                .NotNull()
-                .WithMessage("El campo 'IDUsuario' no debe ser nulo");
+            //TODO comentado para coincidir con la DTO. Chequear.
 
-            // Usé el estado 2 como dado de baja pero podria ser otro numero, solo habria que cambiar estos when:
+            //RuleFor(noticia => noticia.IdUsuario)
+            //    .NotNull()
+            //    .WithMessage("El campo 'IDUsuario' no debe ser nulo");
+
+            // Se usó el estado 4 segun las Enum
 
             RuleFor(noticia => noticia.FechaBaja)
                 .NotEmpty()
-                .When(noticia => noticia.Estado == 2)
-                .WithMessage("El campo 'FechaBaja' es requerido cuando el estado es 2 (baja)");
-
+                .When(noticia => noticia.Estado == 4)
+                .WithMessage("El campo 'FechaBaja' es requerido cuando el estado es 4 (baja)");
 
 
             RuleFor(noticia => noticia.IdUsuarioBaja)
                 .NotEmpty()
-                .When(noticia => noticia.Estado == 2)
-                .WithMessage("El campo 'IdUsuarioBaja' es requerido cuando el estado es 2 (baja)");
+                .When(noticia => noticia.Estado == 4)
+                .WithMessage("El campo 'IdUsuarioBaja' es requerido cuando el estado es 4 (baja)");
 
 
         }

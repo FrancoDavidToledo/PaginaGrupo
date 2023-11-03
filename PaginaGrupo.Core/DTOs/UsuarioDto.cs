@@ -9,9 +9,9 @@ public partial class UsuarioDto
 
     public string Clave { get; set; } = null!;
 
-    public DateTime? FechaAlta { get; set; }
+    public DateTime FechaAlta { get; set; }
 
     public DateTime? FechaUltimoIngreso { get; set; }
-    public string Rol { get; set; }
+    public string Rol { get; set; } = null!;
 
 }
