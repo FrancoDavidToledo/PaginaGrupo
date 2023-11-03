@@ -2,10 +2,7 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IAutoresRepository
+    public interface IAutoresRepository : IRepository<Autores>
     {
-        Task<IEnumerable<Autores>> GetAutores();
-        Task<Autores> GetAutor(int id);
-        Task<Autores> InsertarAutor(Autores noticia);
     }
 }

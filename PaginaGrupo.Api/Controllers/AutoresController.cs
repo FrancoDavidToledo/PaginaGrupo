@@ -1,49 +1,43 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
+using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
     public class AutorController : Controller
     {
-        private readonly IAutoresRepository _autorRepository;
+        private readonly IAutorService _autorService;
         private readonly IMapper _mapper;
-        public AutorController(IAutoresRepository autorRepository, IMapper mapper)
+        public AutorController(IAutorService autorService, IMapper mapper)
         {
-            _autorRepository = autorRepository;
+            _autorService = autorService;
             _mapper = mapper;
         }
+
+        //lo siguiente es para documentar
+        /// <summary>
+        /// Permite mostrar todos los autores, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<AutoresDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo anterior era para documentar
+        //lo siguiente es el nombre del servicio
         [HttpGet("GetAutores")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
         public async Task<IActionResult> GetAutores()
         {
 
-            var autor = await _autorRepository.GetAutores();
+            var autor =  _autorService.GetAutores();
             var autorDto = _mapper.Map<IEnumerable<AutoresDto>>(autor);
 
             return Ok(autorDto);
         }
 
-        [HttpGet("GetAutor/{id}")]
-        public async Task<IActionResult> GetAutor(int id)
-        {
-            var autor = await _autorRepository.GetAutor(id);
-            var autorDto = _mapper.Map<AutoresDto>(autor);
-            return Ok(autorDto);
-
-        }
-
-        [HttpPost("InsertarAutor")]
-        public async Task<IActionResult> InsertarAutor(AutoresDto autorDto)
-        {
-
-
-            var autor = _mapper.Map<Autores>(autorDto);
-            await _autorRepository.InsertarAutor(autor);
-
-            return Ok(autor);
-
-        }
     }
 }

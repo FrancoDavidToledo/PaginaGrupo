@@ -1,9 +1,7 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class Libro
+public class Libro : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Codigo { get; set; } = null!;
 
     public string? Idioma { get; set; }
@@ -17,6 +15,7 @@ public class Libro
     public string Url { get; set; } = null!;
 
     public string UrlPortada { get; set; } = null!;
+    public string Nombre { get; set; } = null!;
 
     public virtual ICollection<LibroAutor> LibroAutor { get; set; } = new List<LibroAutor>();
 

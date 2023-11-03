@@ -2,9 +2,7 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface ICategoriasRepository
+    public interface ICategoriasRepository : IRepository<Categoria>
     {
-        Task<IEnumerable<Categoria>> GetCategorias();
-        Task<Categoria> GetCategoria(int id);
     }
 }

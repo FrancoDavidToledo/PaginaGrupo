@@ -1,49 +1,68 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using PaginaGrupo.Api.Responses;
+using PaginaGrupo.Core.CustomEntitys;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Core.QueryFilters;
+using PaginaGrupo.Core.Services;
+using PaginaGrupo.Infra.Interfaces;
+using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
     public class LibroController : Controller
     {
-        private readonly ILibroRepository _libroRepository;
+        private readonly ILibroService _libroService;
         private readonly IMapper _mapper;
-        public LibroController(ILibroRepository libroRepository, IMapper mapper)
+        private readonly IUriService _uriService;
+        public LibroController(ILibroService libroService, IMapper mapper, IUriService uriService)
         {
-            _libroRepository = libroRepository;
+            _libroService = libroService;
             _mapper = mapper;
+            _uriService = uriService;
         }
+        //lo siguiente es para documentar
+        /// <summary>
+        /// Permite mostrar todos los libros, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<LibroDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo anterior era para documentar
+
+        //lo siguiente es el nombre del servicio
         [HttpGet("GetLibros")]
-        public async Task<IActionResult> GetLibros()
+
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+        public IActionResult GetLibros(LibrosQueryFilter filters)
         {
+            var libros = _libroService.GetLibros(filters);
+            var librosDto = _mapper.Map<IEnumerable<LibroDto>>(libros);
 
-            var libro = await _libroRepository.GetLibros();
-            var libroDto = _mapper.Map<IEnumerable<LibroDto>>(libro);
+            var metadata = new Metadata
+            {
+                TotalCount = libros.TotalCount,
+                PageSize = libros.PageSize,
+                CurrentPage = libros.CurrentPage,
+                TotalPages = libros.TotalPages,
+                HasNextPage = libros.HasNextPage,
+                HasPreviousPage = libros.HasPreviousPage,
+                NextPageUrl = _uriService.GetLibroPaginationUri(filters, Url.RouteUrl(nameof(GetLibros))).ToString(),
+                PreviousPageUrl = _uriService.GetLibroPaginationUri(filters, Url.RouteUrl(nameof(GetLibros))).ToString()
+            };
 
-            return Ok(libroDto);
+            var response = new ApiResponse<IEnumerable<LibroDto>>(librosDto)
+            {
+                Meta = metadata
+            }
+            ;
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(response);
         }
 
-        [HttpGet("GetLibro/{id}")]
-        public async Task<IActionResult> GetLibro(int id)
-        {
-            var libro = await _libroRepository.GetLibro(id);
-            var libroDto = _mapper.Map<LibroDto>(libro);
-            return Ok(libroDto);
-
-        }
-
-        [HttpPost("InsertarLibro")]
-        public async Task<IActionResult> InsertarLibro(LibroDto libroDto)
-        {
-
-
-            var libro = _mapper.Map<Libro>(libroDto);
-            await _libroRepository.InsertarLibro(libro);
-
-            return Ok(libro);
-
-        }
     }
 }

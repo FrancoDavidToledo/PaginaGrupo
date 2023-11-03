@@ -17,5 +17,6 @@ public class LibroDto
     public string Url { get; set; } = null!;
 
     public string UrlPortada { get; set; } = null!;
+    public string Nombre { get; set;} = null!;
 
 }

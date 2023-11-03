@@ -25,6 +25,7 @@ namespace PaginaGrupo.Infra.Data.Configurations
             entity.Property(e => e.UrlPortada)
                 .HasMaxLength(400)
                 .IsUnicode(false);
+            entity.Property(e => e.Nombre).HasColumnName("Nombre");
         }
     }
 

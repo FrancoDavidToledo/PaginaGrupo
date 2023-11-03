@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using PaginaGrupo.Api.Responses;
+using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Infra.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -21,7 +27,16 @@ namespace PaginaGrupo.Api.Controllers
             _passwordService = passwordService;
         }
 
-        [HttpPost("autenticar")]
+        //lo siguiente para documentar
+        /// <summary>
+        /// Realiza la validacion de correo y contraseña, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
+        [HttpPost("AutenticarLogin")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+
         public async Task<IActionResult> Autentication(UserLogin login)
         {
             //si es un usuario valido
@@ -38,7 +53,11 @@ namespace PaginaGrupo.Api.Controllers
         private async Task<(bool, Usuario)> IsValidUser(UserLogin login)
         {
             var user = await _usuarioService.GetLoginByCredentials(login);
-            var isValid = _passwordService.Check(user.Clave, login.Clave);
+            var isValid= false;
+            if (user != null)
+            {
+                isValid = _passwordService.Check(user.Clave, login.Clave);
+            }
             return (isValid, user);
         }
 

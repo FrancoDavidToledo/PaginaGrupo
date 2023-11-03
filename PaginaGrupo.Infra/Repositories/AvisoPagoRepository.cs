@@ -5,38 +5,18 @@ using PaginaGrupo.Infra.Data;
 
 namespace PaginaGrupo.Infra.Repositories
 {
-    public class AvisoPagoRepository : IAvisoPagoRepository
+    public class AvisoPagoRepository : BaseRepository<AvisoPago>, IAvisoPagoRepository
     {
 
-        private readonly PaginaGrupoContext _context;
-        public AvisoPagoRepository(PaginaGrupoContext context)
-        {
-
-            _context = context;
-        }
+        public AvisoPagoRepository(PaginaGrupoContext context) : base(context) { }
 
         //devuelve todos los usuarios
-        public async Task<IEnumerable<AvisoPago>> GetAvisosPagos()
+        public async Task<IEnumerable<AvisoPago>> GetAvisosPagosUsuario(int idUsuario)
         {
-            var avisosPagos = await _context.AvisoPagos.ToListAsync();
+            var avisosPagos = await _entities.Where(x => x.IdUsuario == idUsuario).ToListAsync();
 
             return avisosPagos;
         }
 
-        //devuelve un usuario
-        public async Task<AvisoPago> GetAvisoPago(int id)
-        {
-            var avisoPago = await _context.AvisoPagos.FirstOrDefaultAsync(x => x.Id == id);
-
-            return avisoPago;
-        }
-
-        //Crea un usuario
-        public async Task<AvisoPago> InsertarAvisoPago(AvisoPago avisoPago)
-        {
-            _context.AvisoPagos.AddAsync(avisoPago);
-            await _context.SaveChangesAsync();
-            return avisoPago;
-        }
     }
 }

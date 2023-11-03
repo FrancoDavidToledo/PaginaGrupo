@@ -1,4 +1,5 @@
 ﻿using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Core.Services
@@ -21,6 +22,28 @@ namespace PaginaGrupo.Core.Services
         {
             await _unitOfWork.UsuarioRepository.Add(usuario);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public  IEnumerable<Usuario> GetUsuarios()
+        {
+            var usuarios = _unitOfWork.UsuarioRepository.GetAll();
+
+            return usuarios;
+        }
+
+        public async Task<Usuario> GetUsuario(int id)
+        {
+            var usuarios = await _unitOfWork.UsuarioRepository.GetById(id);
+
+
+            return usuarios;
+        }
+
+        public async Task<IEnumerable<Usuario>> GetUsuariosRol(RolType rol)
+        {
+            var usuarios = await _unitOfWork.UsuarioRepository.GetUsuariosRol(rol);
+
+            return usuarios;
         }
     }
 }

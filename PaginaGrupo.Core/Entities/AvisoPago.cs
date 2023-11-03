@@ -1,8 +1,7 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class AvisoPago
+public class AvisoPago : BaseEntity
 {
-    public int Id { get; set; }
 
     public int? Importe { get; set; }
 

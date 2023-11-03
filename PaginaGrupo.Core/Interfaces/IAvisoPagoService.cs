@@ -2,9 +2,8 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IAvisoPagoRepository : IRepository<AvisoPago>
+    public interface IAvisoPagoService
     {
         Task<IEnumerable<AvisoPago>> GetAvisosPagosUsuario(int idUsuario);
-
     }
 }

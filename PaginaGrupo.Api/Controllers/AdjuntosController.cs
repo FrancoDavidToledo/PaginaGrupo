@@ -24,8 +24,7 @@ namespace PaginaGrupo.Api.Controllers
         /// <summary>
         /// Permite mostrar todos los adjuntos de una noticia, no requiere login
         /// </summary>
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<ComentarioDto>>))]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<AdjuntosDto>>))]
         //lo siguiente es el nombre del servicio
         [HttpGet("GetAdjuntos/{idNoticia}")]
         //lo siguiente es para ver que roles pueden ejecutar la accion

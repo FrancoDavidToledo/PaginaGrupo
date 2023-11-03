@@ -2,10 +2,8 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface ILibroRepository
+    public interface ILibroRepository : IRepository<Libro>
     {
-        Task<IEnumerable<Libro>> GetLibros();
-        Task<Libro> GetLibro(int id);
-        Task<Libro> InsertarLibro(Libro libro);
+
     }
 }

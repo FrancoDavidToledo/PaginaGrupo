@@ -4,8 +4,6 @@ namespace PaginaGrupo.Core.Entities;
 
 public class Comentario : BaseEntity
 {
-    public int Id { get; set; }
-
     public DateTime Fecha { get; set; }
 
     public string Contenido { get; set; } = null!;
