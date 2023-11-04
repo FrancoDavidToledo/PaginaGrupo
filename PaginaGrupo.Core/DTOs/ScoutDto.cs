@@ -21,6 +21,6 @@ public class ScoutDto
 
     public string? CodigoUnidad { get; set; }
 
-    public string? Estado { get; set; }
+    public char Estado { get; set; }
 
 }

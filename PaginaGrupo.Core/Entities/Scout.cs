@@ -22,7 +22,7 @@ public class Scout
 
     public string? CodigoUnidad { get; set; }
 
-    public string? Estado { get; set; }
+    public char Estado { get; set; }
 
     public virtual ICollection<AsistenciaScout> AsistenciaScouts { get; set; } = new List<AsistenciaScout>();
 

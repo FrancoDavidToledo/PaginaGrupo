@@ -60,8 +60,8 @@ namespace PaginaGrupo.Infra.Validators
                 .WithMessage("El campo 'CodigoUnidad' no debe exceder los 10 caracteres");
 
             RuleFor(scout => scout.Estado)
-                .Length(0, 1)
-                .WithMessage("El campo 'Estado' debe tener un carácter");
+                 .NotNull()
+                 .WithMessage("El campo 'Estado' no debe ser nulo");
         }
     }
 }

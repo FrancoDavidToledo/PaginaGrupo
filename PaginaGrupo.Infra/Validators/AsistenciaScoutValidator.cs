@@ -23,7 +23,7 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'Asistencia' no debe ser nulo")
                 .Must(asistencia => BeValidAsistencia(asistencia)) 
-                //Esto da error porque en la DTO asistencia es string, pero en la base en char(1), si se cambia la DTO se arregla. Si no hay que cambiar la base y la validación de abajo
+
                 .WithMessage("El campo 'Asistencia' debe ser 'S' o 'N'");
 
             RuleFor(asistencia => asistencia.CodigoUnidad)
@@ -35,7 +35,7 @@ namespace PaginaGrupo.Infra.Validators
                 .WithMessage("El campo 'CodigoUnidad' debe tener entre 1 y 10 caracteres");
         }
 
-        private bool BeValidAsistencia(char? asistencia) //Valores para presente o Ausente, se podrian modificar o agregar mas
+        private bool BeValidAsistencia(char? asistencia) 
         {
             return asistencia.HasValue && (asistencia.Value == 'P' || asistencia.Value == 'A');
         }
