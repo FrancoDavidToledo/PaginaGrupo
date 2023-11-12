@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PaginaGrupo.Core\PaginaGrupo.Core.csproj" />
     <ProjectReference Include="..\PaginaGrupo.Infra\PaginaGrupo.Infra.csproj" />
+
   </ItemGroup>
 
 </Project>
