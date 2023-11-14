@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.UnitTest", "Pag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.IntegrationTest", "PaginaGrupo.IntegrationTest\PaginaGrupo.IntegrationTest.csproj", "{AC2DBF2A-B05B-42B2-AC05-C35A9AC560B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaginaGrupo.WEB", "PaginaGrupo.WEB\PaginaGrupo.WEB.csproj", "{2BDB2622-795D-40AC-8BAE-6DB4D309222E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaginaGrupo.WebApp", "PaginaGrupo.WebApp\PaginaGrupo.WebApp.csproj", "{66AA4AB1-5401-471F-B22B-03011BA40564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,10 @@ Global
 		{AC2DBF2A-B05B-42B2-AC05-C35A9AC560B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC2DBF2A-B05B-42B2-AC05-C35A9AC560B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC2DBF2A-B05B-42B2-AC05-C35A9AC560B7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BDB2622-795D-40AC-8BAE-6DB4D309222E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BDB2622-795D-40AC-8BAE-6DB4D309222E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BDB2622-795D-40AC-8BAE-6DB4D309222E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BDB2622-795D-40AC-8BAE-6DB4D309222E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66AA4AB1-5401-471F-B22B-03011BA40564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66AA4AB1-5401-471F-B22B-03011BA40564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66AA4AB1-5401-471F-B22B-03011BA40564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66AA4AB1-5401-471F-B22B-03011BA40564}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
