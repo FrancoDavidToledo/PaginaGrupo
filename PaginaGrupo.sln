@@ -10,6 +10,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.Infra", "PaginaGrupo.Infra\PaginaGrupo.Infra.csproj", "{E3E0258B-2630-4DCF-87F4-05923ABC44B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC4C265C-BD75-4917-A722-7A751F056F95}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Pagina HTML FRONT\index.css = ..\..\Pagina HTML FRONT\index.css
+		..\..\Pagina HTML FRONT\index.html = ..\..\Pagina HTML FRONT\index.html
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.UnitTest", "PaginaGrupo.UnitTest\PaginaGrupo.UnitTest.csproj", "{09B8C9DF-DA39-4096-9480-D4C7BEFE2A83}"
 EndProject
