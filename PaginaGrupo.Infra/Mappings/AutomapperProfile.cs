@@ -74,6 +74,7 @@ namespace PaginaGrupo.Infra.Mappings
             // CreateMap<UsuarioDto, Usuario>();
 
             CreateMap<Usuario, UsuarioDtoSinClave>().ReverseMap();
+            CreateMap<Usuario, UsuarioSinClaveTokenDto>().ReverseMap();
         }
     }
 }

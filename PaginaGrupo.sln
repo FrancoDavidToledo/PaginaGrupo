@@ -15,7 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.UnitTest", "Pag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.IntegrationTest", "PaginaGrupo.IntegrationTest\PaginaGrupo.IntegrationTest.csproj", "{AC2DBF2A-B05B-42B2-AC05-C35A9AC560B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaginaGrupo.WebApp", "PaginaGrupo.WebApp\PaginaGrupo.WebApp.csproj", "{66AA4AB1-5401-471F-B22B-03011BA40564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaginaGrupo.WebApp", "PaginaGrupo.WebApp\PaginaGrupo.WebApp.csproj", "{66AA4AB1-5401-471F-B22B-03011BA40564}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5C50E5E-358C-4E23-9275-34489D7C68B6} = {B5C50E5E-358C-4E23-9275-34489D7C68B6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

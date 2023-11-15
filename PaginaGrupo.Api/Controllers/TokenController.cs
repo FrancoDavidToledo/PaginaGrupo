@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -20,11 +22,13 @@ namespace PaginaGrupo.Api.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUsuarioService _usuarioService;
         private readonly IPasswordService _passwordService;
-        public TokenController(IConfiguration configuration, IUsuarioService usuarioService, IPasswordService passwordService)
+        private readonly IMapper _mapper;
+        public TokenController(IConfiguration configuration, IUsuarioService usuarioService, IPasswordService passwordService, IMapper mapper)
         {
             _configuration = configuration;
             _usuarioService = usuarioService;
             _passwordService = passwordService;
+            _mapper = mapper;
         }
 
         //lo siguiente para documentar
@@ -39,15 +43,23 @@ namespace PaginaGrupo.Api.Controllers
 
         public async Task<IActionResult> Autentication(UserLogin login)
         {
+            var response = new ResponseDTO<UsuarioSinClaveTokenDto>();
             //si es un usuario valido
             var validation = await IsValidUser(login);
             if (validation.Item1)
-            {
+            { 
                 var token = GenerateToken(validation.Item2);
-                return Ok(new { token });
+                var unidadDto = _mapper.Map<UsuarioSinClaveTokenDto>(validation.Item2);
+                unidadDto.Token = token;
+                response.EsCorrecto = true;
+                response.Resultado = unidadDto;
+
+                return Ok(response);
             }
 
-            return NotFound();
+            response.EsCorrecto = false;
+            response.Mensaje = "Error al realizar login";
+            return Ok(response);
         }
 
         private async Task<(bool, Usuario)> IsValidUser(UserLogin login)
