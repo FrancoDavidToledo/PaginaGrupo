@@ -1,0 +1,45 @@
+.noticia {
+    display: flex;
+    margin: 20px;
+    padding: 10px;
+
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+
+}
+
+.noticia .contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;  
+    margin-right: 30px;
+    margin-left: 100px;
+    width: 50%;
+}
+.noticia .contenido p {
+    margin: 0;
+    
+}
+.noticia .contenido h2{
+    margin-bottom: 20px;
+}
+
+.noticia picture{
+    width: 50%;
+    display: flex; /* Para centrar la imagen dentro de <picture> */
+    align-items: center;
+    justify-content: space-around;
+    
+}
+
+.noticia picture img {
+    width: 500px; /* Ajusta el ancho máximo de la imagen según tus necesidades */
+    height: 500px;
+    margin-left: 50px;
+    margin-right: 10px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
+

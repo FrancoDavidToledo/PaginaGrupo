@@ -1,0 +1,43 @@
+.arch_contact_us_duplicate {
+    position: relative;
+    background-color: #333333;
+    padding: 70px 0 50px 0;
+}
+
+.col-md-6 {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.custom-input {
+    background-color: #333333;
+    color: white;
+    border: 1px solid white;
+    padding: 8px;
+}
+
+.btn-bg-footer {
+    margin-top: 30px;
+    background-color: whitesmoke;
+}
+
+
+    .btn-bg-footer:hover {
+        background-color: gray;
+    }
+
+    .btn-bg-footer:active {
+        background-color: gray;
+    }
+
+.footer-text {
+    padding: 0 50px 0 50px;
+}
+
+.footer-color h1 {
+    font-size: 35pt;
+}
+
+hr{
+    margin:0;
+}
