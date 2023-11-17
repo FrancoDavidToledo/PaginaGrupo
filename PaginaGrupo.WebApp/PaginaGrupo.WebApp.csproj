@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Imgs\CardsNoticias.razor" />
+    <Content Remove="wwwroot\Imgs\CardsNoticias.razor" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +26,15 @@
 
   <ItemGroup>
     <None Include="Pages\Noticias\Index.razor" />
+    <None Include="wwwroot\Imgs\banner1.jpeg" />
+    <None Include="wwwroot\Imgs\banner2.jpeg" />
+    <None Include="wwwroot\Imgs\banner3.jpeg" />
+    <None Include="wwwroot\Imgs\Footer.html" />
+    <None Include="wwwroot\Imgs\img\Stray_calico_cat_near_Sagami_River-01.jpg" />
+    <None Include="wwwroot\Imgs\img\Welcoming_hero.jpg" />
+    <None Include="wwwroot\Imgs\o1.jpeg" />
+    <None Include="wwwroot\Imgs\o2.jpeg" />
+    <None Include="wwwroot\Imgs\o3.jpeg" />
   </ItemGroup>
 
 </Project>
