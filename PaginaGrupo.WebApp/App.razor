@@ -10,7 +10,7 @@
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
 
                 <NotAuthorized>
-@*                    @{
+                    @{
                         if (context.User.Identity?.IsAuthenticated != true)
                             navManager.NavigateTo("/login");
                         else
@@ -18,7 +18,7 @@
                             <p class="alert alert-danger">No esta autorizado para ver esta pagina</p>
                         }
 
-                    }*@
+                    }
                 </NotAuthorized>
             </AuthorizeRouteView>
 

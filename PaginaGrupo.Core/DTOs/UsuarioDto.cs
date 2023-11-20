@@ -12,7 +12,6 @@ public partial class UsuarioDto
     public DateTime FechaAlta { get; set; }
 
     public DateTime? FechaUltimoIngreso { get; set; }
-    public string Rol { get; set; } = null!;
 
     public string? ConfirmarClave { get; set; }
 }

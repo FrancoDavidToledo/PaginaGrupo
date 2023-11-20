@@ -12,6 +12,8 @@ using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _usuarioService;
@@ -36,13 +38,36 @@ namespace PaginaGrupo.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> InsertarUsuario(UsuarioDto usuarioDto)
         {
+            //var usuario = _mapper.Map<Usuario>(usuarioDto);
+            //usuario.Clave = _passwordService.Hash(usuario.Clave);
+            //await _usuarioService.RegisterUser(usuario);
+
+            ////nuevo, se reconvierte a dto para responder
+            //usuarioDto = _mapper.Map<UsuarioDto>(usuario);
+            //var response = new ApiResponse<UsuarioDto>(usuarioDto);
+            //return Ok(response);
+
             var usuario = _mapper.Map<Usuario>(usuarioDto);
             usuario.Clave = _passwordService.Hash(usuario.Clave);
+            usuario.Rol = RolType.Scout;
             await _usuarioService.RegisterUser(usuario);
 
             //nuevo, se reconvierte a dto para responder
             usuarioDto = _mapper.Map<UsuarioDto>(usuario);
-            var response = new ApiResponse<UsuarioDto>(usuarioDto);
+            var response = new ResponseDTO<string>();
+            if (usuarioDto != null)
+            {
+
+                response.EsCorrecto = true;
+                response.Mensaje = "Usuario creado con exito";
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al realizar registro";
+            }
+
+
             return Ok(response);
 
         }

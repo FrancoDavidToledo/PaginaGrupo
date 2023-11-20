@@ -11,7 +11,7 @@ public partial class Usuario : BaseEntity
 
     public string Clave { get; set; }
 
-    public DateTime? FechaAlta { get; set; }
+    public DateTime? FechaAlta { get; set; } = DateTime.Now;
 
     public DateTime? FechaUltimoIngreso { get; set; }
 

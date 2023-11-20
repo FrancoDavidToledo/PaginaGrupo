@@ -75,12 +75,10 @@
             toastService.ShowWarning("Las contraseñas no coinciden");
             return;
         }
+        modelo.FechaAlta = DateTime.Now;
+        var response =  await _usuarioServicio.Crear(modelo); //ESTO SE COMENTA PORQUE NO ESTA LA FUNCIONALIDAD AUN
 
-        modelo.Rol = "Cliente";
-        var response = "NO";// await _usuarioServicio.Crear(modelo); //ESTO SE COMENTA PORQUE NO ESTA LA FUNCIONALIDAD AUN
-
-        if (response == "SI")
-        //if (response.EsCorrecto)  //ESTO SE COMENTA PORQUE NO ESTA LA FUNCIONALIDAD AUN
+        if (response.EsCorrecto)  //ESTO SE COMENTA PORQUE NO ESTA LA FUNCIONALIDAD AUN
         {
             toastService.ShowSuccess("Su cuenta ha sido creada");
             _navServicio.NavigateTo("/login");

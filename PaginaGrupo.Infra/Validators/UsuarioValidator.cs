@@ -38,9 +38,9 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'FechaAlta' no debe ser nulo");
 
-            RuleFor(usuario => usuario.Rol)
-                 .NotNull()
-                 .WithMessage("El campo 'Rol' no debe ser nulo");
+            //RuleFor(usuario => usuario.Rol)
+            //     .NotNull()
+            //     .WithMessage("El campo 'Rol' no debe ser nulo");
 
             //TODO Chequear esto. Lo comenté porque tiene sentido que sea nulleable hasta el momento en el que el usuairo ingresa realmente.
 
