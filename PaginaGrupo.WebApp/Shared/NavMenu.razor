@@ -1,40 +1,62 @@
-﻿
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm ">
+﻿@implements IDisposable
+
+
+@inject SweetAlertService Swal;
+@inject NavigationManager _navigationManager;
+@using PaginaGrupo.WebApp.Extensiones;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+@inject AuthenticationStateProvider autencacionProvider;
+
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand text-white" runat="server" href="#">GSSP</a>
+        <a class="navbar-brand" runat="server" href="#">Ecommerce Demo</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+
         <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 
-                <li class="nav-item" b-test><NavLink class="nav-link text-white" href="/"> Inicio</NavLink></li>
-                <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias"> Noticias</NavLink></li>
-                <li class="nav-item "><NavLink class="nav-link text-white" href="categorias"> Nosotros</NavLink></li>
-                <li class="nav-item "><NavLink class="nav-link text-white" href="productos"> Organización</NavLink></li>
+                <li class="nav-item" b-test><NavLink class="nav-link text-black" href="/"> Inicio</NavLink></li>
+                <li class="nav-item "><NavLink class="nav-link text-black" href="Noticias"> Noticias</NavLink></li>
+                <li class="nav-item "><NavLink class="nav-link text-black" href="categorias"> Nosotros</NavLink></li>
+                <li class="nav-item "><NavLink class="nav-link text-black" href="productos"> Organización</NavLink></li>
 
-                <li class="nav-item "><NavLink class="nav-link text-white" href="catalogo"> Contacto</NavLink></li>
+                <li class="nav-item "><NavLink class="nav-link text-black" href="catalogo"> Contacto</NavLink></li>
             </ul>
 
+            <AuthorizeView>
+                <Authorized>
+                    <span class="navbar-text me-3">
+                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                    </span>
 
-            <span class="navbar-text me-3 text-white">
-                admins@example.com
-            </span>
+                </Authorized>
+            </AuthorizeView>
 
-@*            <a class="btn btn-outline-light ms-auto ms-md-0 me-3 text-white" href="/cart">
-                <i class="bi-cart-fill me-1"></i>
-                Cart
-                <span class="badge bg-dark text-white ms-1 rounded-pill text-white">0</span>
-            </a>*@
 
-            <button class="btn btn-outline-light ms-auto ms-md-0 me-3 text-white" type="button">Salir</button>
 
-            <a class="btn btn-outline-text-white ms-auto ms-md-0 me-3 text-white" href="/login">Iniciar sesion</a>
+            <AuthorizeView>
+                <Authorized>
+
+                    <button class="btn btn-outline-dark ms-auto ms-md-0 me-3" type="button" @onclick="CerrarSesion">Salir</button>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="btn btn-outline-dark ms-auto ms-md-0 me-3" href="/login">Iniciar sesion</a>
+                </NotAuthorized>
+            </AuthorizeView>
+
+
+
 
         </div>
     </div>
 </nav>
+
 
 @code {
     private bool collapseNavMenu = true;
@@ -45,4 +67,32 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    public void Dispose()
+    {
+     
+    }
+
+
+    private async Task CerrarSesion()
+    {
+
+        SweetAlertResult result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Desea salir?",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Si",
+                CancelButtonText = "No",
+            });
+
+        if (result.IsConfirmed)
+        {
+            var autenticacionExt = (AutenticacionExtension)autencacionProvider;
+            await autenticacionExt.ActualizarEstadoAutenticacion(null);
+            _navigationManager.NavigateTo("/", true);
+        }
+    }
+
+
 }

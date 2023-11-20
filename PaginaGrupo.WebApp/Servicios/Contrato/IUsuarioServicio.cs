@@ -6,7 +6,7 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
     public interface IUsuarioServicio
     {
 
-        Task<ResponseDTO<UsuarioSinClaveTokenDto>> GetLoginByCredentials(UserLogin userLogin);
+        Task<ResponseDTO<UsuarioSinClaveTokenDto>> Autorizacion(UserLogin userLogin);
         //Task<ResponseDTO<UsuarioDTO>> Obtener(int id);
         //Task<ResponseDTO<SesionDTO>> Autorizacion(LoginDTO modelo);
         //Task<ResponseDTO<UsuarioDTO>> Crear(UsuarioDTO modelo);

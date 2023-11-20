@@ -14,9 +14,9 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         }
 
 
-        public async Task<ResponseDTO<UsuarioSinClaveTokenDto>> GetLoginByCredentials(UserLogin userLogin)
+        public async Task<ResponseDTO<UsuarioSinClaveTokenDto>> Autorizacion(UserLogin userLogin)
         {
-            var response = await _httpClient.PostAsJsonAsync("AutenticarLogin", userLogin);
+            var response = await _httpClient.PostAsJsonAsync("api/Token/AutenticarLogin", userLogin);
             var result = await response.Content.ReadFromJsonAsync<ResponseDTO<UsuarioSinClaveTokenDto>>();
             return result!;
         }

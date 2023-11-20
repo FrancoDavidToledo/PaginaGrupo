@@ -17,6 +17,8 @@ using System.Text;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TokenController : Controller
     {
         private readonly IConfiguration _configuration;

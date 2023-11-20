@@ -76,7 +76,7 @@ namespace PaginaGrupo.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //lo anterior era para documentar
-       
+
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticias")]
 
