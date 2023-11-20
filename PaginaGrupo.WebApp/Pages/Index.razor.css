@@ -65,6 +65,13 @@ opacity: 0.4
 /*Fin Carousel*/
 
 /*Comienzo Visitados*/
+.most-visited{
+    margin-top:100px;
+}
+.most-visited .col-md-7 {
+    margin-top: 100px;
+}
+
 .most-visited h1
 {
   font-size: 45pt;
@@ -97,12 +104,16 @@ opacity: 0.4
 /*Fin Visitados*/
 
 /*Comienzo Organizacion*/
-#nuestra-organizacion h1
-{
-  font-size: 45pt;
-  line-height:350%;
-  font-weight:bold;
-  text-align: center;
+#nuestra-organizacion {
+    margin:200px 0 0 0;
+
+    padding-bottom: 200px;
+}
+#nuestra-organizacion h1 {
+    font-size: 45pt;
+    line-height: 350%;
+    font-weight: bold;
+    text-align: center;
 }
 
 #nuestra-organizacion .seccion
@@ -137,3 +148,11 @@ opacity: 0.4
 
 /*Fin Organizacion*/
 
+
+    .bd-placeholder-img image {
+        width: 100%;
+        height:auto;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+    }
