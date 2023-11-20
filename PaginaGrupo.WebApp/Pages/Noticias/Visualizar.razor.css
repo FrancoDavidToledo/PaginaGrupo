@@ -1,0 +1,34 @@
+.flex-noticia {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    width:70%;
+    margin:auto;
+}
+
+.flex-encabezado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+}
+
+.flex-encabezado h1{
+    margin:5rem 0 2rem 0;
+}
+
+.flex-encabezado h3{
+    margin-bottom:1.5rem;
+}
+
+.flex-encabezado img{
+    width: 100%;
+}
+
+.autor{
+
+    margin:1rem 0 0 3rem;
+    font-size:small;
+}
