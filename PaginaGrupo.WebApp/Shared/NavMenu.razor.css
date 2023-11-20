@@ -1,6 +1,5 @@
-nav{
-  background-color:  #0A592A;
-
+nav {
+    background-color: #0A592A;
 }
 
 
@@ -8,8 +7,8 @@ body {
     background-color: #FFFFFF;
 }
 
-body p, a, h1, h2, h3, h4, h5, label {
-    font-family: 'Open Sans', sans-serif;
-    color: black;
-    font-size: 15pt;
-}
+    body p, a, h1, h2, h3, h4, h5, label {
+        font-family: 'Open Sans', sans-serif;
+        color: black;
+        font-size: 15pt;
+    }
