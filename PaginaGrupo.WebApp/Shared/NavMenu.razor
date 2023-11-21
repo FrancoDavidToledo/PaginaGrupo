@@ -29,7 +29,8 @@
                 <li class="nav-item "><NavLink class="nav-link text-white" href="catalogo"> Contacto</NavLink></li>
             </ul>
 
-            <AuthorizeView>
+            @*barra para admin*@
+            <AuthorizeView Roles="Administrador">
                 <Authorized>
                     
                     <Dropdown>
@@ -55,6 +56,56 @@
 
                 </Authorized>
             </AuthorizeView>
+
+             @*barra para dirigente*@
+            <AuthorizeView Roles="Dirigente">
+                <Authorized>
+                    
+                    <Dropdown>
+                    <DropdownToggleButton Color="ButtonColor.Dark" >
+                        <span class="navbar-text me-3 text-white ">
+                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                    </span>
+                    </DropdownToggleButton>
+                    <DropdownMenu>
+                         <DropdownItem To="/Noticias/Nuevo" Type="ButtonType.Link">Crear nueva noticia</DropdownItem>
+                        <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>
+                        <DropdownDivider></DropdownDivider>
+                        <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+
+
+                   @* <span class="navbar-text me-3 text-white">
+                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                    </span>*@
+
+                </Authorized>
+            </AuthorizeView>
+
+            @*barra para Scout*@
+            <AuthorizeView Roles="Scout">
+                <Authorized>
+
+                    <Dropdown>
+                        <DropdownToggleButton Color="ButtonColor.Dark">
+                            <span class="navbar-text me-3 text-white ">
+                                @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                            </span>
+                        </DropdownToggleButton>
+                        <DropdownMenu>
+                            <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+
+
+                    @* <span class="navbar-text me-3 text-white">
+                    @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                    </span>*@
+
+                </Authorized>
+            </AuthorizeView>
+
 
 
 
