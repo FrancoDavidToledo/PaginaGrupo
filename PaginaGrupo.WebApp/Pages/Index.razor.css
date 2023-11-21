@@ -144,6 +144,18 @@ opacity: 0.4
 #nuestra-organizacion .col-lg-3{
   text-align: center;
 }
+.org-img-container {
+    width: 140px;
+    height: 140px;
+    margin: auto;
+}
+.org-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1;
+}
 
 
 /*Fin Organizacion*/

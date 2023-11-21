@@ -34,15 +34,15 @@
     
 }
 
-    .noticia picture img {
-        width: 500px; /* Ajusta el ancho máximo de la imagen según tus necesidades */
-        height: 500px;
-        margin-left: 50px;
-        margin-right: 10px;
-        top: 0;
-        left: 0;
-        object-fit: cover;
-    }
+.noticia picture img {
+    width: 500px; /* Ajusta el ancho máximo de la imagen según tus necesidades */
+    height: 500px;
+    margin-left: 50px;
+    margin-right: 10px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
 
 .paginado{
     text-align:center;
