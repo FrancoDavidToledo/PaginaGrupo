@@ -1,4 +1,7 @@
 ﻿@page "/Noticias/Nuevo"
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+
 <!------ Include the above in your HEAD tag ---------->
 <div>
    <form>
@@ -100,25 +103,40 @@
                   </table>
               
             <div class="adjuntos form-flex-column">
-               <h3>Imagenes</h3>
-               <div class="lista-adjuntos">
+                <h3>Imagenes</h3>
+                <div class="mb-3">
+                  <label for="formFileMultiple" class="form-label">Selecciona imagenes para la noticia</label>
+                  <input class="form-control" type="file" id="formFileMultiple" multiple>
+                </div>
+               
+               @*<div class="lista-adjuntos">
                    <button class="texto-adjunto adjunto-selecionar">Seleccioná archivos</button>
                    <div class="texto-adjunto">Noticia.jpg</div>
                    <div class="texto-adjunto">Noticia2.jpg</div>
                    <div class="texto-adjunto">Noticia3.jpg</div>
                    <!--Esto idealmente deberia ser una lista-->
-               </div>
+               </div>*@
             </div>
             <div class="form-flex-column">
-               <button class="btn btn-primary">Guardar Noticia</button>
+               <button class="btn btn-primary">Guardar borrador</button>
                <br />
-               <button class="btn btn-success">Publicar Noticia</button>
+               <button class="btn btn-success">Publicar noticia</button>
                <br />
-               <button class="btn btn-danger">Borrar Noticia</button>
+               <button class="btn btn-danger">Borrar noticia</button>
                <br />
-               <button class="btn btn-info">Autorizar Noticia</button>
+             <AuthorizeView>
+                <Authorized>
+                    <!--Esto solo se deberia mostrar si se accede como admin-->
+               <button class="btn btn-warning text-light">Autorizar Noticia</button>
+               </Authorized>
+            </AuthorizeView>
             </div>
          </div>
 
    </form>
 </div>
+
+ @code {
+ 
+
+}
