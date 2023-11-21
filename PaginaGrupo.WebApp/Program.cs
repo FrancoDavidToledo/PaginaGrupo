@@ -41,6 +41,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
 using Blazored.Toast;
 
+
 using PaginaGrupo.WebApp.Servicios.Contrato;
 using PaginaGrupo.WebApp.Servicios.Implementacion;
 
@@ -55,6 +56,7 @@ using PaginaGrupo.WebApp.Servicios.Contrato;
 using PaginaGrupo.WebApp.Servicios.Implementacion;
 using PaginaGrupo.WebApp;
 
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
@@ -63,7 +65,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
-
 
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 //builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();
@@ -76,6 +77,7 @@ builder.Services.AddSweetAlert2();
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, AutenticacionExtension>();
+builder.Services.AddBlazorBootstrap();
 
 
 await builder.Build().RunAsync();
