@@ -1,33 +1,65 @@
 ﻿@page "/Noticias/Nuevo"
+@page "/Noticias/editar/{Id:int}"
+
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
 
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+
+
+@inject INoticiaServicio noticiaServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+@*
+    @attribute [Authorize(Roles = "Administrador")];
+*@
+
+<div class="card-header">
+    <h3 class="text-center font-weight-light my-4">@Titulo</h3>
+</div>
 <!------ Include the above in your HEAD tag ---------->
 <div>
-   <form>
+
+   <EditForm Model="modelo" OnValidSubmit="GuardarCambios">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
       <div class="form-group row mt-5">
          <div class="col-sm-10">
              <label for="colFormLabeL">Titulo de la noticia</label>
-            <input type="text" class="form-control form-control-sm" id="colFormLabel" >
+                <input type="text" class="form-control form-control-sm" id="colFormLabel" @bind-value="modelo.Titulo">
          </div>
       </div>
       <div class="form-group row mt-3">
          <div class="col-sm-10">
              <!--Aca se cargaria el autor por codigo(usuario conectado)-->
              <label for="colFormLabel">Autor</label>
-            <input type="text" class="form-control form-control-sm" id="colFormLabel" >
+                <input type="text" class="form-control form-control-sm" id="colFormLabel" @bind-value="modelo.Autor">
          </div>
       </div>
       <div class="form-group row mt-3">
          <div class="col-sm-10">
              <label for="colFormLabel">Copete de la noticia</label>
-            <input type="text" class="form-control" id="colFormLabel" >
+                <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Copete">
          </div>
       </div>
 
+@*      Falta ver como hacer el bind-value con textarea
       <div class="form-group mt-3">
         <label for="exampleFormControlTextarea1">Noticia</label>
         <textarea class="form-control non-resizable" id="exampleFormControlTextarea1" style="height: 500px;" rows="3"></textarea>
+       </div>
+*@
+
+
+      <div class="form-group row mt-3">
+          <div class="col-sm-10">
+                <label for="colFormLabel">Noticia</label>
+              <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Cuerpo">
+          </div>
       </div>
 
       <div class="form-flex">
@@ -117,13 +149,18 @@
                    <!--Esto idealmente deberia ser una lista-->
                </div>*@
             </div>
-            <div class="form-flex-column">
-               <button class="btn btn-primary">Guardar borrador</button>
+        </div>
+
+
+@*            <div class="form-flex-column">
+                <button class="btn btn-primary" onclick="@GuardarCambios()">@boton</button>
                <br />
                <button class="btn btn-success">Publicar noticia</button>
                <br />
                <button class="btn btn-danger">Borrar noticia</button>
                <br />
+
+
              <AuthorizeView>
                 <Authorized>
                     <!--Esto solo se deberia mostrar si se accede como admin-->
@@ -131,12 +168,88 @@
                </Authorized>
             </AuthorizeView>
             </div>
-         </div>
+         </div>*@
+                     <div class="mt-3">
+                <button type="submit" class="btn btn-primary" style="width:130px">@boton</button>
+                <a href="/Noticias" class="btn btn-secondary" style="width:130px">Volver</a>
+            </div>
 
-   </form>
+        </EditForm>
+
 </div>
 
- @code {
- 
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private string Titulo = "Crear Noticia";
+    private string boton = "Crear Borrador";
+    private NoticiaAltaDto modelo = new NoticiaAltaDto();
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        if (Id != 0)
+        {
+            Titulo = "Editar Noticia";
+            boton = "Guardar";
+
+            var response = await noticiaServicio.Obtener(Id);
+            if (response.EsCorrecto!)
+            {
+                modelo = (NoticiaAltaDto)response.Resultado!;
+            }
+            else
+                toastService.ShowWarning(response.Mensaje);
+        }
+
+    }
+
+    private async Task GuardarCambios()
+    {
+        var authState = await authencationState;
+        modelo.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+
+        bool respuesta = true;
+        string mensaje = string.Empty;
+
+        if (Id != 0)
+        {
+            var response = await noticiaServicio.Editar(modelo);
+            if (response.EsCorrecto)
+            {
+                mensaje = "Noticia fue modificado";
+            }
+            else
+            {
+                respuesta = false;
+                mensaje = "No puedo editar";
+            }
+        }
+        else
+        {
+            //modelo.Rol = "Administrador";
+            var response = await noticiaServicio.Crear(modelo);
+            if (response.EsCorrecto)
+            {
+                mensaje = "Noticia fue creado";
+            }
+            else
+            {
+                respuesta = false;
+                mensaje = "No puedo crear";
+            }
+
+        }
+
+        if (respuesta)
+        {
+            toastService.ShowSuccess(mensaje);
+            _navServicio.NavigateTo("/Noticias");
+        }
+        else
+            toastService.ShowWarning(mensaje);
+    }
 }

@@ -104,6 +104,7 @@ namespace PaginaGrupo.Core.Services
             {
                 throw new BusinessException("El usuario no existe");
             }
+            noticia.Estado = 1;
             await _unitOfWork.NoticiasRepository.Add(noticia);
             await _unitOfWork.SaveChangesAsync();
             return noticia;

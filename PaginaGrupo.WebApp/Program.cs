@@ -62,12 +62,16 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://www.gruposcout.somee.com/") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });
+
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 
+
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
-//builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();
+builder.Services.AddScoped<INoticiaServicio, NoticiaServicio>();
+///builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();
 //builder.Services.AddScoped<IProductoServicio, ProductoServicio>();
 //builder.Services.AddScoped<ICarritoServicio, CarritoServicio>();
 //builder.Services.AddScoped<IVentaServicio, VentaServicio>();

@@ -14,7 +14,7 @@ public class Noticias : BaseEntity
 
     public DateTime FechaNoticia { get; set; }
 
-    public short Estado { get; set; }
+    public short Estado { get; set; } = 1;
 
     public DateTime? FechaBaja { get; set; }
 

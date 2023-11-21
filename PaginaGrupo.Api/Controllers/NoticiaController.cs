@@ -9,14 +9,18 @@ using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
+using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Interfaces;
+using PaginaGrupo.WebApp.Pages.Noticias;
+using SocialMedia.Infrastructure.Services;
 using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
     //  [Authorize]
     //  [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
-
+    [Route("api/[controller]")]
+    [ApiController]
     public class NoticiaController : Controller
     {
 
@@ -112,7 +116,7 @@ namespace PaginaGrupo.Api.Controllers
         /// <summary>
         /// Permite mostrar una noticia, no requiere login
         /// </summary>
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<NoticiaDto>))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<NoticiaAltaDto>))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticia/{id}")]
@@ -122,11 +126,27 @@ namespace PaginaGrupo.Api.Controllers
         public async Task<IActionResult> GetNoticia(int id)
         {
             var noticia = await _noticiasService.GetNoticia(id);
-            var noticiaDto = _mapper.Map<NoticiaDto>(noticia);
-            var response = new ApiResponse<NoticiaDto>(noticiaDto);
+            var noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
+            //     var response = new ApiResponse<NoticiaDto>(noticiaDto);
+
+
+
+            //nuevo, se reconvierte a dto para responder
+            var response = new ResponseDTO<NoticiaAltaDto>();
+            if (noticiaDto != null)
+            {
+
+                response.EsCorrecto = true;
+                response.Resultado = noticiaDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al realizar registro";
+            }
+
 
             return Ok(response);
-
         }
 
         //lo siguiente para documentar
@@ -149,26 +169,65 @@ namespace PaginaGrupo.Api.Controllers
 
 
         [HttpPost("InsertarNoticia")]
-        public async Task<IActionResult> InsertarNoticia(NoticiaDto noticiaDto)
+        // [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        public async Task<IActionResult> InsertarNoticia(NoticiaAltaDto noticiaDto)
         {
+            //var noticia = _mapper.Map<Noticias>(noticiaDto);
+            //await _noticiasService.InsertarNoticia(noticia);
+
+            ////nuevo, se reconvierte a dto para responder
+            //noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
+            //var response = new ApiResponse<NoticiaAltaDto>(noticiaDto);
+            //return Ok(response);
+
+            //////////////////////////////////////////
             var noticia = _mapper.Map<Noticias>(noticiaDto);
             await _noticiasService.InsertarNoticia(noticia);
 
             //nuevo, se reconvierte a dto para responder
-            noticiaDto = _mapper.Map<NoticiaDto>(noticia);
-            var response = new ApiResponse<NoticiaDto>(noticiaDto);
+            noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
+            var response = new ResponseDTO<string>();
+
+            if (noticiaDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Mensaje = "Noticia creada con exito";
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al crear la noticia";
+            }
+
             return Ok(response);
 
         }
 
         [HttpPut("ActualizarNoticia")]
-        public async Task<IActionResult> ActualizarNoticia(int id, NoticiaDto noticiaDto)
+        public async Task<IActionResult> ActualizarNoticia(NoticiaDto noticiaDto)
         {
 
-            var noticia = _mapper.Map<Noticias>(noticiaDto);
-            noticia.Id = id;
+            var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
+            //aca actualizar todo lo que quieras
+            noticia.Titulo = noticiaDto.Titulo;
+            noticia.Autor = noticiaDto.Autor;
+            noticia.Copete = noticiaDto.Copete;
+            noticia.Cuerpo = noticiaDto.Cuerpo;
+            noticia.FechaNoticia = noticiaDto.FechaNoticia;
             var result = await _noticiasService.ActualizarNoticia(noticia);
-            var response = new ApiResponse<bool>(result);
+            var response = new ResponseDTO<string>();
+
+            if (result)
+            {
+                response.EsCorrecto = true;
+                response.Mensaje = "Noticia editada con exito";
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al editar la noticia";
+            }
+
             return Ok(response);
 
         }
@@ -182,18 +241,7 @@ namespace PaginaGrupo.Api.Controllers
 
         }
 
-        [HttpPut("ActualizarNoticia2")]
-        public async Task<IActionResult> ActualizarNoticia2(NoticiaDto noticiaDto)
-        {
 
-            var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
-            //aca actualizar todo lo que quieras
-            noticia.Autor = noticiaDto.Autor;
-            var result = await _noticiasService.ActualizarNoticia(noticia);
-            var response = new ApiResponse<bool>(result);
-            return Ok(response);
-
-        }
 
     }
 }
