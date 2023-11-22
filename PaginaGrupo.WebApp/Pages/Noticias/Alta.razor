@@ -74,7 +74,8 @@
       <div class="form-group row mt-3">
           <div class="col-sm-10">
                 <label for="colFormLabel">Noticia</label>
-              <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Cuerpo">
+                 <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Cuerpo">
+              
           </div>
       </div>
 
@@ -154,7 +155,8 @@
                 <h3>Imagenes</h3>
                 <div class="mb-3">
                   <label for="formFileMultiple" class="form-label">Selecciona imagenes para la noticia</label>
-                  <input class="form-control" type="file" id="formFileMultiple" multiple>
+                  @*<input class="form-control" type="file" id="formFileMultiple" multiple>*@
+                  <InputFile class="form-control" OnChange="HandleFileSelection" multiple />
                 </div>
                
                @*<div class="lista-adjuntos">
@@ -275,4 +277,34 @@
         else
             toastService.ShowWarning(mensaje);
     }
+
+    private List<IBrowserFile> archivosSeleccionados = new List<IBrowserFile>();
+    private string carpetaImagenes = "Imgs";
+    //Este metodo se ejecuta al momento de seleccionar los archivos de manera automatica.
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        archivosSeleccionados.AddRange(e.GetMultipleFiles());
+
+        foreach (var archivoSeleccionado in archivosSeleccionados)
+        {
+            if (archivoSeleccionado != null)
+            {
+                // Genera nombre único
+                string nombreArchivo = $"{Guid.NewGuid()}_{archivoSeleccionado.Name}";
+
+                // Genera ruta completa 
+                string rutaCompleta = Path.Combine(carpetaImagenes, nombreArchivo);
+
+                // Guardar la imagen en wwwroot/Imgs
+                await using (var stream = new FileStream(Path.Combine("wwwroot", rutaCompleta), FileMode.Create))
+                {
+                    await archivoSeleccionado.OpenReadStream().CopyToAsync(stream);
+                }
+
+                
+                // faltaria pasarle estas rutas a la noticia, podria ser por un metodo o por un return de este mismo.
+            }
+        }
+    }
+
 }
