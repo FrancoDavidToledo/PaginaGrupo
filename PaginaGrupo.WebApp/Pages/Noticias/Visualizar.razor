@@ -1,6 +1,19 @@
-﻿@page "/Noticias/Visualizar"
+﻿@page "/Noticias/{Id:int}"
+
 @using Microsoft.AspNetCore.Components.Authorization;
 @using System.Security.Claims;
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+
+@inject INoticiaServicio noticiaServicio
+@inject IUsuarioServicio usuarioServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+
 
 <head>
     <meta charset="UTF-8" />
@@ -21,10 +34,9 @@
 <div class="flex-noticia">
     
     <div class="flex-encabezado">
-        <h1>Titulo de la noticia</h1>
+        <h1>@modelo.Titulo</h1>
         <h3>
-            Copete em ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-            veritatis a autem sed dignissimos commodi, voluptas incidunt
+            @modelo.Copete
         </h3>
 
     <div id="carouselExampleCaptions" class="carousel slide carousel-dark">
@@ -65,50 +77,13 @@
 
     </div>
     <h3>
-        em ipsum dolor sit amet consectetur adipisicing elit. Suscipit
-        veritatis a autem sed dignissimos commodi, voluptas incidunt
+       @modelo.Copete
     </h3>
     <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-
-
-
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-        vero corporis incidunt saepe qui commodi quasi neque veniam quam,
-        aspernatur est beatae maxime animi sed reiciendis mollitia ducimus
-        veritatis repellendus?
+        @modelo.Cuerpo
     </p>
 
-    <p class="autor"> > Autor - fecha de publicación</p>
+    <p class="autor"> > @modelo.Autor - FECHA DE PUBLICACION</p>
     
 </div>
 
@@ -123,31 +98,36 @@
                         <h5>Comentarios(1)</h5>
                         
                     </div>
-
-                    <div class="card p-3 mb-3">
+                    <AuthorizeView>
+                        <div class="card p-3 mb-3">
                      
-                          <div class="user d-flex flex-column align-items-start">
+                              <div class="user d-flex flex-column align-items-start">
 
-                             <div class="d-flex flex-row align-items-center">
-                                 <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle m-2">
-                                 <small class="fw-bold text-success ml-2">Usuario</small>
-                             </div>
+                                 <div class="d-flex flex-row align-items-center">
+                                     <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle m-2">
+                                     <small class="fw-bold text-success ml-2"> 
+                                 
+                                         @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                                    
+                                     </small>
+                         
+                                 </div>
                             
-                            <div class="new-comment-form" >
+                                <div class="new-comment-form" >
                                 
                              
-                                <form>
-                                    <div class="col-md-10"> 
-                                      <textarea class="form-control non-resizable" id="exampleFormControlTextarea1" rows="3" placeholder="Deja tu comentario.."></textarea>
-                                </div>
+                                    <form>
+                                        <div class="col-md-10"> 
+                                          <textarea class="form-control non-resizable" id="exampleFormControlTextarea1" rows="3" placeholder="Deja tu comentario.."></textarea>
+                                    </div>
 
-                                <button type="submit" class="btn btn-outline-success mt-2">Enviar Comentario</button>
-                                </form>   
-                               </div>
-                          </div>
-                                     
-                    </div>
-
+                                    <button type="submit" class="btn btn-outline-success mt-2">Enviar Comentario</button>
+                                    </form>   
+                                   </div>
+                              </div>
+                         
+                        </div>
+                    </AuthorizeView> 
                     <!--Comentarios existentes-->
                     <div class="card p-3">
                       <div class="d-flex justify-content-between align-items-center">
@@ -180,9 +160,44 @@
 
 @code {
 
-  
-  //getNoticia(id)
 
+    //getNoticia(id)
+    [Parameter]
+    public int Id { get; set; }
+    private string Titulo = "Crear Noticia";
+    private string boton = "Crear Borrador";
+    private NoticiaAltaDto modelo = new NoticiaAltaDto();
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            var response = await noticiaServicio.Obtener(Id);
+
+            if (response.EsCorrecto!)
+            {
+                modelo = (NoticiaAltaDto)response.Resultado!;
+            }
+            else
+                toastService.ShowWarning("La noticia no fue encontrada. Si el error persiste por favor contacte al administrador.");
+        }
+    }
+
+    private async Task GuardarComentario()
+    {
+        var authState = await authencationState;
+        modelo.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+        //Falta desarrollar
+
+    }
+
+
+   
 
 }
 
