@@ -76,14 +76,14 @@
 
 
     </div>
-    <h3>
+@*    <h3>
        @modelo.Copete
-    </h3>
+    </h3>*@
     <p>
         @modelo.Cuerpo
     </p>
 
-    <p class="autor"> > @modelo.Autor - FECHA DE PUBLICACION</p>
+    <p class="autor"> > @modelo.Autor -@modelo.FechaNoticia.ToString()</p>
     
 </div>
 
@@ -107,7 +107,7 @@
                                      <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle m-2">
                                      <small class="fw-bold text-success ml-2"> 
                                  
-                                         @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                                         @context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
                                     
                                      </small>
                          
@@ -184,7 +184,10 @@
                 modelo = (NoticiaAltaDto)response.Resultado!;
             }
             else
-                toastService.ShowWarning("La noticia no fue encontrada. Si el error persiste por favor contacte al administrador.");
+            {
+                toastService.ShowWarning(response.Mensaje);
+                _navServicio.NavigateTo("/Noticias");
+            }
         }
     }
 

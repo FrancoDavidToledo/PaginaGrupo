@@ -13,6 +13,7 @@ using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Interfaces;
 using PaginaGrupo.WebApp.Pages.Noticias;
 using SocialMedia.Infrastructure.Services;
+using System.Collections.Generic;
 using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
@@ -142,12 +143,52 @@ namespace PaginaGrupo.Api.Controllers
             else
             {
                 response.EsCorrecto = false;
-                response.Mensaje = "Error al realizar registro";
+                response.Mensaje = "Error al obtener la noticia";
             }
 
 
             return Ok(response);
         }
+
+
+        //lo siguiente para documentar
+        /// <summary>
+        /// Permite mostrar una noticia, no requiere login
+        /// </summary>
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<NoticiaAltaDto>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetNoticiaActiva/{id}")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+
+        public async Task<IActionResult> GetNoticiaActiva(int id)
+        {
+            var noticia = await _noticiasService.GetNoticiaActiva(id);
+
+            var noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
+            //     var response = new ApiResponse<NoticiaDto>(noticiaDto);
+
+
+
+            //nuevo, se reconvierte a dto para responder
+            var response = new ResponseDTO<NoticiaAltaDto>();
+
+            response.EsCorrecto = false;
+            response.Mensaje = "La noticia no fue encontrada. Si el error persiste por favor contacte al administrador.";
+
+            if (noticiaDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = noticiaDto;
+                response.Mensaje = null;
+            }
+
+             
+
+            return Ok(response);
+        }
+
 
         //lo siguiente para documentar
         /// <summary>
@@ -158,12 +199,27 @@ namespace PaginaGrupo.Api.Controllers
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticiasEstado/{estado}")]
         //lo siguiente es para ver que roles pueden ejecutar la accion
-        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        //[Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
         public IActionResult GetNoticiasEstado(int estado)
         {
             var noticias = _noticiasService.GetNoticiasEstado(estado);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
-            var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
+           // var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
+            //return Ok(response);
+
+            var response = new ResponseDTO<IEnumerable<NoticiaDto>>();
+
+            if (noticiaDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = noticiaDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al crear la noticia";
+            }
+
             return Ok(response);
         }
 

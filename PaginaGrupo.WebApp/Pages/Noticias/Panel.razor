@@ -1,5 +1,24 @@
 ﻿@page "/Noticias/Panel"
 
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+
+
+@inject INoticiaServicio noticiaServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+
+@*los 2 renglones siguientes son para restringir la pantalla a un rol en especial*@
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Administrador, Dirigente")];
 
 <head>
     <meta charset="UTF-8" />
@@ -138,5 +157,28 @@
 
 
 @code {
+    private NoticiaDto modelo = new NoticiaDto();
+
+
+    private async Task ObtenerNoticias(int estado)
+    {
+        var response = await noticiaServicio.ObtenerListadoNoticias(estado);
+        if (response.EsCorrecto)
+        {
+            //    lista = (List<ProductoDTO>)response.Resultado!;
+        }
+        else
+        {
+            //  lista = new List<ProductoDTO>();
+        }
+
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ObtenerNoticias(1);
+
+    }
 
 }

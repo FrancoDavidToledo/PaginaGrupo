@@ -34,6 +34,27 @@ namespace PaginaGrupo.Core.Services
             return await _unitOfWork.NoticiasRepository.GetById(id);
         }
 
+        public async Task<Noticias> GetNoticiaActiva(int id)
+        {
+            var noticia = await _unitOfWork.NoticiasRepository.GetById(id);
+
+
+            if (noticia == null)
+            {
+                return null;
+            }
+
+            if (noticia.Estado == Convert.ToInt16(EstadoNoticias.Autorizado))
+            {
+                return noticia;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
         public PagesList<Noticias> GetNoticias(NoticiasQueryFilter filters)
         {
             var noticias = _unitOfWork.NoticiasRepository.GetAll();

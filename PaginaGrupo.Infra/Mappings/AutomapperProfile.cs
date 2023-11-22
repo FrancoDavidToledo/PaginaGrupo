@@ -49,7 +49,6 @@ namespace PaginaGrupo.Infra.Mappings
             CreateMap<Noticias, NoticiaDto>().ReverseMap();
 
             CreateMap<Noticias, NoticiaAltaDto>().ReverseMap();
-            CreateMap<NoticiaDto, NoticiaAltaDto>().ReverseMap();
             //CreateMap<NoticiaDto, Noticias>();
 
             CreateMap<Progresion, ProgresionDto>().ReverseMap();

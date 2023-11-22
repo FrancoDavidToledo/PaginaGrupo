@@ -15,9 +15,19 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             _httpClient = httpClient;
         }
 
-        public async Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id)
+        public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id)
         {
             return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticia/{id}");
+        }
+
+        public async Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticiaActiva/{id}");
+        }
+
+        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado)
+        {
+            return await _httpClient.GetFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>($"api/Noticia/GetNoticiasEstado/{estado}");
         }
 
         public async Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo)

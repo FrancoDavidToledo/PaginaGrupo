@@ -1,5 +1,10 @@
 ﻿@page "/Comentarios/Panel"
 
+@*los 2 renglones siguientes son para restringir la pantalla a un rol en especial*@
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Administrador, Dirigente")];
+
+
 <head>
     <meta charset="UTF-8" />
 
