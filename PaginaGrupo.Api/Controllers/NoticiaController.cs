@@ -48,7 +48,7 @@ namespace PaginaGrupo.Api.Controllers
 
         //lo siguiente es para ver que roles pueden ejecutar la accion
         [AllowAnonymous]
-        public IActionResult GetNoticiasActivas(NoticiasQueryFilter filters)
+        public IActionResult GetNoticiasActivas([FromQuery] NoticiasQueryFilter filters)
         {
             var noticias = _noticiasService.GetNoticiasActivas(filters);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
@@ -87,7 +87,7 @@ namespace PaginaGrupo.Api.Controllers
 
         //lo siguiente es para ver que roles pueden ejecutar la accion
         [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
-        public IActionResult GetNoticias(NoticiasQueryFilter filters)
+        public IActionResult GetNoticias([FromQuery] NoticiasQueryFilter filters)
         {
             var noticias = _noticiasService.GetNoticias(filters);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
@@ -270,6 +270,8 @@ namespace PaginaGrupo.Api.Controllers
             noticia.Copete = noticiaDto.Copete;
             noticia.Cuerpo = noticiaDto.Cuerpo;
             noticia.FechaNoticia = noticiaDto.FechaNoticia;
+            noticia.FechaBaja = null;
+            noticia.IdUsuarioBaja = null;
             var result = await _noticiasService.ActualizarNoticia(noticia);
             var response = new ResponseDTO<string>();
 
@@ -282,6 +284,35 @@ namespace PaginaGrupo.Api.Controllers
             {
                 response.EsCorrecto = false;
                 response.Mensaje = "Error al editar la noticia";
+            }
+
+            return Ok(response);
+
+        }
+
+        [HttpPut("ActualizarEstadoNoticia")]
+        public async Task<IActionResult> ActualizarEstadoNoticia(NoticiaDto noticiaDto)
+        {
+            var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
+            //aca actualizar todo lo que quieras
+            noticia.Estado = noticiaDto.Estado;
+            if (noticia.Estado == 4)
+            {
+                noticia.FechaBaja = noticiaDto.FechaBaja;
+                noticia.IdUsuarioBaja = noticiaDto.IdUsuarioBaja;
+            }
+            var result = await _noticiasService.ActualizarNoticia(noticia);
+            var response = new ResponseDTO<string>();
+
+            if (result)
+            {
+                response.EsCorrecto = true;
+                response.Mensaje = "Noticia actualizada con exito";
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al actualizar la noticia";
             }
 
             return Ok(response);

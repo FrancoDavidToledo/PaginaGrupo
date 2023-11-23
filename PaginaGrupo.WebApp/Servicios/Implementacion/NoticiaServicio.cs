@@ -1,10 +1,12 @@
 ﻿using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.WebApp.Servicios.Contrato;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Security.Claims;
+
 
 namespace PaginaGrupo.WebApp.Servicios.Implementacion
 {
@@ -51,7 +53,34 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return await _httpClient.GetFromJsonAsync<ResponseDTO<List<NoticiaAltaDto>>>($"api/Noticia/GetNoticiasActivas/{filter}");
 
         }
-        
+
+        public async Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo)
+        {
+            modelo.FechaBaja = DateTime.Today;
+            modelo.Estado = Convert.ToInt16(EstadoNoticias.Eliminada);
+            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+
+            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            return result!;
+        }
+
+        public async Task<ResponseDTO<bool>> Publicar(NoticiaDto modelo)
+        {
+            modelo.Estado = Convert.ToInt16(EstadoNoticias.Pendiente_Autorizacion);
+            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+
+            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            return result!;
+        }
+
+        public async Task<ResponseDTO<bool>> Autorizar(NoticiaDto modelo)
+        {
+            modelo.Estado = Convert.ToInt16(EstadoNoticias.Autorizado);
+            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+
+            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            return result!;
+        }
         //public async Task<ResponseDTO<bool>> Eliminar(int id)
         //{
         //    return await _httpClient.DeleteFromJsonAsync<ResponseDTO<bool>>($"Noticia/Eliminar/{id}");
