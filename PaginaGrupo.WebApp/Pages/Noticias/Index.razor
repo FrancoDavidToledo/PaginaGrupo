@@ -46,7 +46,7 @@
                     </picture>
                 </div>
 
-                @(invert = !invert)
+                <div style="display:none">@(invert = !invert)</div>
             }
             else
             {
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                @(invert = !invert)
+                <div style="display:none">@(invert = !invert)</div>
             }
 
         }
@@ -79,48 +79,48 @@
     [Parameter]
     public int paginado { get; set; }
 
-    public bool invert /*= false*/;
+    public bool invert = false;
 
-    private List<NoticiaAltaDto>? lista = null;
+    private List<NoticiaDto>? lista = null;
 
 
     [CascadingParameter]
     private Task<AuthenticationState> authencationState { get; set; }
 
 
-    protected async Task OnParametersSetAsync(int paginado)
-    {
-        invert = false;
+    //protected async Task OnParametersSetAsync()
+    //{
 
+
+    //}
+
+    //tc1:
+    //  var response = await noticiaServicio.ObtenerListadoNoticias(estado);
+    //    if (response.EsCorrecto)
+    //    {
+    //        lista = (List<NoticiaDto>)response.Resultado!;
+    //    }
+    //    else
+    //    {
+    //          lista = new List<NoticiaDto>();
+    //    }
+    protected override async Task OnInitializedAsync()
+    {
+        
 
         if (paginado != 0)
         {
 
-
-
-            NoticiasQueryFilter filtro = new NoticiasQueryFilter
+         var response = await noticiaServicio.ObtenerListadoNoticias(3);
+                if (response.EsCorrecto)
                 {
-                    IdUsuario = null,
-                    FechaNoticia =null,
-                    Titulo=null,
-                    PageNumber = paginado,
-                    PageSize = 6
-                };
-
-            var response = await noticiaServicio.ObtenerNoticiasActivas(filtro);
-
-
-            if (response.EsCorrecto!)
-            {
-                lista = (List<NoticiaAltaDto>)response.Resultado!;
-            }
-            else
-            {
-                toastService.ShowWarning(response.Mensaje);
-                lista = new List<NoticiaAltaDto>();
-            }
+                    lista = (List<NoticiaDto>)response.Resultado!;
+                }
+                else
+                {
+                      lista = new List<NoticiaDto>();
+                }
 
         }
-
     }
 }
