@@ -1,4 +1,5 @@
-﻿using PaginaGrupo.Core.DTOs;
+﻿using PaginaGrupo.Api.Responses;
+using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
@@ -48,9 +49,17 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return result!;
         }
 
-        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filter)
+        public async Task<ApiResponse<IEnumerable<NoticiaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters)
         {
-            return await _httpClient.GetFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>($"api/Noticia/GetNoticiasActivas?pageSize={filter.PageSize}&pageNumber={filter.PageNumber}");     
+   
+                // Adjust the API endpoint based on your actual endpoint
+                var response = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<NoticiaDto>>>(
+                    $"api/Noticia/GetNoticiasActivas?PageSize={filters.PageSize}&PageNumber={filters.PageNumber}&Titulo={filters.Titulo}&IdUsuario={filters.IdUsuario}&FechaNoticia={filters.FechaNoticia}"
+                );
+
+                return response ?? new ApiResponse<IEnumerable<NoticiaDto>>(null);
+           
+
         }
 
         public async Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo)

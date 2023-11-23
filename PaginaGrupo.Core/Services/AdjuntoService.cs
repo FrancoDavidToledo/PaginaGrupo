@@ -1,4 +1,5 @@
 ﻿using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Exceptions;
 using PaginaGrupo.Core.Interfaces;
 
 namespace PaginaGrupo.Core.Services
@@ -19,6 +20,24 @@ namespace PaginaGrupo.Core.Services
 
             return Adjuntos;
         }
+
+        public async Task<Adjuntos> InsertarAdjunto(Adjuntos adjunto)
+        {
+            //aca hacer validaciones
+            if (adjunto.Adjunto == null)
+            {
+                throw new BusinessException("Error al guardar el adjunto.");
+            }
+            else
+            {
+                
+
+                await _unitOfWork.AdjuntosRepository.Add(adjunto);
+                await _unitOfWork.SaveChangesAsync();
+                return adjunto;
+            }
+        }
+
 
     }
 }

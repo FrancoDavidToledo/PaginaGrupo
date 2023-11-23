@@ -47,16 +47,16 @@ namespace PaginaGrupo.Api.Controllers
 
         //}
 
-        //[HttpPost("InsertarAdjunto")]
-        //public async Task<IActionResult> InsertarAdjunto(AdjuntosDto adjuntoDto)
-        //{
+        [HttpPost("InsertarAdjunto")]
+        public async Task<IActionResult> InsertarAdjunto(AdjuntosDto adjuntoDto)
+        {
 
 
-        //    var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
-        //    await _adjuntoService.InsertarAdjunto(adjunto);
+            var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
+            await _adjuntoService.InsertarAdjunto(adjunto);
 
-        //    return Ok(adjunto);
+            return Ok(adjunto);
 
-        //}
+        }
     }
 }
