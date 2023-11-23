@@ -1,5 +1,6 @@
 ﻿using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.WebApp.Servicios.Contrato;
 using System.Net.Http.Json;
 using System.Reflection;
@@ -45,6 +46,12 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return result!;
         }
 
+        public async Task<ResponseDTO<List<NoticiaAltaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filter)
+        {
+            return await _httpClient.GetFromJsonAsync<ResponseDTO<List<NoticiaAltaDto>>>($"api/Noticia/GetNoticiasActivas/{filter}");
+
+        }
+        
         //public async Task<ResponseDTO<bool>> Eliminar(int id)
         //{
         //    return await _httpClient.DeleteFromJsonAsync<ResponseDTO<bool>>($"Noticia/Eliminar/{id}");

@@ -1,4 +1,12 @@
-@page "/Noticias"
+
+@page "/Noticias/P/{paginado:int}"
+@using Microsoft.AspNetCore.Components.Authorization
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.QueryFilters
+@using PaginaGrupo.WebApp.Servicios.Contrato
+@inject IToastService toastService
+
+@inject INoticiaServicio noticiaServicio
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,60 +28,99 @@
 
     <h1>Nuestras ultimas noticias</h1>
     
-    <div class="noticia">
-        <div class="contenido">
-            <h2>Título de la Noticia 1</h2>
-            <p>Copete de la noticia 1. Aquí puedes incluir un resumen o una breve descripción de la noticia.</p>
-        </div>
-        <picture>
-        <img src="Imgs/o1.jpeg" alt="Noticia 1">
-        </picture>
-    </div>
+    @if (lista != null)
+    {
 
-    <div class="noticia">
-        <picture><img src="Imgs/o2.jpeg" alt="Noticia 2"> </picture>
-        <div class="contenido">
-            <h2>Título de la Noticia 2</h2>
-            <p>Copete de la noticia 2. Otra breve descripción de la noticia.</p>
-        </div>
 
-    </div>
-        <div class="noticia">
-        <div class="contenido">
-            <h2>Título de la Noticia 3</h2>
-            <p>Copete de la noticia 3. Aquí puedes incluir un resumen o una breve descripción de la noticia.</p>
-        </div>
-        <picture> <img src="Imgs/o3.jpeg" alt="Noticia 3"></picture>
-    </div>
+        @foreach (var item in lista)
+        {
+            if (!invert)
+            {
+                <div class="noticia">
+                    <div class="contenido">
+                        <h2>@item.Titulo</h2>
+                        <p>@item.Copete</p>
+                    </div>
+                    <picture>
+                        <img src="Imgs/o1.jpeg" alt="@item.Titulo">
+                    </picture>
+                </div>
 
-    <div class="noticia">
-        <picture> <img src="Imgs/banner1.jpeg" alt="Noticia 4"></picture>
-        <div class="contenido">
-            <h2>Título de la Noticia 4</h2>
-            <p>Copete de la noticia 4. Otra breve descripción de la noticia.</p>
-        </div>
-        
-    </div>
-        <div class="noticia">
-        <div class="contenido">
-            <h2>Título de la Noticia 5</h2>
-            <p>Copete de la noticia 5. Aquí puedes incluir un resumen o una breve descripción de la noticia.</p>
-        </div>
-        <picture> <img src="Imgs/banner2.jpeg" alt="Noticia 5"> </picture>
-    </div>
+                @(invert = !invert)
+            }
+            else
+            {
+                <div class="noticia">
+                    <picture><img src="Imgs/o2.jpeg" alt="@item.Titulo"> </picture>
+                    <div class="contenido">
+                        <h2>@item.Titulo</h2>
+                        <p>@item.Copete</p>
+                    </div>
+                </div>
 
-    <div class="noticia">
-        <picture><img src="Imgs/banner3.jpeg" alt="Noticia 6"></picture>
-        <div class="contenido">
-            <h2>Título de la Noticia 6</h2>
-            <p>Copete de la noticia 6. Otra breve descripción de la noticia.</p>
-        </div>
-        
-    </div>
+                @(invert = !invert)
+            }
 
-    <div class="paginado">
-        <h2> ⪡ <b style="color:#0A592A">1</b> 2 3 4 5 6 7 ... ⪢  </h2>
-    </div>
+        }
+
+        <div class="paginado">
+            <h2> <a href="/Noticias/P/@(paginado-1)">⪡</a> <b style="color:#0A592A">@(paginado+" ") </b> @for (int i = 1; i < 6; i++){@(paginado+i+" ")}... <a href="/Noticias/P/@(paginado+1)">⪢</a>  </h2>
+        </div>
+    }else
+    {
+        <h4 class="flex align-items-center">No se cargaron noticias...</h4>
+    }
 
 </body>
 </html>
+
+@code{
+    //getNoticia(id)
+    [Parameter]
+    public int paginado { get; set; }
+
+    public bool invert /*= false*/;
+
+    private List<NoticiaAltaDto>? lista = null;
+
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+
+
+    protected async Task OnParametersSetAsync(int paginado)
+    {
+        invert = false;
+
+
+        if (paginado != 0)
+        {
+
+
+
+            NoticiasQueryFilter filtro = new NoticiasQueryFilter
+                {
+                    IdUsuario = null,
+                    FechaNoticia =null,
+                    Titulo=null,
+                    PageNumber = paginado,
+                    PageSize = 6
+                };
+
+            var response = await noticiaServicio.ObtenerNoticiasActivas(filtro);
+
+
+            if (response.EsCorrecto!)
+            {
+                lista = (List<NoticiaAltaDto>)response.Resultado!;
+            }
+            else
+            {
+                toastService.ShowWarning(response.Mensaje);
+                lista = new List<NoticiaAltaDto>();
+            }
+
+        }
+
+    }
+}
