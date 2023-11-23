@@ -110,3 +110,7 @@ body {
 .non-resizable{
     resize:none;
 }
+
+.loading {
+    height: 400px;
+}
