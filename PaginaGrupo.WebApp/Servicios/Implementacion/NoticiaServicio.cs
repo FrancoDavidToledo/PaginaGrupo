@@ -48,10 +48,9 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return result!;
         }
 
-        public async Task<ResponseDTO<List<NoticiaAltaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filter)
+        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filter)
         {
-            return await _httpClient.GetFromJsonAsync<ResponseDTO<List<NoticiaAltaDto>>>($"api/Noticia/GetNoticiasActivas/{filter}");
-
+            return await _httpClient.GetFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>($"api/Noticia/GetNoticiasActivas?pageSize={filter.PageSize}&pageNumber={filter.PageNumber}");     
         }
 
         public async Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo)

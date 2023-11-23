@@ -5,7 +5,6 @@
 @using PaginaGrupo.Core.QueryFilters
 @using PaginaGrupo.WebApp.Servicios.Contrato
 @inject IToastService toastService
-
 @inject INoticiaServicio noticiaServicio
 
 <!DOCTYPE html>
@@ -94,24 +93,24 @@
 
     //}
 
-    //tc1:
-    //  var response = await noticiaServicio.ObtenerListadoNoticias(estado);
-    //    if (response.EsCorrecto)
-    //    {
-    //        lista = (List<NoticiaDto>)response.Resultado!;
-    //    }
-    //    else
-    //    {
-    //          lista = new List<NoticiaDto>();
-    //    }
     protected override async Task OnInitializedAsync()
     {
-        
+
 
         if (paginado != 0)
         {
+            //NoticiasQueryFilter noticiaQF = new NoticiasQueryFilter
+            //    {
+            //        PageNumber = 1,
+            //        PageSize = 6
 
-         var response = await noticiaServicio.ObtenerListadoNoticias(3);
+            //    };
+
+            //var response2 = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
+
+            //toastService.ShowWarning($"{response2.Resultado} || {response2.Mensaje} || {response2.EsCorrecto}");
+
+            var response = await noticiaServicio.ObtenerListadoNoticias(3);
                 if (response.EsCorrecto)
                 {
                     lista = (List<NoticiaDto>)response.Resultado!;
