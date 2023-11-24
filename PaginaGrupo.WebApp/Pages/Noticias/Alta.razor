@@ -106,7 +106,7 @@
             @foreach (var item in @linksImgs)
             {
                 <div class="row mb-2">  
-                <li class="list-group-item col-8" >@item</li> 
+                <li class="list-group-item col-8" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >@item</li> 
                 <button class="btn btn-danger col-4"type="button" @onclick="(async ()=> await EliminarDeListaImg(item))">Eliminar</button>
                 </div>
             }
