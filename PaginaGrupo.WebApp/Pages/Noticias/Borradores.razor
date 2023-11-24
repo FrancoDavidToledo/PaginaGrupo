@@ -83,44 +83,55 @@
             </div>
         </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Fecha de creación</th>
-                <th scope="col">Autor</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (lista != null)
-            {
-                foreach (var item in lista)
-                {
-                    <tr>
-                        <td>@item.Titulo</td>
-                        <td>@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
-                        <td>@item.Autor</td>
-                        <td>
-                            <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
-                                <i class="bi bi-search fs-5"></i>
-                            </a>
-                            <button class="col-5 btn btn-sm btn-success mt-auto" @onclick="(() => Publicar(item))">
-                                <i class="bi bi-check2 fs-5"></i>
-                            </button>
 
-                            <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
-                                <i class="oi oi-pencil fs-5"></i>
-                            </a>
-                            <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
-                                <i class="oi oi-trash fs-5"></i>
-                            </button>
-                        </td>
-                    </tr>
+    @if(lista is null){
+    <div class="d-flex justify-content-center align-items-center loading mb-5">
+        <div class="spinner-border" role="status">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Fecha de creación</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (lista != null)
+                {
+                    foreach (var item in lista)
+                    {
+                        <tr>
+                            <td>@item.Titulo</td>
+                            <td>@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Autor</td>
+                            <td>
+                                <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
+                                    <i class="bi bi-search fs-5"></i>
+                                </a>
+                                <button class="col-5 btn btn-sm btn-success mt-auto" @onclick="(() => Publicar(item))">
+                                    <i class="bi bi-check2 fs-5"></i>
+                                </button>
+
+                                <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
+                                    <i class="oi oi-pencil fs-5"></i>
+                                </a>
+                                <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
+                                    <i class="oi oi-trash fs-5"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    }
 
 </div>
 

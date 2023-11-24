@@ -48,8 +48,8 @@
          <select class="form-control-sm " @bind="buscar">
             <option value="1">Borrador</option>
             <option value="2">Pendiente Autorizar</option>
-            <option value="3">Autorizado</option>
-            <option value="4">Borrado</option>
+            <option value="3">Autorizada</option>
+            <option value="4">Eliminada</option>
         </select>
         <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticias(buscar))">
             <i class="oi oi-magnifying-glass"></i>
@@ -99,61 +99,74 @@
             </div>
         </div>
     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Fecha de creación</th>
-                <th scope="col">Autor</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (lista != null)
-            {
-                foreach (var item in lista)
+
+    @if(lista is null){
+        <div class="d-flex justify-content-center align-items-center loading mb-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Fecha de creación</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+         
+                @if (lista != null)
                 {
-                    <tr>
-                        <td>@item.Titulo</td>
-                        <td>@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
-                        <td>@item.Autor</td>
-                        <td>@Enum.GetName(typeof(EstadoNoticias), item.Estado)</td>
-                        @if (item.Estado != 4)
-                        {
-                            <td>
-                                <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
-                                    <i class="bi bi-search fs-5"></i>
-                                </a>
-                                <button class="col-5 btn btn-sm btn-success mt-auto" @onclick="(() => Autorizar(item))">
-                                    <i class="bi bi-check2 fs-5"></i>
-                                </button>
+                    foreach (var item in lista)
+                    {
+                        <tr>
+                            <td class="col-3">@item.Titulo</td>
+                            <td class="col-2">@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
+                            <td class="col-2">@item.Autor</td>
+                            <td class="col-2">@Enum.GetName(typeof(EstadoNoticias), item.Estado)</td>
+                            @if (item.Estado != 4)
+                            {
+                                <td>
+                                    <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </a>
+                                    <button class="col-5 btn btn-sm btn-success mt-auto" @onclick="(() => Autorizar(item))">
+                                        <i class="bi bi-check2 fs-5"></i>
+                                    </button>
 
-                                <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
-                                    <i class="oi oi-pencil fs-5"></i>
-                                </a>
-                                <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
-                                    <i class="oi oi-trash fs-5"></i>
-                                </button>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
-                                    <i class="bi bi-search fs-5"></i>
-                                </a>
-                                <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
-                                    <i class="oi oi-pencil fs-5"></i>
-                                </a>
-                            </td>
-                        }
+                                    <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
+                                        <i class="oi oi-pencil fs-5"></i>
+                                    </a>
+                                    <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
+                                        <i class="oi oi-trash fs-5"></i>
+                                    </button>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </a>
+                                    <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
+                                        <i class="oi oi-pencil fs-5"></i>
+                                    </a>
+                                </td>
+                            }
 
-                    </tr>
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+
+            </tbody>
+        </table>
+    }
 </div>
 
 
