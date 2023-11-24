@@ -51,7 +51,8 @@
     private async Task Iniciar()
     {
         var response = await _usuarioServicio.Autorizacion(modelo);
-        if (response.EsCorrecto)
+
+        if (response == null | response.EsCorrecto)
         {
             UsuarioSinClaveTokenDto sesion = (UsuarioSinClaveTokenDto)response.Resultado!;
 
@@ -65,7 +66,7 @@
         }
         else
         {
-            toastService.ShowWarning(response.Mensaje!);
+            toastService.ShowWarning("No se pudo realizar el login, por favor corrobore los datos");
         }
 
 

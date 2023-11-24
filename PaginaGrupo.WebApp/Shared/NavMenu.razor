@@ -36,7 +36,7 @@
                     <Dropdown>
                     <DropdownToggleButton Color="ButtonColor.Dark" >
                         <span class="navbar-text me-3 text-white ">
-                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                                @context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
                     </span>
                     </DropdownToggleButton>
                     <DropdownMenu>
@@ -64,7 +64,7 @@
                     <Dropdown>
                     <DropdownToggleButton Color="ButtonColor.Dark" >
                         <span class="navbar-text me-3 text-white ">
-                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                        @context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
                     </span>
                     </DropdownToggleButton>
                     <DropdownMenu>
@@ -90,7 +90,7 @@
                     <Dropdown>
                         <DropdownToggleButton Color="ButtonColor.Dark">
                             <span class="navbar-text me-3 text-white ">
-                                @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
+                                @context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
                             </span>
                         </DropdownToggleButton>
                         <DropdownMenu>
