@@ -49,15 +49,15 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return result!;
         }
 
-        public async Task<ApiResponse<IEnumerable<NoticiaDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters)
+        public async Task<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters)
         {
    
                 // Adjust the API endpoint based on your actual endpoint
-                var response = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<NoticiaDto>>>(
-                    $"api/Noticia/GetNoticiasActivas?PageSize={filters.PageSize}&PageNumber={filters.PageNumber}&Titulo={filters.Titulo}&IdUsuario={filters.IdUsuario}&FechaNoticia={filters.FechaNoticia}"
+                var response = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>>(
+                    $"api/Noticia/GetNoticiasActivasImagen?PageSize={filters.PageSize}&PageNumber={filters.PageNumber}&Titulo={filters.Titulo}&IdUsuario={filters.IdUsuario}&FechaNoticia={filters.FechaNoticia}"
                 );
 
-                return response ?? new ApiResponse<IEnumerable<NoticiaDto>>(null);
+                return response ?? new ApiResponse<IEnumerable<NoticiaActivaImagenDto>>(null);
            
 
         }

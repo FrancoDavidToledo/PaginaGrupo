@@ -10,6 +10,8 @@ using System.Net;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AdjuntoController : Controller
     {
         private readonly IAdjuntoService _adjuntoService;

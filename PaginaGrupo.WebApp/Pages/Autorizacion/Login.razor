@@ -59,7 +59,7 @@
             await autenticacionExt.ActualizarEstadoAutenticacion(sesion);
 
             if (sesion.Rol.ToLower() == "scout")
-                _navServicio.NavigateTo("/noticias");
+                _navServicio.NavigateTo("/noticias/p/1");
             else
                 _navServicio.NavigateTo("/");
         }

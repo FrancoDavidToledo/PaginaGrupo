@@ -152,7 +152,7 @@
     [Parameter]
     public int Id { get; set; }
     private string Titulo = "Crear Noticia";
-    private string boton = "Crear Borrador";
+    private string boton = "Crear";
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
     private List<string> linksImgs = new List<string>();
     private string nuevoLink;
@@ -190,31 +190,37 @@
 
         bool respuesta = true;
         string mensaje = string.Empty;
-
-        if (Id != 0)
+        if (modelo.Titulo == null | modelo.Copete == null | modelo.Cuerpo == null | modelo.Autor == null)
         {
-            var response = await noticiaServicio.Editar(modelo);
-            mensaje = response.Mensaje;
-            if (!response.EsCorrecto)
-            {
-                respuesta = false;
-            }
+            respuesta = false;
+            mensaje = "Debes completar todos los campos";
         }
         else
         {
-            //modelo.Rol = "Administrador";
-            var response = await noticiaServicio.Crear(modelo);
-            mensaje = response.Mensaje;
-            if (!response.EsCorrecto)
+            if (Id != 0)
             {
-                respuesta = false;
+                var response = await noticiaServicio.Editar(modelo);
+                mensaje = response.Mensaje;
+                if (!response.EsCorrecto)
+                {
+                    respuesta = false;
+                }
             }
-            int aux = response.Resultado.Id;
-            GuardarImg(aux);
+            else
+            {
+                //modelo.Rol = "Administrador";
+                var response = await noticiaServicio.Crear(modelo);
+                mensaje = response.Mensaje;
+                if (!response.EsCorrecto)
+                {
+                    respuesta = false;
+                }
+                int aux = response.Resultado.Id;
+                GuardarImg(aux);
 
 
+            }
         }
-
         if (respuesta)
         {
             toastService.ShowSuccess(mensaje);

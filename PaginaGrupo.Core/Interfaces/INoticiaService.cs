@@ -1,4 +1,5 @@
 ﻿using PaginaGrupo.Core.CustomEntitys;
+using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.QueryFilters;
 
@@ -9,6 +10,7 @@ namespace PaginaGrupo.Core.Interfaces
 
         PagesList<Noticias> GetNoticias(NoticiasQueryFilter filters);
         PagesList<Noticias> GetNoticiasActivas(NoticiasQueryFilter filters);
+        PagesList<Noticias> GetNoticiasActivasAdjunto(NoticiasQueryFilter filters);
         Task<Noticias> GetNoticia(int id);
         Task<Noticias> GetNoticiaActiva(int id);
         Task<Noticias> InsertarNoticia(Noticias noticia);

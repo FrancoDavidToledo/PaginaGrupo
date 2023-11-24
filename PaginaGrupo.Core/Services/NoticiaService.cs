@@ -108,6 +108,7 @@ namespace PaginaGrupo.Core.Services
             {
                 noticias = noticias.Where(x => x.Titulo.ToLower().Contains(filters.Titulo.ToLower()));
             }
+            noticias = noticias.OrderByDescending(x => x.FechaNoticia);
 
             //la paginacion va despues de los filtros
             var noticiaPaginada = PagesList<Noticias>.Create(noticias, filters.PageNumber, filters.PageSize);
@@ -115,6 +116,39 @@ namespace PaginaGrupo.Core.Services
 
             return noticiaPaginada;
         }
+
+
+        public PagesList<Noticias> GetNoticiasActivasAdjunto(NoticiasQueryFilter filters)
+        {
+            var noticias = _unitOfWork.NoticiasRepository.GetNoticiasEstado(Convert.ToInt32(EstadoNoticias.Autorizado));
+
+            //paginado
+            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
+            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+
+            if (filters.IdUsuario != null)
+            {
+                noticias = noticias.Where(x => x.IdUsuario == filters.IdUsuario);
+            }
+
+            if (filters.FechaNoticia != null)
+            {
+                noticias = noticias.Where(x => x.FechaNoticia.ToShortDateString() == filters.FechaNoticia?.ToShortDateString());
+            }
+
+            if (filters.Titulo != null)
+            {
+                noticias = noticias.Where(x => x.Titulo.ToLower().Contains(filters.Titulo.ToLower()));
+            }
+            noticias = noticias.OrderByDescending(x => x.FechaNoticia);
+
+            //la paginacion va despues de los filtros
+            var noticiaPaginada = PagesList<Noticias>.Create(noticias, filters.PageNumber, filters.PageSize);
+
+
+            return noticiaPaginada;
+        }
+
 
         //Crea una noticia
         public async Task<Noticias> InsertarNoticia(Noticias noticia)

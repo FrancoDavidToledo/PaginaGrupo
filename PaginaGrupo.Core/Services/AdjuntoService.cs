@@ -39,5 +39,18 @@ namespace PaginaGrupo.Core.Services
         }
 
 
+        public async Task<string> GetAdjuntoPrincipal(int idNoticia)
+        {
+            var Adjuntos = await _unitOfWork.AdjuntosRepository.GetAdjunto(idNoticia);
+
+            if (Adjuntos != null)
+            { 
+            return Adjuntos.Adjunto;
+            }
+            else
+            {
+                return "https://lh3.googleusercontent.com/u/1/drive-viewer/AK7aPaBxrxUsiZ6-mekiGouksnPX7nwxeD2Sjco1bWajAiLYxIxtk8KIpIuZTVayqWo6D3Lpd_lFTYTtM_tTP6pr9pgXJf62=w1600-h773";
+            }
+        }
     }
 }

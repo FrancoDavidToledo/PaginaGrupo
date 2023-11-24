@@ -19,13 +19,13 @@ namespace PaginaGrupo.Infra.Repositories
             return adjuntos;
         }
 
-        ////devuelve un adjunto
-        //public async Task<Adjuntos> GetAdjunto(int id)
-        //{
-        //    var adjunto = await _context.Adjuntos.FirstOrDefaultAsync(x => x.Id == id);
+        //devuelve un adjunto
+        public async Task<Adjuntos> GetAdjunto(int idNoticia)
+        {
+            var adjunto = await _entities.FirstOrDefaultAsync(x => x.IdNoticia == idNoticia);
 
-        //    return adjunto;
-        //}
+            return adjunto;
+        }
 
         ////inserta un adjunto
         //public async Task<Adjuntos> InsertarAdjunto(Adjuntos adjunto)

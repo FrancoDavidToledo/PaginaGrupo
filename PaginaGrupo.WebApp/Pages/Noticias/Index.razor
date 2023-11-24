@@ -52,7 +52,7 @@
                         <p>@item.Copete</p>
                     </div>
                     <picture>
-                        <img src="Imgs/o1.jpeg" alt="@item.Titulo">
+                        <img src="@item.Adjunto" alt="@item.Titulo">
                     </picture>
                 </div>
 
@@ -61,7 +61,7 @@
             else
             {
                 <div class="noticia">
-                    <picture><img src="Imgs/o2.jpeg" alt="@item.Titulo"> </picture>
+                    <picture><img src="@item.Adjunto" alt="@item.Titulo"> </picture>
                     <div class="contenido">
                         <h2>@item.Titulo</h2>
                         <p>@item.Copete</p>
@@ -88,7 +88,7 @@
 
     public bool invert = false;
 
-    private List<NoticiaDto>? lista = null;
+    private List<NoticiaActivaImagenDto>? lista = null;
 
 
     [CascadingParameter]
@@ -107,7 +107,7 @@
 
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
 
-            lista = (List<NoticiaDto>)response.Data;
+            lista = (List<NoticiaActivaImagenDto>)response.Data;
 
         }
         else

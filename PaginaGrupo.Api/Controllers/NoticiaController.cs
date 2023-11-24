@@ -26,13 +26,15 @@ namespace PaginaGrupo.Api.Controllers
     {
 
         private readonly INoticiasService _noticiasService;
+        private readonly IAdjuntoService _adjuntoService;
         private readonly IMapper _mapper;
         private readonly IUriService _uriService;
-        public NoticiaController(INoticiasService noticiasService, IMapper mapper, IUriService uriService)
+        public NoticiaController(INoticiasService noticiasService, IMapper mapper, IUriService uriService, IAdjuntoService adjuntoService)
         {
             _noticiasService = noticiasService;
             _mapper = mapper;
             _uriService = uriService;
+            _adjuntoService = adjuntoService;
         }
 
         //lo siguiente es para documentar
@@ -66,6 +68,44 @@ namespace PaginaGrupo.Api.Controllers
             };
 
             var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto)
+            {
+                Meta = metadata
+            }
+            ;
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            return Ok(response);
+        }
+        //lo siguiente es para documentar
+        /// <summary>
+        /// Muestra todas las noticias ACTIVAS, no requiere login
+        /// </summary>
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetNoticiasActivasImagen")]
+
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [AllowAnonymous]
+        public async Task<IActionResult> GetNoticiasActivasImagenAsync([FromQuery] NoticiasQueryFilter filters)
+        {
+            var noticias = _noticiasService.GetNoticiasActivasAdjunto(filters);
+            var noticiaDto = _mapper.Map<IEnumerable<NoticiaActivaImagenDto>>(noticias);
+            foreach (var i in noticiaDto)
+            {
+                    i.Adjunto = await _adjuntoService.GetAdjuntoPrincipal(i.Id);
+             }
+
+            var metadata = new Metadata
+            {
+                TotalCount = noticias.TotalCount,
+                PageSize = noticias.PageSize,
+                CurrentPage = noticias.CurrentPage,
+                TotalPages = noticias.TotalPages,
+                HasNextPage = noticias.HasNextPage,
+                HasPreviousPage = noticias.HasPreviousPage,
+                NextPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticiasActivas))).ToString(),
+                PreviousPageUrl = _uriService.GetNoticiaPaginationUri(filters, Url.RouteUrl(nameof(GetNoticiasActivas))).ToString()
+            };
+
+            var response = new ApiResponse<IEnumerable<NoticiaActivaImagenDto>>(noticiaDto)
             {
                 Meta = metadata
             }
@@ -242,11 +282,12 @@ namespace PaginaGrupo.Api.Controllers
 
             //nuevo, se reconvierte a dto para responder
             noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
-            var response = new ResponseDTO<string>();
+            var response = new ResponseDTO<NoticiaAltaDto>();
 
             if (noticiaDto != null)
             {
                 response.EsCorrecto = true;
+                response.Resultado = noticiaDto;
                 response.Mensaje = "Noticia creada con exito";
             }
             else
