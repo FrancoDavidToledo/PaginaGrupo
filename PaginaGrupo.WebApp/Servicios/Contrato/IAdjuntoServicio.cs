@@ -10,5 +10,7 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
     {
 
         Task<ResponseDTO<string>> InsertarAdjunto(Adjuntos adjunto);
+
+        Task<ApiResponse<IEnumerable<AdjuntosDto>>> GetAdjuntosNoticia(int idNoticia);
     }
 }

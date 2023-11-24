@@ -1,4 +1,5 @@
-﻿using PaginaGrupo.Core.DTOs;
+﻿using PaginaGrupo.Api.Responses;
+using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
@@ -24,14 +25,20 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<string>>();
             //return result!;
 
-                var url = $"api/Adjunto/InsertarAdjunto";
-                // Enviar la solicitud con los datos en el cuerpo
-                var response = await _httpClient.PostAsJsonAsync(url, modelo);
-                // Verificar si la solicitud fue exitosa
-                response.EnsureSuccessStatusCode();  
-                
-                var result = await response.Content.ReadFromJsonAsync<ResponseDTO<string>>();
-                return result!;
+            var url = $"api/Adjunto/InsertarAdjunto";
+            // Enviar la solicitud con los datos en el cuerpo
+            var response = await _httpClient.PostAsJsonAsync(url, modelo);
+            // Verificar si la solicitud fue exitosa
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<string>>();
+            return result!;
+        }
+
+        public async Task<ApiResponse<IEnumerable<AdjuntosDto>>> GetAdjuntosNoticia(int idNoticia)
+        {
+         return await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<AdjuntosDto>>>($"api/Adjunto/GetAdjuntos/{idNoticia}");
+
         }
 
     }

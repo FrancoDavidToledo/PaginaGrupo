@@ -1,5 +1,5 @@
 
-@page "/Noticias/P/{paginado:int}"
+@page "/Noticias/p/{paginado:int}"
 @using Microsoft.AspNetCore.Components.Authorization
 @using PaginaGrupo.Core.DTOs
 @using PaginaGrupo.Core.QueryFilters
@@ -74,7 +74,7 @@
         }
 
         <div class="paginado">
-            <h2> <a href="/Noticias/P/@(paginado-1)">⪡</a> <b style="color:#0A592A">@(paginado+" ") </b> @for (int i = 1; i < 6; i++){@(paginado+i+" ")}... <a href="/Noticias/P/@(paginado+1)">⪢</a>  </h2>
+            <h2> <a href="/Noticias/p/@(paginado-1)">⪡</a> <b style="color:#0A592A">@(paginado+" ") </b> @for (int i = 1; i < 6; i++){@(paginado+i+" ")}... <a href="/Noticias/p/@(paginado+1)">⪢</a>  </h2>
         </div>
     }
 
@@ -112,7 +112,7 @@
         }
         else
         {
-             _navServicio.NavigateTo("/Noticias/P/1");
+             _navServicio.NavigateTo("/Noticias/p/1");
         }
 
     }
