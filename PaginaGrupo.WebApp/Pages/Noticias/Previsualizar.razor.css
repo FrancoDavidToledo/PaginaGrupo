@@ -110,3 +110,9 @@ body {
 .non-resizable{
     resize:none;
 }
+
+/**/
+
+.carousel-inner{
+    max-width:600px;
+}

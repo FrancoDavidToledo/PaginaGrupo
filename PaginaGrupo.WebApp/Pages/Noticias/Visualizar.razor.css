@@ -114,3 +114,6 @@ body {
 .loading {
     height: 400px;
 }
+.carousel-inner {
+    max-width: 600px;
+}
