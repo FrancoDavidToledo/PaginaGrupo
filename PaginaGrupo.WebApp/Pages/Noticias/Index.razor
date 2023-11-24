@@ -31,54 +31,89 @@
 
     @if (lista is null)
     {
-   <div class="d-flex justify-content-center align-items-center loading">
-      <div class="spinner-border" role="status">
-        <span class="sr-only"></span>
-      </div>
-    </div>
-
-   }else if (lista.Count == 0)
+        <div class="d-flex justify-content-center align-items-center loading">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    } else if (lista.Count == 0)
     {
-        <h4 class="flex align-items-center">No se cargaron noticias...</h4>
-    }else{
+
+        <div style="display:none">@CargaSinNoticias()</div>
+    }
+    else {
 
         @foreach (var item in lista)
         {
             if (!invert)
             {
                 <a href="/Noticias/@item.Id" class="text-decoration-none">
-                <div class="noticia text-black">
-                    <div class="contenido">
-                        <h2>@item.Titulo</h2>
-                        <p>@item.Copete</p>
+                    <div class="noticia text-black">
+                        <div class="contenido">
+                            <h2>@item.Titulo</h2>
+                            <p>@item.Copete</p>
+                        </div>
+                        <picture>
+                            <img src="@item.Adjunto" alt="@item.Titulo">
+                        </picture>
                     </div>
-                    <picture>
-                        <img src="@item.Adjunto" alt="@item.Titulo">
-                    </picture>
-                </div>
 
-                <div style="display:none">@(invert = !invert)</div>
+                    <div style="display:none">@(invert = !invert)</div>
                 </a>
             }
             else
             {
                 <a href="/Noticias/@item.Id" class="text-decoration-none">
-                <div class="noticia text-black">
-                    <picture><img src="@item.Adjunto" alt="@item.Titulo"> </picture>
-                    <div class="contenido">
-                        <h2>@item.Titulo</h2>
-                        <p>@item.Copete</p>
+                    <div class="noticia text-black">
+                        <picture><img src="@item.Adjunto" alt="@item.Titulo"> </picture>
+                        <div class="contenido">
+                            <h2>@item.Titulo</h2>
+                            <p>@item.Copete</p>
+                        </div>
                     </div>
-                </div>
 
-                <div style="display:none">@(invert = !invert)</div>
+                    <div style="display:none">@(invert = !invert)</div>
                 </a>
             }
 
         }
 
         <div class="paginado">
-            <h2> <a href="/Noticias/p/@(paginado-1)">⪡</a> <b style="color:#0A592A">@(paginado+" ") </b> @for (int i = 1; i < 6; i++){@(paginado+i+" ")}... <a href="/Noticias/p/@(paginado+1)">⪢</a>  </h2>
+            <h2>
+                @if (paginadoModel == 1)
+                {
+                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                    <b style="color:#0A592A">@(paginado+" ") </b>
+                    @for (int i = 1; i < 5; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                    }
+                    <span>...</span> 
+                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a> 
+                }else if(paginadoModel == 2) {
+                    <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
+                    <b>@(paginado-1) </b>
+                    <b style="color:#0A592A">@(paginado+" ") </b>
+                    @for (int i = 1; i < 3; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                    }
+                    <span>...</span> 
+                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
+                }
+                else
+                {
+                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                    <a href="/Noticias/p/@(paginadoModel-2)">@(paginado-2+" ") </a>
+                    <a href="/Noticias/p/@(paginadoModel-1)">@(paginado-1+" ") </a>
+                    <b style="color:#0A592A">@(paginado+" ") </b>
+                    @for (int i = 1; i < 2; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                    }
+                    <span>...</span> 
+                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
+                }
+
+            
+            </h2>
         </div>
     }
 
@@ -93,6 +128,7 @@
     public bool invert = false;
 
     private List<NoticiaActivaImagenDto>? lista = null;
+    public int paginadoModel = 0;
 
 
     [CascadingParameter]
@@ -112,11 +148,12 @@
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
 
             lista = (List<NoticiaActivaImagenDto>)response.Data;
+            paginadoModel = response.Meta.CurrentPage;
 
         }
         else
         {
-             _navServicio.NavigateTo("/Noticias/p/1");
+            _navServicio.NavigateTo("/Noticias/p/1");
         }
 
     }
@@ -151,8 +188,10 @@
     //    }
     //}
 
- protected override async Task OnInitializedAsync()
+    protected async Task CargaSinNoticias()
     {
+        toastService.ShowWarning("No se encontraron noticias que cargar...");
+        _navServicio.NavigateTo($"/Noticias/p/{paginadoModel-1}");
         
     }
 }
