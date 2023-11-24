@@ -46,7 +46,8 @@
         {
             if (!invert)
             {
-                <div class="noticia">
+                <a href="/Noticias/@item.Id" class="text-decoration-none">
+                <div class="noticia text-black">
                     <div class="contenido">
                         <h2>@item.Titulo</h2>
                         <p>@item.Copete</p>
@@ -57,10 +58,12 @@
                 </div>
 
                 <div style="display:none">@(invert = !invert)</div>
+                </a>
             }
             else
             {
-                <div class="noticia">
+                <a href="/Noticias/@item.Id" class="text-decoration-none">
+                <div class="noticia text-black">
                     <picture><img src="@item.Adjunto" alt="@item.Titulo"> </picture>
                     <div class="contenido">
                         <h2>@item.Titulo</h2>
@@ -69,6 +72,7 @@
                 </div>
 
                 <div style="display:none">@(invert = !invert)</div>
+                </a>
             }
 
         }
