@@ -181,7 +181,7 @@
     private List<NoticiaDto>? lista = null;
     bool respuesta = false;
     string mensaje = string.Empty;
-    private int buscar = 3;
+    private int buscar = 2;
 
     private async Task ObtenerNoticias(int estado)
     {
@@ -219,7 +219,7 @@
             if (publicado.EsCorrecto)
             {
                 respuesta = true;
-                await ObtenerNoticias(3);
+                await ObtenerNoticias(buscar);
             }
 
         }
@@ -254,7 +254,7 @@
             if (eliminado.EsCorrecto)
             {
                 respuesta = true;
-                await ObtenerNoticias(3);
+                await ObtenerNoticias(buscar);
             }
 
         }
@@ -264,7 +264,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ObtenerNoticias(3);
+        await ObtenerNoticias(buscar);
     }
 
 

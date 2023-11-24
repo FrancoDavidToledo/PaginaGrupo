@@ -82,16 +82,17 @@
             <h2>
                 @if (paginadoModel == 1)
                 {
-                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                    <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
                     <b style="color:#0A592A">@(paginado+" ") </b>
                     @for (int i = 1; i < 5; i++) {
                         <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
                     }
                     <span>...</span> 
                     <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a> 
+
                 }else if(paginadoModel == 2) {
-                    <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
-                    <b>@(paginado-1) </b>
+                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none"> @(paginado - 1 + " ")</a>
                     <b style="color:#0A592A">@(paginado+" ") </b>
                     @for (int i = 1; i < 3; i++) {
                         <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
@@ -102,8 +103,8 @@
                 else
                 {
                     <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
-                    <a href="/Noticias/p/@(paginadoModel-2)">@(paginado-2+" ") </a>
-                    <a href="/Noticias/p/@(paginadoModel-1)">@(paginado-1+" ") </a>
+                    <a href="/Noticias/p/@(paginadoModel-2)" class="text-black text-decoration-none">@(paginado - 2 + " ") </a>
+                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">@(paginado - 1 + " ") </a>
                     <b style="color:#0A592A">@(paginado+" ") </b>
                     @for (int i = 1; i < 2; i++) {
                         <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
@@ -148,6 +149,12 @@
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
 
             lista = (List<NoticiaActivaImagenDto>)response.Data;
+
+            foreach (var item in lista)
+            {
+                item.Copete = item.Copete + ". Entrá para saber mas...";
+            }
+
             paginadoModel = response.Meta.CurrentPage;
 
         }

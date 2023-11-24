@@ -138,7 +138,8 @@ else
         @((MarkupString)modelo.Cuerpo.Replace("\n", "<br />"))
     </p>
 
-    <p class="autor"> > @modelo.Autor -@modelo.FechaNoticia.ToString()</p>
+        <p class="autor">Escrito por: @modelo.Autor - @modelo.FechaNoticia.ToString("dd/MM/yyyy")</p>
+
     
 </div>
 

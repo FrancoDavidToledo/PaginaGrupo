@@ -11,7 +11,7 @@ namespace PaginaGrupo.Infra.Data.Configurations
         {
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Adjunto)
-                    .HasMaxLength(400)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("Adjunto");
 

@@ -183,6 +183,8 @@ namespace PaginaGrupo.Core.Services
         {
 
             var listadoNoticias = _unitOfWork.NoticiasRepository.GetNoticiasEstado(estado);
+            listadoNoticias = listadoNoticias.OrderByDescending(x => x.Id);
+
             return listadoNoticias;
         }
     }

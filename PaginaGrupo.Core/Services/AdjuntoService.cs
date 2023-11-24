@@ -49,7 +49,7 @@ namespace PaginaGrupo.Core.Services
             }
             else
             {
-                return "https://lh3.googleusercontent.com/u/1/drive-viewer/AK7aPaBxrxUsiZ6-mekiGouksnPX7nwxeD2Sjco1bWajAiLYxIxtk8KIpIuZTVayqWo6D3Lpd_lFTYTtM_tTP6pr9pgXJf62=w1600-h773";
+                return "https://lh3.googleusercontent.com/u/1/drive-viewer/AK7aPaCTmP4yyIZ7dIIgb3pHkggoxeI6FkLbo90kbGk7pax0ddNdV3juBIMKOnQTsFaNVvCsGsF8GNb6iu3l00eZDdQrrAN0=w1600-h773";
             }
         }
     }
