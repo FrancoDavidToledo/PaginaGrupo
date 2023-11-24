@@ -119,7 +119,7 @@ else
        @modelo.Copete
     </h3>*@
     <p class="text-left">
-        @modelo.Cuerpo
+        @((MarkupString)modelo.Cuerpo.Replace("\n", "<br />"))
     </p>
 
     <p class="autor"> > @modelo.Autor -@modelo.FechaNoticia.ToString()</p>
