@@ -68,7 +68,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
 
-
+builder.Services.AddScoped<IAdjuntoServicio, AdjuntoServicio>();
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 builder.Services.AddScoped<INoticiaServicio, NoticiaServicio>();
 ///builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();

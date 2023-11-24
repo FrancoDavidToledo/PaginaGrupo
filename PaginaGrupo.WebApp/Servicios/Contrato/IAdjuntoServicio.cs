@@ -1,6 +1,7 @@
 ﻿using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.QueryFilters;
+using PaginaGrupo.Api.Responses;
 
 namespace PaginaGrupo.WebApp.Servicios.Contrato
 { 

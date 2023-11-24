@@ -24,8 +24,6 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<string>>();
             //return result!;
 
-            try
-            {
                 var url = $"api/Adjunto/InsertarAdjunto";
                 // Enviar la solicitud con los datos en el cuerpo
                 var response = await _httpClient.PostAsJsonAsync(url, modelo);
@@ -34,14 +32,6 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
                 
                 var result = await response.Content.ReadFromJsonAsync<ResponseDTO<string>>();
                 return result!;
-
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine($"Error en la solicitud HTTP: {ex.Message}");
-                throw;
-            }
-
         }
 
     }

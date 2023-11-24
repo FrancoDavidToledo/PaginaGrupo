@@ -9,7 +9,7 @@
 @using PaginaGrupo.Core.DTOs
 @using PaginaGrupo.Core.Entities
 
-
+@inject IAdjuntoServicio adjuntoServicio
 @inject INoticiaServicio noticiaServicio
 @inject IToastService toastService
 @inject NavigationManager _navServicio
@@ -41,6 +41,9 @@
 </div>
 <!------ Include the above in your HEAD tag ---------->
 <div>
+
+    
+
 
    <EditForm Model="modelo" OnValidSubmit="GuardarCambios">
             <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -87,26 +90,28 @@
             </div>
         </div>
 
-      <div class="form-flex">
-              
-            <div class="adjuntos form-flex-column">
-                <h3>Imagenes</h3>
-                <div class="mb-3">
-                  <label for="formFileMultiple" class="form-label">Selecciona imagenes para la noticia</label>
-                  @*<input class="form-control" type="file" id="formFileMultiple" multiple>*@
-                  <InputFile class="form-control" OnChange="HandleFileSelection" multiple />
+        <div class="adjuntos form-flex-column">
+            <h3 class="mb-3">Imágenes</h3>
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Selecciona imágenes para la noticia</label>
+                @*<input class="form-control" type="file" id="formFileMultiple" multiple>*@
+                <div class="input-group">
+                    <input type="text" class="form-control" @bind="nuevoLink" placeholder="Escribe tu enlace aquí" />
+                    <button class="btn btn-secondary" type="button" @onclick="(async ()=> await CargarListaImg())">Agregar a la lista</button>
                 </div>
-               
-
-               @*<div class="lista-adjuntos">
-                   <button class="texto-adjunto adjunto-selecionar">Seleccioná archivos</button>
-                   <div class="texto-adjunto">Noticia.jpg</div>
-                   <div class="texto-adjunto">Noticia2.jpg</div>
-                   <div class="texto-adjunto">Noticia3.jpg</div>
-                   <!--Esto idealmente deberia ser una lista-->
-               </div>*@
             </div>
         </div>
+        @if (linksImgs.Any()){
+        <ul class="list-group">
+            @foreach (var item in @linksImgs)
+            {
+                <div class="row mb-2">  
+                <li class="list-group-item col-8" >@item</li> 
+                <button class="btn btn-danger col-4"type="button" @onclick="(async ()=> await EliminarDeListaImg(item))">Eliminar</button>
+                </div>
+            }
+        </ul>
+        }
 
 
 @*            <div class="form-flex-column">
@@ -133,6 +138,7 @@
 
         </EditForm>
 
+
 @*        <EditForm Model="modelo" OnValidSubmit="GuardarCambios">
         <div class="mt-3">
             <button type="submit" class="btn btn-primary" style="width:130px">@boton</button>
@@ -148,7 +154,8 @@
     private string Titulo = "Crear Noticia";
     private string boton = "Crear Borrador";
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
-
+    private List<string> linksImgs = new List<string>();
+    private string nuevoLink;
 
     [CascadingParameter]
     private Task<AuthenticationState> authencationState { get; set; }
@@ -202,45 +209,79 @@
             {
                 respuesta = false;
             }
+            int aux = response.Resultado.Id;
+            GuardarImg(aux);
+
 
         }
 
         if (respuesta)
         {
             toastService.ShowSuccess(mensaje);
-            _navServicio.NavigateTo("/Noticias");
+            _navServicio.NavigateTo("/Noticias/p/1");
         }
         else
             toastService.ShowWarning(mensaje);
     }
 
-    private List<IBrowserFile> archivosSeleccionados = new List<IBrowserFile>();
-    private string carpetaImagenes = "Imgs";
-    //Este metodo se ejecuta al momento de seleccionar los archivos de manera automatica.
-    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    //private List<IBrowserFile> archivosSeleccionados = new List<IBrowserFile>();
+    //private string carpetaImagenes = "Imgs";
+    ////Este metodo se ejecuta al momento de seleccionar los archivos de manera automatica.
+    //private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    //{
+    //    archivosSeleccionados.AddRange(e.GetMultipleFiles());
+
+    //    foreach (var archivoSeleccionado in archivosSeleccionados)
+    //    {
+    //        if (archivoSeleccionado != null)
+    //        {
+    //            // Genera nombre único
+    //            string nombreArchivo = $"{Guid.NewGuid()}_{archivoSeleccionado.Name}";
+
+    //            // Genera ruta completa 
+    //            string rutaCompleta = Path.Combine(carpetaImagenes, nombreArchivo);
+
+    //            // Guardar la imagen en wwwroot/Imgs
+    //            await using (var stream = new FileStream(Path.Combine("wwwroot", rutaCompleta), FileMode.Create))
+    //            {
+    //                await archivoSeleccionado.OpenReadStream().CopyToAsync(stream);
+    //            }
+
+
+    //            // faltaria pasarle estas rutas a la noticia, podria ser por un metodo o por un return de este mismo.
+    //        }
+    //    }
+    //}
+
+    private async Task CargarListaImg()
     {
-        archivosSeleccionados.AddRange(e.GetMultipleFiles());
-
-        foreach (var archivoSeleccionado in archivosSeleccionados)
+        if (!string.IsNullOrWhiteSpace(nuevoLink))
         {
-            if (archivoSeleccionado != null)
-            {
-                // Genera nombre único
-                string nombreArchivo = $"{Guid.NewGuid()}_{archivoSeleccionado.Name}";
-
-                // Genera ruta completa 
-                string rutaCompleta = Path.Combine(carpetaImagenes, nombreArchivo);
-
-                // Guardar la imagen en wwwroot/Imgs
-                await using (var stream = new FileStream(Path.Combine("wwwroot", rutaCompleta), FileMode.Create))
-                {
-                    await archivoSeleccionado.OpenReadStream().CopyToAsync(stream);
-                }
-
-                
-                // faltaria pasarle estas rutas a la noticia, podria ser por un metodo o por un return de este mismo.
-            }
+            linksImgs.Add(nuevoLink);
+            nuevoLink = string.Empty;
+        }
+        else
+        {
+            toastService.ShowWarning("No hay link que cargar.");
         }
     }
 
+    private async Task GuardarImg(int idNoticia)
+    {
+        foreach (var item in linksImgs)
+        {
+            Adjuntos adjuntoAux = new Adjuntos
+                {
+                    Adjunto = item.ToString(),
+                    IdNoticia = idNoticia
+                };
+
+            adjuntoServicio.InsertarAdjunto(adjuntoAux);
+        }
+    }
+
+    private async Task EliminarDeListaImg(string link)
+    {
+        linksImgs.Remove(link);
+    }
 }
