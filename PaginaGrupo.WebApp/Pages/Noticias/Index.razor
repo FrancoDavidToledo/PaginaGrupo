@@ -36,10 +36,7 @@
                 <span class="sr-only"></span>
             </div>
         </div>
-    } else if (lista.Count == 0)
-    {
 
-        <div style="display:none">@CargaSinNoticias()</div>
     }
     else {
 
@@ -149,7 +146,10 @@
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
 
             lista = (List<NoticiaActivaImagenDto>)response.Data;
-
+            if(lista.Count == 0)
+            {
+                CargaSinNoticias(response.Meta.TotalPages);
+            }
             foreach (var item in lista)
             {
                 item.Copete = item.Copete + ". Entrá para saber mas...";
@@ -195,10 +195,10 @@
     //    }
     //}
 
-    protected async Task CargaSinNoticias()
+    protected async Task CargaSinNoticias(int link)
     {
         toastService.ShowWarning("No se encontraron noticias que cargar...");
-        _navServicio.NavigateTo($"/Noticias/p/{paginadoModel-1}");
+        _navServicio.NavigateTo($"/Noticias/p/{link}");
         
     }
 }
