@@ -7,6 +7,7 @@
 @using PaginaGrupo.Core.DTOs
 @using PaginaGrupo.Core.Entities
 
+@inject IAdjuntoServicio adjuntoServicio
 @inject INoticiaServicio noticiaServicio
 @inject IUsuarioServicio usuarioServicio
 @inject IToastService toastService
@@ -33,7 +34,18 @@
 </head>
 
 
-<div class="flex-noticia">
+@if (modelo.Cuerpo is null)
+{
+   <div class="d-flex justify-content-center align-items-center loading">
+      <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+}
+else
+{
+    
+<div class="flex-noticia align-items-center">
     
     <div class="flex-encabezado">
         <h1>@modelo.Titulo</h1>
@@ -41,47 +53,88 @@
             @modelo.Copete
         </h3>
 
-    <div id="carouselExampleCaptions" class="carousel slide carousel-dark">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="Imgs/banner1.jpeg" mx-auto d-block class="d-block w-100 h-100" alt="...">
-                
-            </div>
-            <div class="carousel-item">
-                <img src="Imgs/banner2.jpeg" mx-auto d-block class="d-block w-100 h-100" alt="..." >
+        <div id="carouselExampleCaptions" class="carousel slide carousel-dark">
+    @*        <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>*@
+            <div class="carousel-inner">
+                @if (linksImgs is null || linksImgs.Count == 0)
+                {
+
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <img src="Imgs/banner1.jpeg" mx-auto d-block class="d-block w-100 h-100" alt="...">
+
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Imgs/banner2.jpeg" mx-auto d-block class="d-block w-100 h-100" alt="..." >
+
+                    </div>
+                    <div class="carousel-item">
+                        <img src="Imgs/banner3.jpeg" class="d-block w-100 h-100" alt="...">
+
+                    </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+        
+                }
+                else
+                {
+                    foreach (var item in linksImgs)
+                    {
+                        if(primerImg)
+                        {
+                            <div class="carousel-item active" data-bs-interval="10000">
+                            <img src="@item" mx-auto d-block class="d-block w-100 h-100" alt="..." >@*onerror="@CargarImagenDefault(item)"*@
+                            </div>
+
+                            <div style="display:none">@(primerImg= false)</div>
+                        }
+                        else
+                        {
+                            <div class="carousel-item">
+                                <img src="@item" mx-auto d-block class="d-block w-100 h-100" alt="..." > @*onerror="@CargarImagenDefault(item)"*@
+                                    </div>
+                        }
+                    }       
+
+                }
 
             </div>
-            <div class="carousel-item">
-                <img src="Imgs/banner3.jpeg" class="d-block w-100 h-100" alt="...">
+                @if(linksImgs.Count()>=2)
+                {
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
 
-            </div>
+                }
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
 
 
     </div>
 @*    <h3>
        @modelo.Copete
     </h3>*@
-    <p>
+    <p class="text-left">
         @modelo.Cuerpo
     </p>
 
@@ -160,6 +213,8 @@
             </div>
         </div>
 
+}
+
 @code {
 
 
@@ -169,6 +224,8 @@
     private string Titulo = "Crear Noticia";
     private string boton = "Crear Borrador";
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
+    private List<string> linksImgs = new List<string>();
+    private bool primerImg = true;
 
 
     [CascadingParameter]
@@ -184,6 +241,7 @@
             if (response.EsCorrecto!)
             {
                 modelo = (NoticiaAltaDto)response.Resultado!;
+                await CargarImagenes(Id);
             }
             else
             {
@@ -193,6 +251,7 @@
         }
     }
 
+
     private async Task GuardarComentario()
     {
         var authState = await authencationState;
@@ -201,8 +260,39 @@
 
     }
 
+    private async Task CargarImagenes(int idNoticia)
+    {
+        var responseAdjunto = await adjuntoServicio.GetAdjuntosNoticia(idNoticia);
 
-   
+        foreach (var item in responseAdjunto.Data)
+        {
+            linksImgs.Add(item.Adjunto);
+        }
+    }
+
+
+    //Esto era para contener casos donde la carga de las imagenes fallen.
+    //List<int> indices = new List<int>();
+    //private async Task CargarImagenDefault(string link)
+    //{
+    //    int indice = linksImgs.IndexOf(link);
+
+    //    indices.Add(indice);
+    //    //if (indice != -1)
+    //    //{
+    //    //    // Modificar la cadena si se encuentra
+    //    //    linksImgs[indice] = "/Imgs/icon-192.png";
+    //    //}
+    //}
+
+    //private async Task CargarImagenDefault()
+    //{
+    //    foreach (var item in indices)
+    //    {
+    //        linksImgs[item] = "/Imgs/icon-192.png";
+    //    }
+    //}
+
 
 }
 

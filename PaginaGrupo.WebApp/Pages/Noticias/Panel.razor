@@ -45,10 +45,15 @@
             <button class="btn btn-success fw-bold"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button>
 
             <div class="input-group mb-3">
-                <input type="text" placeholder="Buscar por estado..." @bind-value="buscar">
-                <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticias(buscar))">
-                    <i class="oi oi-magnifying-glass"></i>
-                </button>
+         <select class="form-control-sm " @bind="buscar">
+            <option value="1">Borrador</option>
+            <option value="2">Pendiente Autorizar</option>
+            <option value="3">Autorizado</option>
+            <option value="4">Borrado</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticias(buscar))">
+            <i class="oi oi-magnifying-glass"></i>
+        </button>
             </div>
         </div>
 

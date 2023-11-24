@@ -149,13 +149,14 @@
 </div>
 
 @code {
-        [Parameter]
-        public int Id { get; set; }
+    [Parameter]
+    public int Id { get; set; }
     private string Titulo = "Crear Noticia";
     private string boton = "Crear";
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
     //private IEnumerable<AdjuntosDto> adjuntosAux;
     private List<string> linksImgs = new List<string>();
+    private List<string> linksImgsAux = new List<string>();
     private string nuevoLink;
 
     [CascadingParameter]
@@ -211,6 +212,9 @@
                 {
                     respuesta = false;
                 }
+                var responseAdjunto = await adjuntoServicio.GetAdjuntosNoticia(Id);
+                await EliminarAdjuntoRepetido(responseAdjunto.Data);
+                GuardarImg(Id);
                 //TODO Abria que recorrer las listas de adjuntos y la respuesta de adjuntos de la API, si no existe en la API guardarlo, si no, no.
 
             }
@@ -286,6 +290,22 @@
         foreach (var item in adjuntos)
         {
             linksImgs.Add(item.Adjunto);
+        }
+    } 
+
+    private async Task EliminarAdjuntoRepetido(IEnumerable<AdjuntosDto> adjuntos)
+    {
+
+        foreach (var item in adjuntos)
+        {
+            if(linksImgs.Contains(item.Adjunto))
+            {
+                linksImgsAux.Add(item.Adjunto);
+            }
+        }
+        foreach (var item in linksImgsAux)
+        {
+            EliminarDeListaImg(item);
         }
     } 
 
