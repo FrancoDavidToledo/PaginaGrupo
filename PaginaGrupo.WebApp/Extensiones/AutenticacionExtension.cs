@@ -27,8 +27,8 @@ namespace PaginaGrupo.WebApp.Extensiones
                     new Claim(ClaimTypes.NameIdentifier, sesionUsuario.Id.ToString()),
                     new Claim(ClaimTypes.Name, sesionUsuario.Nombre),
                     new Claim(ClaimTypes.Email, sesionUsuario.Correo),
-                    new Claim(ClaimTypes.Role, sesionUsuario.Rol)
-                //    new Claim(ClaimTypes.AuthenticationMethod, sesionUsuario.Token)
+                    new Claim(ClaimTypes.Role, sesionUsuario.Rol),
+                    new Claim(ClaimTypes.Authentication, sesionUsuario.Token)
                 },"JwtAuth"));
 
                 await _localStorage.SetItemAsync("sesionUsuario", sesionUsuario);
@@ -58,8 +58,8 @@ namespace PaginaGrupo.WebApp.Extensiones
                     new Claim(ClaimTypes.NameIdentifier, sesionUsuario.Id.ToString()),
                     new Claim(ClaimTypes.Name, sesionUsuario.Nombre),
                     new Claim(ClaimTypes.Email, sesionUsuario.Correo),
-                    new Claim(ClaimTypes.Role, sesionUsuario.Rol)
-               //     new Claim(ClaimTypes.AuthenticationMethod, sesionUsuario.Token)
+                    new Claim(ClaimTypes.Role, sesionUsuario.Rol),
+                    new Claim(ClaimTypes.Authentication, sesionUsuario.Token)
                 }, "JwtAuth"));
 
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));

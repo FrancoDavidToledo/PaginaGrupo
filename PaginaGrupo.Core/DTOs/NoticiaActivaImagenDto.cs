@@ -11,5 +11,7 @@
         public short Estado { get; set; }
 
         public string Adjunto { get; set; }
+
+        public DateTime FechaNoticia { get; set; }
     }
 }

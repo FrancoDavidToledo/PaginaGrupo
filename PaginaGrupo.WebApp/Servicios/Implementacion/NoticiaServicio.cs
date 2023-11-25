@@ -5,23 +5,60 @@ using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.WebApp.Servicios.Contrato;
 using System.Net.Http.Json;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Claims;
-
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using System.Net;
+using PaginaGrupo.WebApp.Extensiones;
+using System;
 
 namespace PaginaGrupo.WebApp.Servicios.Implementacion
 {
     public class NoticiaServicio : INoticiaServicio
     {
         private readonly HttpClient _httpClient;
-        public NoticiaServicio(HttpClient httpClient)
+        private NavigationManager _navigationManager;
+
+
+        public NoticiaServicio(HttpClient httpClient, NavigationManager navigationManager)
         {
             _httpClient = httpClient;
+            _navigationManager = navigationManager;
+
         }
 
-        public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id)
+        //public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id)
+        //{
+        //    return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticia/{id}");
+        //}
+
+
+        public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id, string token)
         {
-            return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticia/{id}");
+                
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticia/{id}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            //request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmFkb3IiLCJuYmYiOjE3MDA4ODAwMjksImV4cCI6MTcwMDg4MDYyOSwiaXNzIjoiQUJDWFlaIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0NDM1NiJ9.3fm5oVLEEa1Y7gdSyCuoAx-qJEAwilak9VDzw5yob0U");
+            // request.Headers.Add("Authorization", "Bearer" + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmFkb3IiLCJuYmYiOjE3MDA4ODAwMjksImV4cCI6MTcwMDg4MDYyOSwiaXNzIjoiQUJDWFlaIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0NDM1NiJ9.3fm5oVLEEa1Y7gdSyCuoAx-qJEAwilak9VDzw5yob0U");
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+             {
+              _navigationManager.NavigateTo("/logout");
+                return null;
+             }
+            else
+            {
+                return null;
+            }
+            
+
         }
 
         public async Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id)

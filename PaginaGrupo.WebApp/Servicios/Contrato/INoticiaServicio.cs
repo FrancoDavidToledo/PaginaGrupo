@@ -10,7 +10,7 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
     {
 
        // Task<ResponseDTO<List<NoticiaDto>>> Lista(string rol,string buscar);
-        Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id);
+        Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id,string token);
         Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id);
         Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo);
         Task<ResponseDTO<bool>> Editar(NoticiaAltaDto modelo);

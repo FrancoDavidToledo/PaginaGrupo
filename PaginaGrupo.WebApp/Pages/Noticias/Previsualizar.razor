@@ -227,6 +227,7 @@ else
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
     private List<string> linksImgs = new List<string>();
     private bool primerImg = true;
+    private string token;
 
 
     [CascadingParameter]
@@ -237,7 +238,9 @@ else
     {
         if (Id != 0)
         {
-            var response = await noticiaServicio.ObtenerById(Id);
+            var authState = await authencationState;
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var response = await noticiaServicio.ObtenerById(Id,token);
 
             if (response.EsCorrecto!)
             {

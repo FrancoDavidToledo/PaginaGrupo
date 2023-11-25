@@ -47,6 +47,7 @@
                 <a href="/Noticias/@item.Id" class="text-decoration-none">
                     <div class="noticia text-black">
                         <div class="contenido">
+                            <h4>@item.FechaNoticia.ToString("dd/MM/yyyy")</h4>
                             <h2>@item.Titulo</h2>
                             <p>@item.Copete</p>
                         </div>
@@ -64,6 +65,7 @@
                     <div class="noticia text-black">
                         <picture><img src="@item.Adjunto" alt="@item.Titulo"> </picture>
                         <div class="contenido">
+                            <h4>@item.FechaNoticia.ToString("dd/MM/yyyy")</h4>
                             <h2>@item.Titulo</h2>
                             <p>@item.Copete</p>
                         </div>

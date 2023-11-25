@@ -162,7 +162,7 @@ namespace PaginaGrupo.Api.Controllers
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticia/{id}")]
         //lo siguiente es para ver que roles pueden ejecutar la accion
-        [AllowAnonymous]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
 
         public async Task<IActionResult> GetNoticia(int id)
         {

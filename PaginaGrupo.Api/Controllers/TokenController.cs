@@ -99,7 +99,7 @@ namespace PaginaGrupo.Api.Controllers
               _configuration["Jwt:Audience"],
               claims,
               DateTime.Now,
-              DateTime.UtcNow.AddMinutes(10)
+              DateTime.UtcNow.AddMinutes(1)
             );
 
             var token = new JwtSecurityToken(header, payload);

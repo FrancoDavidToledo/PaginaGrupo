@@ -165,13 +165,13 @@
 
     protected override async Task OnParametersSetAsync()
     {
-
+        var authState = await authencationState;
         if (Id != 0)
         {
             Titulo = "Editar Noticia";
             boton = "Guardar";
-
-            var response = await noticiaServicio.ObtenerById(Id);
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var response = await noticiaServicio.ObtenerById(Id, token);
             if (response.EsCorrecto!)
             {
                 modelo = (NoticiaAltaDto)response.Resultado!;

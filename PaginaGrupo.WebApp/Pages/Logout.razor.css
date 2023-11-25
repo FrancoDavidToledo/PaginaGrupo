@@ -1,0 +1,170 @@
+:root {
+  /*No me estarian funcionando las variables de css*/
+  --footer-bg-color: #333333; /*Esto iria para .custom-input y .arch_contact_us_duplicate*/
+}
+
+
+/*body general*/
+body{
+    background-color: #FFFFFF;
+    
+}
+/*Todas las tipografías*/
+body p,a,h1,h2,h3,h4,h5,label{
+  font-family: 'Open Sans', sans-serif;
+  color:black;
+  font-size: 15pt;
+
+}
+
+/*Comienzo Navbar*/
+.navbar{
+  background-color: #0A592A;
+}
+
+.navbar-brand{
+margin-left: 20px;
+}
+#navbar-principal a{
+  color: #FFFFFF;
+}
+#toggler-boton{
+border-width: 1px;
+border-color: #FFFFFF;
+}
+
+.navbar-toggler {
+  border-color: #FFFFFF;
+}
+
+#navbarText{
+  padding-left: 25%;
+  padding-right: 20px;
+}
+/*Fin Navbar*/
+
+/*Comienzo Carousel*/
+
+.carousel-item {
+height: 55vh;
+object-fit: scale-down;
+object-position: center;
+}
+.carousel-item img{
+background-image: none;
+background-color: rgb(100,100,100);
+background-blend-mode: soft-light;
+opacity: 0.4
+}
+/*Titulo Carousel*/
+.carousel-caption h1{
+  color: black;
+  font-weight:bold;
+  font-size:45pt;
+}
+/*Fin Carousel*/
+
+/*Comienzo Visitados*/
+.most-visited{
+    margin-top:100px;
+}
+.most-visited .col-md-7 {
+    margin-top: 100px;
+}
+
+.most-visited h1
+{
+  font-size: 45pt;
+  line-height:350%;
+  font-weight:bold;
+  text-align: center;
+}
+
+.featurette-heading{
+  font-size: 45pt;
+  line-height:350%;
+  font-weight:bold;
+  text-align: justify;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 10%;
+}
+
+.most-visited .lead{
+  padding-left: 10%;
+  padding-top: 10%;
+  padding-right: 10%;
+}
+
+.most-visited .col-md-5{
+  padding-left: 10%;
+  padding-top: 10%;
+  padding-right: 10%;
+}
+/*Fin Visitados*/
+
+/*Comienzo Organizacion*/
+#nuestra-organizacion {
+    margin:200px 0 0 0;
+
+    padding-bottom: 200px;
+}
+#nuestra-organizacion h1 {
+    font-size: 45pt;
+    line-height: 350%;
+    font-weight: bold;
+    text-align: center;
+}
+
+#nuestra-organizacion .seccion
+{
+  font-size: 20pt;
+  line-height:200%;
+  font-weight:  bold;
+  text-align: center;
+}
+
+#nuestra-organizacion p
+{
+  font-size: 10pt;
+  text-align: normal;
+}
+
+
+#nuestra-organizacion .lead{
+  padding-left: 7%;
+  padding-right: 7%;
+  padding-bottom: 5%;
+  font-size: 14pt;
+}
+
+#nuestra-organizacion .col-lg-3{
+  text-align: center;
+}
+#nuestra-organizacion .col-lg-3{
+  text-align: center;
+}
+.org-img-container {
+    width: 140px;
+    height: 140px;
+    margin: auto;
+}
+.org-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 1;
+}
+
+
+/*Fin Organizacion*/
+
+
+.bd-placeholder-img image {
+    width: 100%;
+    height:auto;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}

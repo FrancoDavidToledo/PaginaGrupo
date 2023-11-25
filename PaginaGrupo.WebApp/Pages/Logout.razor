@@ -1,0 +1,19 @@
+﻿@page "/logout"
+
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+@inject AuthenticationStateProvider autencacionProvider;
+@using PaginaGrupo.WebApp.Extensiones;
+@inject NavigationManager _navServicio
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        var autenticacionExt = (AutenticacionExtension)autencacionProvider;
+        await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        _navServicio.NavigateTo("/",true);
+
+    }
+
+}
