@@ -1,9 +1,26 @@
 ﻿@page "/Comentarios/Panel"
 
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+@using CurrieTechnologies.Razor.SweetAlert2;
+
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+@using PaginaGrupo.Core.Enumerations
+
+@inject SweetAlertService Swal;
+@inject INoticiaServicio noticiaServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+
 @*los 2 renglones siguientes son para restringir la pantalla a un rol en especial*@
 @using Microsoft.AspNetCore.Authorization;
 @attribute [Authorize(Roles = "Administrador, Dirigente")];
-
 
 <head>
     <meta charset="UTF-8" />
@@ -20,107 +37,136 @@
 
 </head>
 
-
 <div>
     
-    <h1>Panel de Comentarios</h1>
+    <h1>Panel de comentarios</h1>
+    <div class="flex-buttons">
+        <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
+            @* <button class="btn btn-success fw-bold"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button> *@
 
-    <div class="flex-buttons flex-row-reverse">
+            <div class="input-group mb-3">
+         <select class="form-control-sm" @bind="buscar">
+            <option value="1">Pendiente</option>
+            <option value="2">Aceptado</option>
+            <option value="3">Rechazado</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticias(buscar))">
+            <i class="oi oi-magnifying-glass"></i>
+        </button>
+            </div>
+        </div>
+
         <div class="flex-options">
+
             <div class="flex-options-details">
-                <div>
-                    <button type="button" class="btn btn-primary">
+@*                 <div>
+                    <button type="button" class="btn btn-primary text-light">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                         </svg>
                     </button>
-                    <span> Visualizar noticia</span>
-                </div>
+                    <span>Previsualizar</span>
+                </div> *@
                 <div>
-                    <button type="button" class="btn btn-warning text-light">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
+                    <button type="button" class="btn btn-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
                     </button>
-                    <span> Aprobar comentario</span>
+                    <span> Autorizar Noticia</span>
                 </div>
             </div>
-            <div class="flex-options-details">
 
+
+            <div class="flex-options-details">
+                @*<div>
+                    <button type="button" class="btn btn-warning text-light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                        </svg>
+                    </button>
+                    <span> Editar noticia</span>
+                </div> *@
                 <div>
                     <button type="button" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
                         </svg>
                     </button>
-                    <span> Eliminar comentario</span>
+                    <span> Eliminar noticia</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <table class="table table-success table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Noticia</th>
-                <th scope="col">Comentario</th>
-                <th scope="col">Usuario</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>20/11/2023</td>
-                <td>Nueva pagina para el grupo</td>
-                <td>Muy buena noticia! Espero las siguientes...</td>
-                <td>Franco</td>
-                <td>Pend. Autorizar</td>
-                <td>
-                    <button type="button" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-                    </button>                  
-                    <button type="button" class="btn btn-warning text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                        </svg>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>20/11/2023</td>
-                <td>Nueva pagina para el grupo</td>
-                <td>Si se exceden cierta cantidad de caracteres seria ideal que el mensaje se acorte de manera que no rompa la interfaz, y se pueda ver el comentario completo de otra manera mas comoda. </td>
-                <td>Franco</td>
-                <td>Pend. Autorizar</td>
-                <td>
-                    <button type="button" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-                    </button>                  
-                    <button type="button" class="btn btn-warning text-light">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-danger">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                        </svg>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    @if(lista is null){
+        <div class="d-flex justify-content-center align-items-center loading mb-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Fecha de creación</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+         
+                @if (lista != null)
+                {
+                    foreach (var item in lista)
+                    {
+                        <tr>
+                            <td class="col-3">@item.Titulo</td>
+                            <td class="col-2">@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
+                            <td class="col-2">@item.Autor</td>
+                            <td class="col-2">@Enum.GetName(typeof(EstadoNoticias), item.Estado)</td>
+                                <td>
+                                @if (item.Estado == 1)
+                                {
+
+                                    @*  <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </a> *@
+                                    <button class="col-5 btn btn-sm btn-success mt-auto" @onclick="(() => Autorizar(item))">
+                                        <i class="bi bi-check2 fs-5"></i>
+                                    </button>
+
+                                    @*<a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
+                                        <i class="oi oi-pencil fs-5"></i>
+                                    </a> *@
+                                    <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
+                                        <i class="oi oi-trash fs-5"></i>
+                                    </button>
+                                }
+                                </td>
+                            
+                         @*else
+                            {
+                                <td>
+                                    <a class="col-5 btn btn-sm btn-primary mt-auto" href="/noticias/previsualizar/@item.Id">
+                                        <i class="bi bi-search fs-5"></i>
+                                    </a>
+                                    <a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/noticias/editar/@item.Id">
+                                        <i class="oi oi-pencil fs-5"></i>
+                                    </a>
+                                </td>
+                            }*@
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    }
 </div>
 
 
@@ -128,5 +174,101 @@
 
 
 @code {
+    private NoticiaDto modelo = new NoticiaDto();
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+
+    private List<NoticiaDto>? lista = null;
+    bool respuesta = false;
+    string mensaje = string.Empty;
+    private int buscar = 1;
+
+    private async Task ObtenerNoticias(int estado)
+    {
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await noticiaServicio.ObtenerListadoNoticias(estado, token);
+        if (response.EsCorrecto)
+        {
+            lista = (List<NoticiaDto>)response.Resultado!;
+        }
+        else
+        {
+            lista = new List<NoticiaDto>();
+        }
+
+    }
+
+    private async Task Autorizar(NoticiaDto noticia)
+    {
+        var authState = await authencationState;
+        noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Autorizar Noticia",
+                Text = "Deseas autorizar la noticia? Una vez hecho esto, la noticia se publicará definitivamente.",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var publicado = await noticiaServicio.Autorizar(noticia);
+
+
+            mensaje = publicado.Mensaje;
+            if (publicado.EsCorrecto)
+            {
+                respuesta = true;
+                await ObtenerNoticias(buscar);
+            }
+
+        }
+
+        if (respuesta)
+        {
+            toastService.ShowSuccess(mensaje);
+            _navServicio.NavigateTo("/Noticias/p/1");
+        }
+        else
+            toastService.ShowWarning(mensaje);
+    }
+
+    private async Task Borrar(NoticiaDto noticia)
+    {
+        var authState = await authencationState;
+        noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Eliminar Noticia",
+                Text = "Deseas eliminar la noticia?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var eliminado = await noticiaServicio.Eliminar(noticia);
+
+
+            mensaje = eliminado.Mensaje;
+            if (eliminado.EsCorrecto)
+            {
+                respuesta = true;
+                await ObtenerNoticias(buscar);
+            }
+
+        }
+
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerNoticias(buscar);
+    }
+
 
 }

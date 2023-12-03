@@ -183,9 +183,13 @@
     string mensaje = string.Empty;
     private int buscar = 2;
 
+ 
     private async Task ObtenerNoticias(int estado)
     {
-        var response = await noticiaServicio.ObtenerListadoNoticias(estado);
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await noticiaServicio.ObtenerListadoNoticias(estado, token);
         if (response.EsCorrecto)
         {
             lista = (List<NoticiaDto>)response.Resultado!;

@@ -1,19 +1,11 @@
-﻿using PaginaGrupo.Api.Responses;
+﻿using Microsoft.AspNetCore.Components;
+using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.DTOs;
-using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.WebApp.Servicios.Contrato;
-using System.Net.Http.Json;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using System.Net;
-using PaginaGrupo.WebApp.Extensiones;
-using System;
+using System.Net.Http.Json;
 
 namespace PaginaGrupo.WebApp.Servicios.Implementacion
 {
@@ -63,11 +55,16 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         public async Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id)
         {
+            //no hace falta porque es un servicio publico
             return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticiaActiva/{id}");
         }
 
-        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado)
+        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado, string token)
         {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticiasEstado/{estado}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+
             return await _httpClient.GetFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>($"api/Noticia/GetNoticiasEstado/{estado}");
         }
 
@@ -88,9 +85,8 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         public async Task<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters)
         {
-   
-                // Adjust the API endpoint based on your actual endpoint
-                var response = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>>(
+            //no hace falta porque es un servicio publico
+            var response = await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>>(
                     $"api/Noticia/GetNoticiasActivasImagen?PageSize={filters.PageSize}&PageNumber={filters.PageNumber}&Titulo={filters.Titulo}&IdUsuario={filters.IdUsuario}&FechaNoticia={filters.FechaNoticia}"
                 );
 
@@ -126,15 +122,5 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
             return result!;
         }
-        //public async Task<ResponseDTO<bool>> Eliminar(int id)
-        //{
-        //    return await _httpClient.DeleteFromJsonAsync<ResponseDTO<bool>>($"Noticia/Eliminar/{id}");
-        //}
-
-        //public async Task<ResponseDTO<List<NoticiaDTO>>> Lista(string rol, string buscar)
-        //{
-        //    return await _httpClient.GetFromJsonAsync<ResponseDTO<List<NoticiaDTO>>>($"Noticia/Lista/{rol}/{buscar}");
-        //}
-
     }
 }

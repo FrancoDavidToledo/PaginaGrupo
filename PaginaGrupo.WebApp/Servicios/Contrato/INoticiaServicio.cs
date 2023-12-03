@@ -14,7 +14,7 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
         Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id);
         Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo);
         Task<ResponseDTO<bool>> Editar(NoticiaAltaDto modelo);
-        Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado);
+        Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado, string token);
         Task<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters);
         Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo);
 
