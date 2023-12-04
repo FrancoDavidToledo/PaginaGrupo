@@ -4,6 +4,7 @@
     {
         Administrador,
         Dirigente,
+        Hormiga,
         Scout
     }
 }

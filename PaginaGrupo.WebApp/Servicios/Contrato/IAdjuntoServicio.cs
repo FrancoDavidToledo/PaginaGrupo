@@ -9,7 +9,7 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
     public interface IAdjuntoServicio
     {
 
-        Task<ResponseDTO<string>> InsertarAdjunto(Adjuntos adjunto);
+        Task<ResponseDTO<string>> InsertarAdjunto(Adjuntos adjunto, string token);
 
         Task<ApiResponse<IEnumerable<AdjuntosDto>>> GetAdjuntosNoticia(int idNoticia);
     }

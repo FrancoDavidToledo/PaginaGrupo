@@ -205,6 +205,7 @@
         var authState = await authencationState;
         noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
 
+
         var resultado = await Swal.FireAsync(new SweetAlertOptions
             {
                 Title = "Autorizar Noticia",
@@ -215,7 +216,8 @@
 
         if (resultado.IsConfirmed)
         {
-            var publicado = await noticiaServicio.Autorizar(noticia);
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var publicado = await noticiaServicio.Autorizar(noticia, token);
 
 
             mensaje = publicado.Mensaje;
@@ -250,7 +252,8 @@
 
         if (resultado.IsConfirmed)
         {
-            var eliminado = await noticiaServicio.Eliminar(noticia);
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var eliminado = await noticiaServicio.Eliminar(noticia, token);
 
 
             mensaje = eliminado.Mensaje;

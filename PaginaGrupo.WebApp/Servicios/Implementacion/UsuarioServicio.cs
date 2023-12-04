@@ -14,7 +14,7 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             _httpClient = httpClient;
         }
 
-
+        //listo
         public async Task<ResponseDTO<UsuarioSinClaveTokenDto>> Autorizacion(UserLogin userLogin)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Token/AutenticarLogin", userLogin);
@@ -22,7 +22,7 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             return result!;
         }
 
-
+        //listo
         public async Task<ResponseDTO<string>> Crear(UsuarioDto modelo)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Usuario/InsertarUsuario", modelo);

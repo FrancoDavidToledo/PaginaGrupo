@@ -26,7 +26,7 @@
                 <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias/p/1">Noticias</NavLink></li>
                 <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias/p/1">Nosotros</NavLink></li>
                 <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias/p/1">Organización</NavLink></li>
-                <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias/p/1">Contacto</NavLink></li>
+@*                <li class="nav-item "><NavLink class="nav-link text-white" href="Noticias/p/1">Contacto</NavLink></li>*@
             </ul>
 
 
@@ -82,6 +82,25 @@
                         @context.User.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault()
                     </span>*@
 
+                </Authorized>
+            </AuthorizeView>
+
+            @*barra para Hormigas*@
+            <AuthorizeView Roles="Hormiga">
+                <Authorized>
+                    <Dropdown>
+                        <DropdownToggleButton Color="ButtonColor.Dark">
+                            <span class="navbar-text me-3 text-white ">
+                                @context.User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
+                            </span>
+                        </DropdownToggleButton>
+                        <DropdownMenu>
+                            <DropdownItem To="/Noticias/Nuevo" Type="ButtonType.Link">Crear nueva noticia</DropdownItem>
+                            <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>
+                            <DropdownDivider></DropdownDivider>
+                            <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </Authorized>
             </AuthorizeView>
 

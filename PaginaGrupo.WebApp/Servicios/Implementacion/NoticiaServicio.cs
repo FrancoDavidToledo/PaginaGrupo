@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json.Linq;
 using PaginaGrupo.Api.Responses;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Enumerations;
@@ -22,19 +23,12 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         }
 
-        //public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id)
-        //{
-        //    return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticia/{id}");
-        //}
-
-
+        //listo
         public async Task<ResponseDTO<NoticiaAltaDto>> ObtenerById(int id, string token)
         {
-                
+
             var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticia/{id}");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            //request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmFkb3IiLCJuYmYiOjE3MDA4ODAwMjksImV4cCI6MTcwMDg4MDYyOSwiaXNzIjoiQUJDWFlaIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0NDM1NiJ9.3fm5oVLEEa1Y7gdSyCuoAx-qJEAwilak9VDzw5yob0U");
-            // request.Headers.Add("Authorization", "Bearer" + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluaXN0cmFkb3IiLCJuYmYiOjE3MDA4ODAwMjksImV4cCI6MTcwMDg4MDYyOSwiaXNzIjoiQUJDWFlaIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0NDM1NiJ9.3fm5oVLEEa1Y7gdSyCuoAx-qJEAwilak9VDzw5yob0U");
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -49,40 +43,91 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             {
                 return null;
             }
-            
 
         }
 
+        //listo
         public async Task<ResponseDTO<NoticiaAltaDto>> Obtener(int id)
         {
             //no hace falta porque es un servicio publico
             return await _httpClient.GetFromJsonAsync<ResponseDTO<NoticiaAltaDto>>($"api/Noticia/GetNoticiaActiva/{id}");
         }
 
+        //listo
         public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> ObtenerListadoNoticias(int estado, string token)
         {
+
             var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticiasEstado/{estado}");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
 
-            return await _httpClient.GetFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>($"api/Noticia/GetNoticiasEstado/{estado}");
         }
 
-        public async Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo)
+        //listo
+        public async Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo, string token)
         {
-       
-            var response = await _httpClient.PostAsJsonAsync("api/Noticia/InsertarNoticia", modelo);
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
-            return result!;
+
+            //var response = await _httpClient.PostAsJsonAsync("api/Noticia/InsertarNoticia", modelo);
+            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
+            //return result!;
+
+            var request = new HttpRequestMessage(HttpMethod.Post, $"api/Noticia/InsertarNoticia?Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public async Task<ResponseDTO<bool>> Editar(NoticiaAltaDto modelo)
+        //listo
+        public async Task<ResponseDTO<bool>> Editar(NoticiaAltaDto modelo, string token)
         {
-            var response = await _httpClient.PutAsJsonAsync("api/Noticia/ActualizarNoticia", modelo);
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
-            return result!;
+            //var response = await _httpClient.PutAsJsonAsync("api/Noticia/ActualizarNoticia", modelo);
+            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            //return result!;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/Noticia/ActualizarNoticia?Id={modelo.Id}&Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        //listo
         public async Task<ApiResponse<IEnumerable<NoticiaActivaImagenDto>>> ObtenerNoticiasActivas(NoticiasQueryFilter filters)
         {
             //no hace falta porque es un servicio publico
@@ -95,32 +140,84 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         }
 
-        public async Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo)
+        //listo
+        public async Task<ResponseDTO<bool>> Eliminar(NoticiaDto modelo, string token)
         {
             modelo.FechaBaja = DateTime.Today;
             modelo.Estado = Convert.ToInt16(EstadoNoticias.Eliminada);
-            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
 
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
-            return result!;
+
+            //var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            //return result!;
+
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/Noticia/ActualizarEstadoNoticia?Id={modelo.Id}&Estado={modelo.Estado}&FechaBaja={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuarioBaja={modelo.IdUsuarioBaja}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public async Task<ResponseDTO<bool>> Publicar(NoticiaDto modelo)
+        //listo
+        public async Task<ResponseDTO<bool>> Publicar(NoticiaDto modelo, string token)
         {
             modelo.Estado = Convert.ToInt16(EstadoNoticias.Pendiente_Autorizacion);
-            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
 
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
-            return result!;
+            //var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            //return result!;
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/Noticia/ActualizarEstadoNoticia?Id={modelo.Id}&Estado={modelo.Estado}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
         }
-
-        public async Task<ResponseDTO<bool>> Autorizar(NoticiaDto modelo)
+        //listo
+        public async Task<ResponseDTO<bool>> Autorizar(NoticiaDto modelo, string token)
         {
             modelo.Estado = Convert.ToInt16(EstadoNoticias.Autorizado);
-            var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
 
-            var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
-            return result!;
+            //var response = await _httpClient.PutAsJsonAsync($"api/Noticia/ActualizarEstadoNoticia", modelo);
+            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            //return result!;
+            var request = new HttpRequestMessage(HttpMethod.Put, $"api/Noticia/ActualizarEstadoNoticia?Id={modelo.Id}&Estado={modelo.Estado}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

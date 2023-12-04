@@ -49,16 +49,22 @@ namespace PaginaGrupo.Api.Controllers
 
         //}
 
+        //lo siguiente para documentar
+        /// <summary>
+        /// Permite mostrar todos los adjuntos de una noticia, no requiere login
+        /// </summary>
+        //[ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<AdjuntosDto>>))]
+        //lo siguiente es el nombre del servicio
         [HttpPost("InsertarAdjunto")]
-        public async Task<IActionResult> InsertarAdjunto(AdjuntosDto adjuntoDto)
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> InsertarAdjunto([FromQuery] AdjuntosDto adjuntoDto)
         {
-
-
             var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
+
             await _adjuntoService.InsertarAdjunto(adjunto);
 
             return Ok(adjunto);
-
         }
     }
 }

@@ -193,7 +193,7 @@
     {
         var authState = await authencationState;
         modelo.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
-
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
         bool respuesta = true;
         string mensaje = string.Empty;
         if (modelo.Titulo == null | modelo.Copete == null | modelo.Cuerpo == null | modelo.Autor == null)
@@ -207,7 +207,7 @@
         {
             if (Id != 0)
             {
-                var response = await noticiaServicio.Editar(modelo);
+                var response = await noticiaServicio.Editar(modelo, token);
                 mensaje = response.Mensaje;
                 if (!response.EsCorrecto)
                 {
@@ -222,7 +222,7 @@
             else
             {
                 //modelo.Rol = "Administrador";
-                var response = await noticiaServicio.Crear(modelo);
+                var response = await noticiaServicio.Crear(modelo, token);
                 mensaje = response.Mensaje;
                 if (!response.EsCorrecto)
                 {
@@ -313,6 +313,8 @@
 
     private async Task GuardarImg(int idNoticia)
     {
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
         foreach (var item in linksImgs)
         {
             Adjuntos adjuntoAux = new Adjuntos
@@ -321,7 +323,7 @@
                     IdNoticia = idNoticia
                 };
 
-            adjuntoServicio.InsertarAdjunto(adjuntoAux);
+            adjuntoServicio.InsertarAdjunto(adjuntoAux, token);
         }
     }
 

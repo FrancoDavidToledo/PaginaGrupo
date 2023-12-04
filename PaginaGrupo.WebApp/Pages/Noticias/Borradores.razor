@@ -178,9 +178,9 @@
 
         if (resultado.IsConfirmed)
         {
-            var publicado = await noticiaServicio.Publicar(noticia);
-
-
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var publicado = await noticiaServicio.Publicar(noticia, token);
+            
             mensaje = publicado.Mensaje;
             if (publicado.EsCorrecto)
             {
@@ -213,7 +213,8 @@
 
         if (resultado.IsConfirmed)
         {
-            var eliminado = await noticiaServicio.Eliminar(noticia);
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var eliminado = await noticiaServicio.Eliminar(noticia, token);
 
 
             mensaje = eliminado.Mensaje;

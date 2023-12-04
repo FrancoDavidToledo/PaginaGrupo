@@ -126,7 +126,7 @@ namespace PaginaGrupo.Api.Controllers
         [HttpGet("GetNoticias")]
 
         //lo siguiente es para ver que roles pueden ejecutar la accion
-        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
         public IActionResult GetNoticias([FromQuery] NoticiasQueryFilter filters)
         {
             var noticias = _noticiasService.GetNoticias(filters);
@@ -162,7 +162,7 @@ namespace PaginaGrupo.Api.Controllers
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticia/{id}")]
         //lo siguiente es para ver que roles pueden ejecutar la accion
-        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
 
         public async Task<IActionResult> GetNoticia(int id)
         {
@@ -239,13 +239,11 @@ namespace PaginaGrupo.Api.Controllers
         //lo siguiente es el nombre del servicio
         [HttpGet("GetNoticiasEstado/{estado}")]
         //lo siguiente es para ver que roles pueden ejecutar la accion
-        //[Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
         public IActionResult GetNoticiasEstado(int estado)
         {
             var noticias = _noticiasService.GetNoticiasEstado(estado);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
-           // var response = new ApiResponse<IEnumerable<NoticiaDto>>(noticiaDto);
-            //return Ok(response);
 
             var response = new ResponseDTO<IEnumerable<NoticiaDto>>();
 
@@ -265,18 +263,9 @@ namespace PaginaGrupo.Api.Controllers
 
 
         [HttpPost("InsertarNoticia")]
-        // [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente))]
-        public async Task<IActionResult> InsertarNoticia(NoticiaAltaDto noticiaDto)
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> InsertarNoticia([FromQuery] NoticiaAltaDto noticiaDto)
         {
-            //var noticia = _mapper.Map<Noticias>(noticiaDto);
-            //await _noticiasService.InsertarNoticia(noticia);
-
-            ////nuevo, se reconvierte a dto para responder
-            //noticiaDto = _mapper.Map<NoticiaAltaDto>(noticia);
-            //var response = new ApiResponse<NoticiaAltaDto>(noticiaDto);
-            //return Ok(response);
-
-            //////////////////////////////////////////
             var noticia = _mapper.Map<Noticias>(noticiaDto);
             await _noticiasService.InsertarNoticia(noticia);
 
@@ -301,7 +290,8 @@ namespace PaginaGrupo.Api.Controllers
         }
 
         [HttpPut("ActualizarNoticia")]
-        public async Task<IActionResult> ActualizarNoticia(NoticiaDto noticiaDto)
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> ActualizarNoticia([FromQuery] NoticiaDto noticiaDto)
         {
 
             var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
@@ -311,8 +301,11 @@ namespace PaginaGrupo.Api.Controllers
             noticia.Copete = noticiaDto.Copete;
             noticia.Cuerpo = noticiaDto.Cuerpo;
             noticia.FechaNoticia = noticiaDto.FechaNoticia;
+            //cada vez que se edita, vuelve a estado borrador y se borran los datos de baja
             noticia.FechaBaja = null;
             noticia.IdUsuarioBaja = null;
+            noticia.Estado = Convert.ToInt16(EstadoNoticias.Borrador);
+
             var result = await _noticiasService.ActualizarNoticia(noticia);
             var response = new ResponseDTO<string>();
 
@@ -332,7 +325,8 @@ namespace PaginaGrupo.Api.Controllers
         }
 
         [HttpPut("ActualizarEstadoNoticia")]
-        public async Task<IActionResult> ActualizarEstadoNoticia(NoticiaDto noticiaDto)
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> ActualizarEstadoNoticia([FromQuery] NoticiaEstadoDto noticiaDto)
         {
             var noticia = await _noticiasService.GetNoticia(noticiaDto.Id);
             //aca actualizar todo lo que quieras
@@ -361,6 +355,7 @@ namespace PaginaGrupo.Api.Controllers
         }
 
         [HttpDelete("BorrarNoticia/{id}")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
         public async Task<IActionResult> BorrarNoticia(int id)
         {
             var result = await _noticiasService.BorrarNoticia(id);
