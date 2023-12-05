@@ -20,7 +20,7 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los comentarios con un estado en particular
         public async Task<IEnumerable<Comentario>> GetComentariosEstado(int estado)
         {
-            var comentarios = await _entities.Where(x => x.Estado == estado).ToListAsync();
+            var comentarios = await _entities.Where(x => x.Estado == Convert.ToInt16(estado)).ToListAsync();
 
             return comentarios;
         }

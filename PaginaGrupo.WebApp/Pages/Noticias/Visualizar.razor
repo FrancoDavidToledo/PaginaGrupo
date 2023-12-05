@@ -10,6 +10,7 @@
 @inject IAdjuntoServicio adjuntoServicio
 @inject INoticiaServicio noticiaServicio
 @inject IUsuarioServicio usuarioServicio
+@inject IComentarioServicio comentarioServicio
 @inject IToastService toastService
 @inject NavigationManager _navServicio
 @inject AuthenticationStateProvider autencacionProvider;
@@ -158,10 +159,12 @@ else
                              
                                     <form>
                                         <div class="col-md-10"> 
-                                          <textarea class="form-control non-resizable" id="exampleFormControlTextarea1" rows="3" placeholder="Deja tu comentario.."></textarea>
+                                          @*<textarea class="form-control non-resizable" id="exampleFormControlTextarea1" rows="3" placeholder="Deja tu comentario.."></textarea>*@
+                                        <textarea class="form-control non-resizable" id="colFormLabel" rows="3" placeholder="Deja tu comentario.." @bind="comentario.Contenido"></textarea>
                                     </div>
 
-                                    <button type="submit" class="btn btn-outline-success mt-2">Enviar Comentario</button>
+                                    @*<button type="submit" class="btn btn-outline-success mt-2">Enviar Comentario</button>*@
+                                    <button class="btn btn-outline-success mt-2" type="button" @onclick="(async ()=> await GuardarComentario(comentario))">Enviar Comentario</button>
                                     </form>   
                                    </div>
                               </div>
@@ -169,31 +172,49 @@ else
                         </div>
                     </AuthorizeView> 
                     <!--Comentarios existentes-->
-                    <div class="card p-3">
-                      <div class="d-flex justify-content-between align-items-center">
-                          <div class="user d-flex flex-row align-items-center">
-                            <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle m-2">
-                            <span>
-                                <small class="fw-bold text-success ml-2">Franco</small>
-                                <br />
-                                <small class="font-weight-bold">Que buena noticia! Espero mas...</small></span>                          
-                          </div>
-                         <small>Hace dos dias</small>
-                      </div>
-                      <div class="action d-flex justify-content-between mt-2 align-items-center">
-                          <AuthorizeView Roles="Dirigente,Administrador">
-                              <Authorized>
-                                  <!--Aca se tendria que verificar que el usuario sea Admin, Dirigente o ( Scout y coincidir con el usuario que creó el comentario)-->
 
-                                <div class="reply px-4">
 
-                                    <small>Remove</small>
-                           
+                    @if (lista != null)
+                    {
+                        foreach (var item in lista)
+                        {
+                        <div class="card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user d-flex flex-row align-items-center">
+                                    <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle m-2">
+                                    <span>
+                                        <small class="fw-bold text-success ml-2">@item.NombreUsuario</small>
+                                        <br />
+@*                                        <small class="font-weight-bold">@item.Contenido</small>
+                                        <br />*@
+                                        <p class="text-left">
+                                            @((MarkupString)item.Contenido.Replace("\n", "<br />"))
+                                        </p>
+                                    </span>
                                 </div>
-                              </Authorized>
-                          </AuthorizeView>                         
-                      </div>                  
-                    </div>
+                                <small>@item.Fecha.ToString("dd/MM/yyyy")</small>
+                            </div>
+@*                            <div class="action d-flex justify-content-between mt-2 align-items-center">
+                                <AuthorizeView Roles="Dirigente,Administrador">
+                                    <Authorized>
+                                        <!--Aca se tendria que verificar que el usuario sea Admin, Dirigente o ( Scout y coincidir con el usuario que creó el comentario)-->
+
+                                        <div class="reply px-4">
+
+                                            <small>Remove</small>
+
+                                        </div>
+                                    </Authorized>
+                                </AuthorizeView>
+                            </div>*@
+                        </div>
+                        <br />
+                        }
+                    }
+
+
+
+
                 </div>               
             </div>
         </div>
@@ -210,8 +231,11 @@ else
     private string Titulo = "Crear Noticia";
     private string boton = "Crear Borrador";
     private NoticiaAltaDto modelo = new NoticiaAltaDto();
+    private ComentarioDto comentario = new ComentarioDto();
     private List<string> linksImgs = new List<string>();
     private bool primerImg = true;
+    private List<ComentarioPublicoDto>? lista = null;
+   
 
     [CascadingParameter]
     private Task<AuthenticationState> authencationState { get; set; }
@@ -233,15 +257,36 @@ else
                 toastService.ShowWarning(response.Mensaje);
                 _navServicio.NavigateTo("/Noticias/P/1");
             }
+
+            await ObtenerComentarios(Id);
+
+
         }
     }
 
-    private async Task GuardarComentario()
+    private async Task GuardarComentario(ComentarioDto comentario)
     {
+        string mensaje = string.Empty;
+        bool respuesta = true;
         var authState = await authencationState;
-        modelo.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
-        //Falta desarrollar
+        comentario.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+        comentario.IdNoticia = modelo.Id;
+        comentario.Fecha = DateTime.Today;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
 
+        var response = await comentarioServicio.Crear(comentario, token);
+        mensaje = response.Mensaje;
+        if (!response.EsCorrecto)
+        {
+            respuesta = false;
+        }
+        if (respuesta)
+        {
+            toastService.ShowSuccess(mensaje);
+            _navServicio.NavigateTo($"/Noticias/p/1");
+        }
+        else
+            toastService.ShowWarning(mensaje);
     }
 
 
@@ -255,7 +300,22 @@ else
         }
     }
 
+    private async Task ObtenerComentarios(int estado)
+    {
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
 
+        var response = await comentarioServicio.ObtenerComentariosActivos(estado);
+        if (response != null)
+        {
+            lista = (List<ComentarioPublicoDto>)response.Data!;
+        }
+        else
+        {
+            lista = new List<ComentarioPublicoDto>();
+        }
+
+    }
 
    
 

@@ -71,6 +71,7 @@ builder.Services.AddBlazoredToast();
 builder.Services.AddScoped<IAdjuntoServicio, AdjuntoServicio>();
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 builder.Services.AddScoped<INoticiaServicio, NoticiaServicio>();
+builder.Services.AddScoped<IComentarioServicio, ComentarioServicio>();
 ///builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();
 //builder.Services.AddScoped<IProductoServicio, ProductoServicio>();
 //builder.Services.AddScoped<ICarritoServicio, CarritoServicio>();

@@ -11,8 +11,7 @@ public class Comentario : BaseEntity
     public int IdUsuario { get; set; }
 
     public int IdNoticia { get; set; }
-    public Int16 Estado { get; set; }
-
+    public int Estado { get; set; }
     public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;

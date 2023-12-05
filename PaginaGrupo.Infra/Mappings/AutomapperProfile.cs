@@ -26,6 +26,7 @@ namespace PaginaGrupo.Infra.Mappings
             // CreateMap<CategoriaDto, Categoria>();
 
             CreateMap<Comentario, ComentarioDto>().ReverseMap();
+            CreateMap<ComentarioPublicoDto, ComentarioDto>().ReverseMap();
             // CreateMap<ComentarioDto, Comentario>();
 
             CreateMap<Fecha, FechaDto>().ReverseMap();

@@ -12,7 +12,7 @@
 @using PaginaGrupo.Core.Enumerations
 
 @inject SweetAlertService Swal;
-@inject INoticiaServicio noticiaServicio
+@inject IComentarioServicio comentarioServicio
 @inject IToastService toastService
 @inject NavigationManager _navServicio
 @inject AuthenticationStateProvider autencacionProvider;
@@ -50,7 +50,8 @@
             <option value="2">Aceptado</option>
             <option value="3">Rechazado</option>
         </select>
-        <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticias(buscar))">
+                <input type="text" class="form-control-sm" placeholder="Buscar por IdNoticia..." @bind-value="buscarId">
+                <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerComentarios(buscar, buscarId))">
             <i class="oi oi-magnifying-glass"></i>
         </button>
             </div>
@@ -73,7 +74,7 @@
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                         </svg>
                     </button>
-                    <span> Autorizar Noticia</span>
+                    <span> Autorizar Comentario</span>
                 </div>
             </div>
 
@@ -93,7 +94,7 @@
                             <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
                         </svg>
                     </button>
-                    <span> Eliminar noticia</span>
+                    <span> Eliminar Comentario</span>
                 </div>
             </div>
         </div>
@@ -111,9 +112,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Titulo</th>
-                    <th scope="col">Fecha de creación</th>
-                    <th scope="col">Autor</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Noticia</th>
+                    <th scope="col">Comentario</th>
+                    <th scope="col">Usuario</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Acciones</th>
                 </tr>
@@ -125,10 +127,11 @@
                     foreach (var item in lista)
                     {
                         <tr>
-                            <td class="col-3">@item.Titulo</td>
-                            <td class="col-2">@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
-                            <td class="col-2">@item.Autor</td>
-                            <td class="col-2">@Enum.GetName(typeof(EstadoNoticias), item.Estado)</td>
+                            <td class="col-3">@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td class="col-2">@item.TituloNoticia</td>
+                            <td class="col-2">@item.Contenido</td>
+                            <td class="col-2">@item.NombreUsuario</td>
+                            <td class="col-2">@Enum.GetName(typeof(EstadoComentarios), item.Estado)</td>
                                 <td>
                                 @if (item.Estado == 1)
                                 {
@@ -147,7 +150,12 @@
                                         <i class="oi oi-trash fs-5"></i>
                                     </button>
                                 }
-                                </td>
+                                else if (item.Estado ==2){
+                                    <button class="col-5 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item))">
+                                        <i class="oi oi-trash fs-5"></i>
+                                    </button>
+                                }
+                            </td>
                             
                          @*else
                             {
@@ -178,38 +186,36 @@
     [CascadingParameter]
     private Task<AuthenticationState> authencationState { get; set; }
 
-    private List<NoticiaDto>? lista = null;
+    private List<ComentarioDto>? lista = null;
     bool respuesta = false;
     string mensaje = string.Empty;
     private int buscar = 1;
+    private int? buscarId = null;
 
-    private async Task ObtenerNoticias(int estado)
+    private async Task ObtenerComentarios(int estado, int? buscarId)
     {
         var authState = await authencationState;
         var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
 
-        var response = await noticiaServicio.ObtenerListadoNoticias(estado, token);
+        var response = await comentarioServicio.ObtenerListadoComentarios(estado, buscarId, token);
         if (response.EsCorrecto)
         {
-            lista = (List<NoticiaDto>)response.Resultado!;
+            lista = (List<ComentarioDto>)response.Resultado!;
         }
         else
         {
-            lista = new List<NoticiaDto>();
+            lista = new List<ComentarioDto>();
         }
 
     }
 
-    private async Task Autorizar(NoticiaDto noticia)
+    private async Task Autorizar(ComentarioDto comentario)
     {
         var authState = await authencationState;
-        noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
-
-
-        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            var resultado = await Swal.FireAsync(new SweetAlertOptions
             {
-                Title = "Autorizar Noticia",
-                Text = "Deseas autorizar la noticia? Una vez hecho esto, la noticia se publicará definitivamente.",
+                Title = "Autorizar Comentario",
+                Text = "Deseas autorizar el comentario? Una vez hecho esto, el comentario se mostrará publicamente.",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -217,14 +223,14 @@
         if (resultado.IsConfirmed)
         {
             var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
-            var publicado = await noticiaServicio.Autorizar(noticia, token);
+            var publicado = await comentarioServicio.Autorizar(comentario, token);
 
 
             mensaje = publicado.Mensaje;
             if (publicado.EsCorrecto)
             {
                 respuesta = true;
-                await ObtenerNoticias(buscar);
+                await ObtenerComentarios(buscar, buscarId);
             }
 
         }
@@ -232,20 +238,19 @@
         if (respuesta)
         {
             toastService.ShowSuccess(mensaje);
-            _navServicio.NavigateTo("/Noticias/p/1");
+            //_navServicio.NavigateTo("/Comentarios/Panel");
         }
         else
             toastService.ShowWarning(mensaje);
     }
 
-    private async Task Borrar(NoticiaDto noticia)
+    private async Task Borrar(ComentarioDto comentario)
     {
         var authState = await authencationState;
-        noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
         var resultado = await Swal.FireAsync(new SweetAlertOptions
             {
-                Title = "Eliminar Noticia",
-                Text = "Deseas eliminar la noticia?",
+                Title = "Eliminar Comentario",
+                Text = "Deseas eliminar el comentario?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true
             });
@@ -253,14 +258,14 @@
         if (resultado.IsConfirmed)
         {
             var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
-            var eliminado = await noticiaServicio.Eliminar(noticia, token);
+            var eliminado = await comentarioServicio.Eliminar(comentario, token);
 
 
             mensaje = eliminado.Mensaje;
             if (eliminado.EsCorrecto)
             {
                 respuesta = true;
-                await ObtenerNoticias(buscar);
+                await ObtenerComentarios(buscar, buscarId);
             }
 
         }
@@ -270,7 +275,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await ObtenerNoticias(buscar);
+        await ObtenerComentarios(buscar, buscarId);
     }
 
 
