@@ -7,11 +7,10 @@ namespace PaginaGrupo.WebApp.Servicios.Contrato
     {
 
         Task<ResponseDTO<UsuarioSinClaveTokenDto>> Autorizacion(UserLogin userLogin);
-        //Task<ResponseDTO<UsuarioDTO>> Obtener(int id);
-        //Task<ResponseDTO<SesionDTO>> Autorizacion(LoginDTO modelo);
+        Task<ResponseDTO<IEnumerable<UsuarioDtoSinClave>>> ObtenerListadoUsuarios(int rol, string token);
+        Task<ResponseDTO<UsuarioDtoSinClave>> ObtenerUsuario(int id, string token);
         Task<ResponseDTO<string>> Crear(UsuarioDto modelo);
-        //Task<ResponseDTO<bool>> Editar(UsuarioDTO modelo);
-        //Task<ResponseDTO<bool>> Eliminar(int id);
+        Task<ResponseDTO<bool>> Editar(UsuarioDtoSinClave modelo, string token);
 
     }
 }

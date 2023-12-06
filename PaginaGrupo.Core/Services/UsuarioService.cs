@@ -45,5 +45,12 @@ namespace PaginaGrupo.Core.Services
 
             return usuarios;
         }
+
+        public async Task<bool> ActualizarUsuario(Usuario usuario)
+        {
+            _unitOfWork.UsuarioRepository.Update(usuario);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
     }
 }

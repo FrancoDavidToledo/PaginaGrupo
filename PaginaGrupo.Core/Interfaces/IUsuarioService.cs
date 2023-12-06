@@ -11,5 +11,6 @@ namespace PaginaGrupo.Core.Interfaces
         Task<Usuario> GetUsuario(int id);
 
         Task<IEnumerable<Usuario>> GetUsuariosRol(RolType rol);
+        Task<bool> ActualizarUsuario(Usuario usuario);
     }
 }

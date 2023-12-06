@@ -1,0 +1,38 @@
+.form-flex {
+    margin:50px 0 100px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.lista-adjuntos {
+    background-color: lightgray;
+    width: 400px;
+    min-height: 200px;
+    border: solid 3px;
+    border-color: black;
+    padding:10px
+}
+
+.texto-adjunto {
+    width: 100%;
+    height: 50px;
+}
+.adjunto-selecionar {
+    border: solid 2px;
+    border-color: black;
+    border-radius: 50px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+.non-resizable {
+    resize: none;
+}
+
