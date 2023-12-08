@@ -44,15 +44,15 @@
         <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
 
             <div class="input-group mb-3">
-         <select class="form-control-sm " @bind="buscar">
+         <select class="form-control-sm btn border-black" @bind="buscar" @onclick="(async()=> await ObtenerUsuarios(buscar))">
                     <option value="3">Scout</option>
                     <option value="1">Dirigente</option>
                     <option value="2">Hormiga</option>
                     <option value="0">Administrador</option>
         </select>
-        <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerUsuarios(buscar))">
+        @*<button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerUsuarios(buscar))">
             <i class="oi oi-magnifying-glass"></i>
-        </button>
+        </button>*@
             </div>
         </div>
 

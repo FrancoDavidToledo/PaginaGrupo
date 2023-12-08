@@ -84,7 +84,7 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
             //return result!;
 
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/Noticia/InsertarNoticia?Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
+            var request = new HttpRequestMessage(HttpMethod.Post, $"api/Noticia/InsertarNoticia?Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo.Replace("\n", "<br/>")}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)

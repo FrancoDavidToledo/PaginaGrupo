@@ -188,7 +188,7 @@ else
 @*                                        <small class="font-weight-bold">@item.Contenido</small>
                                         <br />*@
                                         <p class="text-left">
-                                            @((MarkupString)item.Contenido.Replace("\n", "<br />"))
+                                            @((MarkupString)item.Contenido.Replace("\n", "<br/>"))
                                         </p>
                                     </span>
                                 </div>
@@ -269,6 +269,7 @@ else
         string mensaje = string.Empty;
         bool respuesta = true;
         var authState = await authencationState;
+
         comentario.IdUsuario = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
         comentario.IdNoticia = modelo.Id;
         comentario.Fecha = DateTime.Today;

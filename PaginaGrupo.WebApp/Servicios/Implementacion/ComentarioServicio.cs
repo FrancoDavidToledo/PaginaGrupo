@@ -69,7 +69,7 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         //listo - falta test
         public async Task<ResponseDTO<ComentarioDto>> Crear(ComentarioDto modelo, string token)
         {
-        var request = new HttpRequestMessage(HttpMethod.Post, $"api/Comentario/InsertarComentario?Fecha={modelo.Fecha.ToString("MM/dd/yyyy")}&Contenido={modelo.Contenido}&IdUsuario={modelo.IdUsuario}&IdNoticia={modelo.IdNoticia}");
+        var request = new HttpRequestMessage(HttpMethod.Post, $"api/Comentario/InsertarComentario?Fecha={modelo.Fecha.ToString("MM/dd/yyyy")}&Contenido={modelo.Contenido.Replace("\n", "<br/>")}&IdUsuario={modelo.IdUsuario}&IdNoticia={modelo.IdNoticia}");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
