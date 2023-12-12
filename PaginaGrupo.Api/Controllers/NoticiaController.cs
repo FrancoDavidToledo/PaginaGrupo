@@ -255,7 +255,7 @@ namespace PaginaGrupo.Api.Controllers
             else
             {
                 response.EsCorrecto = false;
-                response.Mensaje = "Error al crear la noticia";
+                response.Mensaje = "Error al obtener las noticias";
             }
 
             return Ok(response);

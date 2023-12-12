@@ -2,10 +2,11 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IAsistenciaScoutRepository
+    public interface IAsistenciaScoutRepository : IRepository<AsistenciaScout>
     {
-        Task<IEnumerable<AsistenciaScout>> GetAsistenciasScouts();
-        Task<AsistenciaScout> GetAsistenciaScout(int id);
-        Task<AsistenciaScout> InsertarAsistenciaScout(AsistenciaScout asistenciaScout);
+        IEnumerable<AsistenciaScout> GetByFecha(int idFecha);
+        //Task<IEnumerable<AsistenciaScout>> GetAsistenciasScouts();
+        //Task<AsistenciaScout> GetAsistenciaScout(int id);
+        //Task<AsistenciaScout> InsertarAsistenciaScout(AsistenciaScout asistenciaScout);
     }
 }

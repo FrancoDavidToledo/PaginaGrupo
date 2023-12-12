@@ -1,10 +1,8 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class Fecha
+public class Fechas : BaseEntity
 {
-    public int Id { get; set; }
-
-    public DateTime Fecha1 { get; set; }
+    public DateTime Fecha { get; set; }
 
     public short AnioScout { get; set; }
 

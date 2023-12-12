@@ -16,7 +16,10 @@
 
         IAvisoPagoRepository AvisoPagoRepository { get; }
 
-
+        IScoutRepository ScoutRepository { get; }
+        IFechaRepository FechaRepository { get; }
+        IAsistenciaScoutRepository AsistenciaScoutRepository { get; }
+        INombreScoutRepository NombreScoutRepository { get; }
         void SaveChanges();
         Task SaveChangesAsync();
 

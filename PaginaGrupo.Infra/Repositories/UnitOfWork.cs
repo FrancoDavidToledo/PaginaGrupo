@@ -16,6 +16,10 @@ namespace PaginaGrupo.Infra.Repositories
         private readonly IAutoresRepository _autoresRepository;
         private readonly ICategoriasRepository _categoriasRepository;
         private readonly IAvisoPagoRepository _avisoPagoRepository;
+        private readonly IScoutRepository _scoutRepository;
+        private readonly INombreScoutRepository _nombreScoutRepository;
+        private readonly IFechaRepository _fechaRepository;
+        private readonly IAsistenciaScoutRepository _asistenciaScoutRepository;
 
 
         public UnitOfWork(PaginaGrupoContext context)
@@ -31,6 +35,10 @@ namespace PaginaGrupo.Infra.Repositories
         public ICategoriasRepository CategoriasRepository => _categoriasRepository ?? new CategoriaRepository(_context);
         public IAutoresRepository AutoresRepository => _autoresRepository ?? new AutorRepository(_context);
         public IAvisoPagoRepository AvisoPagoRepository => _avisoPagoRepository ?? new AvisoPagoRepository(_context);
+        public IScoutRepository ScoutRepository => _scoutRepository ?? new ScoutRepository(_context);
+        public INombreScoutRepository NombreScoutRepository => _nombreScoutRepository ?? new NombreScoutRepository(_context);
+        public IFechaRepository FechaRepository => _fechaRepository ?? new FechaRepository(_context);
+        public IAsistenciaScoutRepository AsistenciaScoutRepository => _asistenciaScoutRepository ?? new AsistenciaScoutRepository(_context);
 
         public void Dispose()
         {

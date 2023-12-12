@@ -5,38 +5,16 @@ using PaginaGrupo.Infra.Data;
 
 namespace PaginaGrupo.Infra.Repositories
 {
-    public class FechaRepository : IFechaRepository
+    public class FechaRepository : BaseRepository<Fechas>, IFechaRepository
     {
+        public FechaRepository(PaginaGrupoContext context) : base(context) { }
 
-        private readonly PaginaGrupoContext _context;
-        public FechaRepository(PaginaGrupoContext context)
+
+        public IEnumerable<Fechas> GetByAnio(int anio)
         {
-
-            _context = context;
-        }
-
-        //devuelve todos los usuarios
-        public async Task<IEnumerable<Fecha>> GetFechas()
-        {
-            var fechas = await _context.Fechas.ToListAsync();
+            var fechas = _entities.Where(x => x.AnioScout == anio).ToList();
 
             return fechas;
-        }
-
-        //devuelve un usuario
-        public async Task<Fecha> GetFecha(int id)
-        {
-            var fecha = await _context.Fechas.FirstOrDefaultAsync(x => x.Id == id);
-
-            return fecha;
-        }
-
-        //Crea un usuario
-        public async Task<Fecha> InsertarFecha(Fecha fecha)
-        {
-            _context.Fechas.AddAsync(fecha);
-            await _context.SaveChangesAsync();
-            return fecha;
         }
     }
 }

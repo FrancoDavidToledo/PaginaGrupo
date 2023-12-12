@@ -1,9 +1,7 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class Scout
+public class Scout : BaseEntity
 {
-    public int Id { get; set; }
-
     public string? Nombre { get; set; }
 
     public string? Apellido { get; set; }

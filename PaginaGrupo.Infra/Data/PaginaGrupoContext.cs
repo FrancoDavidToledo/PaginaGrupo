@@ -27,7 +27,7 @@ public partial class PaginaGrupoContext : DbContext
 
     public virtual DbSet<Comentario> Comentarios { get; set; }
 
-    public virtual DbSet<Fecha> Fechas { get; set; }
+    public virtual DbSet<Fechas> Fechas { get; set; }
 
     public virtual DbSet<HistoricoUsuario> HistoricoUsuarios { get; set; }
 

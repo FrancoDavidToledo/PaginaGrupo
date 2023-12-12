@@ -29,7 +29,7 @@ namespace PaginaGrupo.Infra.Mappings
             CreateMap<ComentarioPublicoDto, ComentarioDto>().ReverseMap();
             // CreateMap<ComentarioDto, Comentario>();
 
-            CreateMap<Fecha, FechaDto>().ReverseMap();
+            CreateMap<Fechas, FechaDto>().ReverseMap();
             // CreateMap<FechaDto, Fecha>();
 
             CreateMap<HistoricoUsuario, HistoricoUsuarioDto>().ReverseMap();
@@ -65,6 +65,8 @@ namespace PaginaGrupo.Infra.Mappings
             //CreateMap<RamaDto, Rama>();
 
             CreateMap<Scout, ScoutDto>().ReverseMap();
+            CreateMap<Scout, ScoutEstadoDto>().ReverseMap();
+            CreateMap<Scout, ScoutUnidadDto>().ReverseMap();
             //CreateMap<ScoutDto, Scout>();
 
             CreateMap<TipoAdjunto, TipoAdjuntoDto>().ReverseMap();

@@ -64,6 +64,10 @@ namespace PaginaGrupo.Infra.Extensions
             builder.Services.AddScoped<IAutorService, AutorService>();
             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
             builder.Services.AddScoped<IAvisoPagoService, AvisoPagoService>();
+            builder.Services.AddScoped<IScoutService, ScoutService>();
+            builder.Services.AddScoped<IAsistenciaScoutService, AsistenciaScoutService>();
+            builder.Services.AddScoped<INombreScoutService, NombreScoutService>();
+            builder.Services.AddScoped<IFechasService, FechasService>();
             return builder;
         }
     }

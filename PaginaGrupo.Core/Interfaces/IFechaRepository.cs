@@ -2,10 +2,11 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IFechaRepository
+    public interface IFechaRepository : IRepository<Fechas>
     {
-        Task<IEnumerable<Fecha>> GetFechas();
-        Task<Fecha> GetFecha(int id);
-        Task<Fecha> InsertarFecha(Fecha fecha);
+        IEnumerable<Fechas> GetByAnio(int anio);
+        //Task<IEnumerable<Fechas>> GetFechas();
+        //Task<Fechas> GetFecha(int id);
+        //Task<Fechas> InsertarFecha(Fechas fecha);
     }
 }

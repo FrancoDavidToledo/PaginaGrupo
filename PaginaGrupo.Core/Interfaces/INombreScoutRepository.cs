@@ -2,10 +2,11 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface INombreScoutRepository
+    public interface INombreScoutRepository : IRepository<NombreScout>
     {
-        Task<IEnumerable<NombreScout>> GetNombresScouts();
-        Task<NombreScout> GetNombreScout(int id);
-        Task<NombreScout> InsertarNombreScout(NombreScout nombreScout);
+        IEnumerable<NombreScout> GetNombresScout(int idScout);
+        //Task<IEnumerable<NombreScout>> GetNombresScouts();
+        //Task<NombreScout> GetNombreScout(int id);
+        //Task<NombreScout> InsertarNombreScout(NombreScout nombreScout);
     }
 }

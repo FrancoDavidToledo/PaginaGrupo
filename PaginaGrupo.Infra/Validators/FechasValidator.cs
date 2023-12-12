@@ -11,7 +11,7 @@ namespace PaginaGrupo.Infra.Validators
                 .NotNull()
                 .WithMessage("El campo 'ID' no debe ser nulo");
 
-            RuleFor(fecha => fecha.Fecha1) //fecha1 porque en el DTO está de esta manera.
+            RuleFor(fecha => fecha.Fecha) //fecha1 porque en el DTO está de esta manera.
                 .NotNull()
                 .WithMessage("El campo 'Fecha' no debe ser nulo");
 

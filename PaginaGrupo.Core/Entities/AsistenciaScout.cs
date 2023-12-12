@@ -1,6 +1,6 @@
 ﻿namespace PaginaGrupo.Core.Entities;
 
-public class AsistenciaScout
+public class AsistenciaScout : BaseEntity
 {
     public int Id { get; set; }
 
@@ -14,7 +14,7 @@ public class AsistenciaScout
 
     public virtual Unidad? CodigoUnidadNavigation { get; set; }
 
-    public virtual Fecha? IdFechaNavigation { get; set; }
+    public virtual Fechas? IdFechaNavigation { get; set; }
 
     public virtual Scout? IdScoutNavigation { get; set; }
 }

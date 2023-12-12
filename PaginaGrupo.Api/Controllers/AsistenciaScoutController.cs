@@ -1,46 +1,68 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Entities;
+using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
+using PaginaGrupo.Core.Services;
 
 namespace PaginaGrupo.Api.Controllers
 {
     public class AsistenciaScoutController : Controller
     {
-        private readonly IAsistenciaScoutRepository _asistenciaScoutRepository;
+        private readonly IAsistenciaScoutService _asistenciaScoutService;
         private readonly IMapper _mapper;
-        public AsistenciaScoutController(IAsistenciaScoutRepository asistenciaScoutRepository, IMapper mapper)
+        public AsistenciaScoutController(IAsistenciaScoutService asistenciaScoutService, IMapper mapper)
         {
-            _asistenciaScoutRepository = asistenciaScoutRepository;
+            _asistenciaScoutService = asistenciaScoutService;
             _mapper = mapper;
         }
-        [HttpGet("GetAsistenciasScouts")]
-        public async Task<IActionResult> GetAsistenciasScouts()
+        [HttpGet("GetAsistenciasScouts/{idFecha}")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+
+        public async Task<IActionResult> GetAsistenciasScouts(int idFecha)
         {
 
-            var asistenciaScout = await _asistenciaScoutRepository.GetAsistenciasScouts();
+            var asistenciaScout = _asistenciaScoutService.GetAsistenciasScouts(idFecha);
             var asistenciaScoutDto = _mapper.Map<IEnumerable<AsistenciaScoutDto>>(asistenciaScout);
 
-            return Ok(asistenciaScoutDto);
+            var response = new ResponseDTO<IEnumerable<AsistenciaScoutDto>>();
+
+            if (asistenciaScoutDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = asistenciaScoutDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al obtener las asistencias";
+            }
+
+            return Ok(response);
         }
 
         [HttpGet("GetAsistenciaScout/{id}")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+
         public async Task<IActionResult> GetAsistenciaScout(int id)
         {
-            var asistenciaScout = await _asistenciaScoutRepository.GetAsistenciaScout(id);
+            var asistenciaScout = await _asistenciaScoutService.GetAsistenciaScout(id);
             var asistenciaScoutDto = _mapper.Map<AsistenciaScoutDto>(asistenciaScout);
             return Ok(asistenciaScoutDto);
 
         }
 
         [HttpPost("InsertarAsistenciaScout")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+
         public async Task<IActionResult> InsertarAsistenciaScout(AsistenciaScoutDto asistenciaScoutDto)
         {
 
 
             var asistenciaScout = _mapper.Map<AsistenciaScout>(asistenciaScoutDto);
-            await _asistenciaScoutRepository.InsertarAsistenciaScout(asistenciaScout);
+            await _asistenciaScoutService.InsertarAsistenciaScout(asistenciaScout);
 
             return Ok(asistenciaScout);
 

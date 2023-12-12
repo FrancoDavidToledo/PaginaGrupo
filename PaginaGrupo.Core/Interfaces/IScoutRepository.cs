@@ -2,10 +2,10 @@
 
 namespace PaginaGrupo.Core.Interfaces
 {
-    public interface IScoutRepository
+    public interface IScoutRepository : IRepository<Scout>
     {
-        Task<IEnumerable<Scout>> GetScouts();
-        Task<Scout> GetScout(int id);
-        Task<Scout> InsertarScout(Scout scout);
+        //Task<IEnumerable<Scout>> GetScouts();
+        //Task<Scout> GetScout(int id);
+        //Task<Scout> InsertarScout(Scout scout);
     }
 }
