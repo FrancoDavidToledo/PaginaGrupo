@@ -24,6 +24,17 @@ namespace PaginaGrupo.Infra.Repositories
 
             return comentarios;
         }
+        public async Task<IEnumerable<Comentario>> GetComentariosEstadoFiltrado(int estado, string filtro)
+        {
+            var comentarios = await _entities.Where(x => x.Estado == Convert.ToInt16(estado) &&
+                                                    (x.Contenido.ToLower().Contains(filtro.ToLower()) ||
+                                                    x.IdUsuarioNavigation.Nombre.ToLower().Contains(filtro.ToLower()) ||
+                                                    x.IdNoticiaNavigation.Titulo.ToLower().Contains(filtro.ToLower()) ||
+                                                    x.IdNoticia.ToString() == filtro)
+                                                    ).ToListAsync();
+
+            return comentarios;
+        }
 
 
     }

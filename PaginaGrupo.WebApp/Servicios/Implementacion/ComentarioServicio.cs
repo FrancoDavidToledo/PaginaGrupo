@@ -52,6 +52,35 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             }
         }
 
+        public async Task<ResponseDTO<IEnumerable<ComentarioDto>>> ObtenerListadoComentariosFiltrado(int estado,string? filtro,  string token)
+        {
+            string url;
+
+            if (filtro == null)
+                url = $"api/Comentario/GetComentariosEstado?Estado={estado}";
+            else
+                url = $"api/Comentario/GetComentariosEstadoFiltrado?Estado={estado}&filtro={filtro}"; 
+            
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<IEnumerable<ComentarioDto>>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         //listo - falta test
         public async Task<ApiResponse<IEnumerable<ComentarioPublicoDto>>> ObtenerComentariosActivos(int idNoticia)
         {

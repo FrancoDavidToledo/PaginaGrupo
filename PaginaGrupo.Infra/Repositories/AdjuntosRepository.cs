@@ -14,8 +14,9 @@ namespace PaginaGrupo.Infra.Repositories
         //devuelve todos los adjuntos de una noticia
         public async Task<IEnumerable<Adjuntos>> GetAdjuntosNoticia(int idNoticia)
         {
-         //   var adjuntos = await _entities.ToListAsync();
+            //   var adjuntos = await _entities.ToListAsync();
             var adjuntos = await _entities.Where(x => x.IdNoticia == idNoticia).ToListAsync();
+          
             return adjuntos;
         }
 

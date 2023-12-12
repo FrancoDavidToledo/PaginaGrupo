@@ -17,6 +17,15 @@ namespace PaginaGrupo.Infra.Repositories
 
             return noticiasEstado;
         }
+        public IEnumerable<Noticias> GetNoticiasEstadoFiltrado(int estado, string? filtro)
+        {
+            var noticiasEstado = _entities.Where(x => x.Estado == estado &&
+                                                (x.Autor.Contains(filtro) ||
+                                                x.Titulo.Contains(filtro) ||
+                                                x.Id.ToString()==filtro) //No se usa el contains para no traer registros de mas.
+                                                ).ToList();
 
+            return noticiasEstado;
+        }
     }
 }

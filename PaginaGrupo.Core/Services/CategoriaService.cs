@@ -22,5 +22,6 @@ namespace PaginaGrupo.Core.Services
             return categorias;
         }
 
+
     }
 }

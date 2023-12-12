@@ -187,5 +187,23 @@ namespace PaginaGrupo.Core.Services
 
             return listadoNoticias;
         }
+
+        public IEnumerable<Noticias> GetNoticiasEstadoFiltrado(int estado, string? filtro)
+        {
+            if (filtro != null)
+            {
+                var listadoNoticias = _unitOfWork.NoticiasRepository.GetNoticiasEstadoFiltrado(estado, filtro);
+                listadoNoticias = listadoNoticias.OrderByDescending(x => x.Id);
+
+                return listadoNoticias;
+            }
+            else
+            {
+                var listadoNoticias = _unitOfWork.NoticiasRepository.GetNoticiasEstado(estado);
+                listadoNoticias = listadoNoticias.OrderByDescending(x => x.Id);
+
+                return listadoNoticias;
+            }
+        }
     }
 }

@@ -31,7 +31,19 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         //listo
         public async Task<ResponseDTO<string>> InsertarAdjunto(Adjuntos modelo, string token)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/Adjunto/InsertarAdjunto?Adjunto={modelo.Adjunto}&IdNoticia={modelo.IdNoticia}");
+            string url;
+
+            if (modelo.Adjunto ==" ")
+            {
+                string dataImagenBase64 = Encoding.UTF8.GetString(modelo.DataImagen);
+                url = $"api/Adjunto/InsertarAdjuntoArchivo?&IdNoticia={modelo.IdNoticia}&DataImagen={dataImagenBase64}";
+            }
+            else
+            {
+                url = $"api/Adjunto/InsertarAdjunto?Adjunto={modelo.Adjunto}&IdNoticia={modelo.IdNoticia}&DataImagen={modelo.DataImagen}";
+            }
+           
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
@@ -53,7 +65,32 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         //listo
         public async Task<ApiResponse<IEnumerable<AdjuntosDto>>> GetAdjuntosNoticia(int idNoticia)
         {
-         return await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<AdjuntosDto>>>($"api/Adjunto/GetAdjuntos/{idNoticia}");
+          var result= await _httpClient.GetFromJsonAsync<ApiResponse<IEnumerable<AdjuntosDto>>>($"api/Adjunto/GetAdjuntos/{idNoticia}");
+
+            return result;
+
+        }
+
+        public async Task<bool> EliminarAdjuntos(int idAdjunto, string token)
+        {
+            //return await _httpClient.GetFromJsonAsync<>($"api/Adjunto/EliminarAdjunto/{idAdjunto}");
+
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"api/Adjunto/EliminarAdjunto/{idAdjunto}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<bool>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return false;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 

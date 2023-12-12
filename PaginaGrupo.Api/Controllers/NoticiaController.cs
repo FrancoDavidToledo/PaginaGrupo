@@ -11,7 +11,7 @@ using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.Core.Services;
 using PaginaGrupo.Infra.Interfaces;
-using PaginaGrupo.WebApp.Pages.Noticias;
+//using PaginaGrupo.WebApp.Pages.Noticias;
 using SocialMedia.Infrastructure.Services;
 using System.Collections.Generic;
 using System.Net;
@@ -243,6 +243,37 @@ namespace PaginaGrupo.Api.Controllers
         public IActionResult GetNoticiasEstado(int estado)
         {
             var noticias = _noticiasService.GetNoticiasEstado(estado);
+            var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
+
+            var response = new ResponseDTO<IEnumerable<NoticiaDto>>();
+
+            if (noticiaDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = noticiaDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al crear la noticia";
+            }
+
+            return Ok(response);
+        }
+
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ApiResponse<IEnumerable<NoticiaDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetNoticiasEstadoFiltrado")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public IActionResult GetNoticiasEstadoFiltrado([FromQuery] int estado, string? filtro)
+        {
+            if(filtro==null)
+            {
+                filtro = "";
+            }
+            var noticias = _noticiasService.GetNoticiasEstadoFiltrado(estado,filtro);
             var noticiaDto = _mapper.Map<IEnumerable<NoticiaDto>>(noticias);
 
             var response = new ResponseDTO<IEnumerable<NoticiaDto>>();

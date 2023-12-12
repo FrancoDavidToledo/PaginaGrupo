@@ -76,6 +76,28 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         }
 
+        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> GetNoticiasEstadoFiltrado(int estado,string filtro, string token)
+        {
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticiasEstadoFiltrado?Estado={estado}&Filtro={filtro}");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.SendAsync(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                return await response.Content.ReadFromJsonAsync<ResponseDTO<IEnumerable<NoticiaDto>>>();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _navigationManager.NavigateTo("/logout");
+                return null;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
         //listo
         public async Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo, string token)
         {

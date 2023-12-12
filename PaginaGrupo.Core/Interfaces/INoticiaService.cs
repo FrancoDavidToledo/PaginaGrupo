@@ -17,5 +17,6 @@ namespace PaginaGrupo.Core.Interfaces
         Task<bool> ActualizarNoticia(Noticias noticia);
         Task<bool> BorrarNoticia(int id);
         IEnumerable<Noticias> GetNoticiasEstado(int estado);
+        IEnumerable<Noticias> GetNoticiasEstadoFiltrado(int estado, string? filtro);
     }
 }

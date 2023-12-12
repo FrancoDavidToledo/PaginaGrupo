@@ -14,11 +14,13 @@ namespace PaginaGrupo.Infra.Data.Configurations
                     .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("Adjunto");
+            entity.Property(e => e.DataImagen).HasColumnName("DataImagen");
 
             entity.HasOne(d => d.IdNoticiaNavigation).WithMany(p => p.Adjuntos)
                     .HasForeignKey(d => d.IdNoticia)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Adjuntos_Noticias");
+            
         }
     }
 

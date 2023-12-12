@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PaginaGrupo.Core\PaginaGrupo.Core.csproj" />
-    <ProjectReference Include="..\PaginaGrupo.WebApp\PaginaGrupo.WebApp.csproj" />
   </ItemGroup>
 
 </Project>

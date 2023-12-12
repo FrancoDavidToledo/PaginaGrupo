@@ -22,6 +22,7 @@ namespace PaginaGrupo.Infra.Validators
             RuleFor(adjunto => adjunto.IdNoticia)
                 .NotNull()
                 .WithMessage("El campo 'IdNoticia' no debe ser nulo");
+
         }
     }
 }

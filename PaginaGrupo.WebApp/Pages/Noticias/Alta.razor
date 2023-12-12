@@ -67,13 +67,6 @@
          </div>
       </div>
 
-@*      Falta ver como hacer el bind-value con textarea
-      <div class="form-group mt-3">
-        <label for="exampleFormControlTextarea1">Noticia</label>
-        <textarea class="form-control non-resizable" id="exampleFormControlTextarea1" style="height: 500px;" rows="3"></textarea>
-       </div>
-*@
-
         <div class="row">
             <table class="col-5">
                 <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarNegrita(modelo.Cuerpo))">b</button></th>
@@ -105,7 +98,7 @@
                 <InputDate class="form-control-sm" @bind-Value="modelo.FechaNoticia"></InputDate>
             </div>
         </div>
-
+        
         <div class="adjuntos form-flex-column">
             <h3 class="mb-3 mt-5">Imágenes</h3>
             <div class="mb-3">
@@ -117,17 +110,27 @@
                 </div>
             </div>
         </div>
-        @if (linksImgs.Any()){
-        <ul class="list-group">
-            @foreach (var item in @linksImgs)
-            {
-                <div class="row mb-2">  
-                <li class="list-group-item col-8" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >@item</li> 
-                <button class="btn btn-danger col-4"type="button" @onclick="(async ()=> await EliminarDeListaImg(item))">Eliminar</button>
-                </div>
-            }
-        </ul>
+
+        @if (linksImgs.Any())
+        {
+            <ul class="list-group">
+                @foreach (var item in @linksImgs)
+                {
+                    <div class="row mb-2">  
+                        <li class="list-group-item col-8" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" >@item</li> 
+                        <button class="btn btn-danger col-4"type="button" @onclick="(async ()=> await EliminarDeListaImg(item))">Eliminar</button>
+                    </div>
+                }
+            </ul>
         }
+        <div>
+            <InputFile OnChange="@CargarArchivoImagen"  />
+                @if (!string.IsNullOrEmpty(selectedFileName))
+                {
+                    <p>Archivo seleccionado: @selectedFileName</p>
+                }
+        </div>
+        
 
 
 @*            <div class="form-flex-column">
@@ -173,6 +176,11 @@
     //private IEnumerable<AdjuntosDto> adjuntosAux;
     private List<string> linksImgs = new List<string>();
     private List<string> linksImgsAux = new List<string>();
+    private string selectedFileName;
+    private List<byte[]> archivosImgs = new List<byte[]>();
+
+    private InputFileChangeEventArgs inputFile;
+
     private string nuevoLink;
 
     [CascadingParameter]
@@ -311,12 +319,17 @@
 
     private async Task EliminarAdjuntoRepetido(IEnumerable<AdjuntosDto> adjuntos)
     {
-
+         var authState = await authencationState;
+         var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
         foreach (var item in adjuntos)
         {
             if(linksImgs.Contains(item.Adjunto))
             {
                 linksImgsAux.Add(item.Adjunto);
+            }
+            else
+            {           
+                adjuntoServicio.EliminarAdjuntos(item.Id,token);
             }
         }
         foreach (var item in linksImgsAux)
@@ -335,6 +348,18 @@
             Adjuntos adjuntoAux = new Adjuntos
                 {
                     Adjunto = item.ToString(),
+                    DataImagen =new byte[0], //Le asigna un DataImagen vacio para coincidir con el model
+                    IdNoticia = idNoticia
+                };
+
+            adjuntoServicio.InsertarAdjunto(adjuntoAux, token);
+        }
+        foreach (var item in archivosImgs)
+        {
+            Adjuntos adjuntoAux = new Adjuntos
+                {
+                    Adjunto = " ", //Le asigna un Adjunto vacio para coincidir con el model
+                    DataImagen = item,
                     IdNoticia = idNoticia
                 };
 
@@ -351,7 +376,7 @@
     {
         modelo.Cuerpo = cuerpo + "<b></b>";
     }
-        private async Task InsertarCursiva(string cuerpo)
+    private async Task InsertarCursiva(string cuerpo)
     {
         modelo.Cuerpo = cuerpo + "<em></em>";
     }
@@ -362,5 +387,19 @@
     private async Task InsertarTachado(string cuerpo)
     {
         modelo.Cuerpo = cuerpo + "<s></s>";
+    }
+
+    private async Task CargarArchivoImagen(InputFileChangeEventArgs e)
+    {
+        selectedFileName = e.File.Name;
+
+        using (var stream = e.File.OpenReadStream())
+        {
+            var buffer = new byte[e.File.Size];
+            await stream.ReadAsync(buffer);
+
+            archivosImgs.Add(buffer);
+			
+        }
     }
 }

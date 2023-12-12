@@ -7,6 +7,7 @@ namespace PaginaGrupo.Core.Interfaces
     {
         Task<IEnumerable<Comentario>> GetComentariosNoticiasActivas(int idNoticia);
         Task<IEnumerable<Comentario>> GetComentariosEstado(int estado);
+        Task<IEnumerable<Comentario>> GetComentariosEstadoFiltrado(int estado, string filtro);
 
     }
 }

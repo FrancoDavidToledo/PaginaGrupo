@@ -30,13 +30,29 @@ namespace PaginaGrupo.Core.Services
             }
             else
             {
-                
+
 
                 await _unitOfWork.AdjuntosRepository.Add(adjunto);
                 await _unitOfWork.SaveChangesAsync();
                 return adjunto;
             }
         }
+        //public async Task<Adjuntos> InsertarAdjuntoImagen(Adjuntos adjunto)
+        //{
+        //    //aca hacer validaciones
+        //    if (adjunto.Adjunto == null && adjunto.Data == null)
+        //    {
+        //        throw new BusinessException("Error al guardar el adjunto.");
+        //    }
+        //    else
+        //    {
+
+
+        //        await _unitOfWork.AdjuntosRepository.Add(adjunto);
+        //        await _unitOfWork.SaveChangesAsync();
+        //        return adjunto;
+        //    }
+        //}
 
 
         public async Task<string> GetAdjuntoPrincipal(int idNoticia)
@@ -44,13 +60,22 @@ namespace PaginaGrupo.Core.Services
             var Adjuntos = await _unitOfWork.AdjuntosRepository.GetAdjunto(idNoticia);
 
             if (Adjuntos != null)
-            { 
-            return Adjuntos.Adjunto;
+            {
+                return Adjuntos.Adjunto;
             }
             else
             {
                 return "https://lh3.googleusercontent.com/u/1/drive-viewer/AK7aPaCTmP4yyIZ7dIIgb3pHkggoxeI6FkLbo90kbGk7pax0ddNdV3juBIMKOnQTsFaNVvCsGsF8GNb6iu3l00eZDdQrrAN0=w1600-h773";
             }
+        }
+
+        public async Task<bool> EliminarAdjunto(int id)
+        {
+
+            await _unitOfWork.AdjuntosRepository.Delete(id);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+
         }
     }
 }

@@ -7,6 +7,7 @@ using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using System.Net;
+using System.Text;
 
 namespace PaginaGrupo.Api.Controllers
 {
@@ -60,11 +61,43 @@ namespace PaginaGrupo.Api.Controllers
         [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
         public async Task<IActionResult> InsertarAdjunto([FromQuery] AdjuntosDto adjuntoDto)
         {
+
             var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
 
             await _adjuntoService.InsertarAdjunto(adjunto);
 
             return Ok(adjunto);
         }
+
+        [HttpPost("InsertarAdjuntoArchivo")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> InsertarAdjuntoArchivo([FromQuery] int idNoticia, string DataImagen)
+        {
+            AdjuntosDto adjuntoDto = new AdjuntosDto()
+            {
+                IdNoticia = idNoticia,
+                DataImagen = Encoding.UTF8.GetBytes(DataImagen),
+                Adjunto = ""
+            };
+            var adjunto = _mapper.Map<Adjuntos>(adjuntoDto);
+
+            await _adjuntoService.InsertarAdjunto(adjunto);
+
+            return Ok(adjunto);
+        }
+
+        [HttpDelete("EliminarAdjunto/{idAdjunto}")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> EliminarAdjunto(int idAdjunto)
+        {
+            var result = await _adjuntoService.EliminarAdjunto(idAdjunto);
+            var response = new ApiResponse<bool>(result);
+            return Ok(response);
+
+        }
+
+
+
     }
 }

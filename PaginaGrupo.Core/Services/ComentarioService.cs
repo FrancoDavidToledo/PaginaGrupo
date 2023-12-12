@@ -45,6 +45,15 @@ namespace PaginaGrupo.Core.Services
             return comentarios;
         }
 
+        public async Task<IEnumerable<Comentario>> GetComentariosEstadoFiltrado(int estado,string filtro)
+        {
+            var comentarios = await _unitOfWork.ComentarioRepository.GetComentariosEstadoFiltrado(estado,filtro);
+
+            comentarios = comentarios.OrderByDescending(x => x.Id);
+
+            return comentarios;
+        }
+
         //Crea una noticia
         public async Task<Comentario> InsertarComentario(Comentario comentario)
         {

@@ -99,6 +99,47 @@ namespace PaginaGrupo.Api.Controllers
 
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ResponseDTO<IEnumerable<ComentarioDto>>))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //lo siguiente es el nombre del servicio
+        [HttpGet("GetComentariosEstadoFiltrado")]
+        //lo siguiente es para ver que roles pueden ejecutar la accion
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+        public async Task<IActionResult> GetComentariosEstadoFiltrado([FromQuery] int estado, string? filtro)
+        {
+            if (string.IsNullOrEmpty(filtro))
+                filtro = "";
+
+            var comentarios = await _comentarioService.GetComentariosEstadoFiltrado(estado ,filtro);
+            var comentariosDto = _mapper.Map<IEnumerable<ComentarioDto>>(comentarios);
+            var response = new ResponseDTO<IEnumerable<ComentarioDto>>();
+            var usuario = new Usuario();
+            var noticia = new Noticias();
+
+
+            foreach (var i in comentariosDto)
+            {
+                usuario = await _usuarioService.GetUsuario(i.IdUsuario);
+                i.NombreUsuario = usuario.Nombre;
+                noticia = await _noticiasService.GetNoticia(i.IdNoticia);
+                i.TituloNoticia = noticia.Titulo;
+            }
+
+            if (comentariosDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = comentariosDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al buscar la noticia";
+            }
+
+            return Ok(response);
+
+        }
+
         [HttpPost("InsertarComentario")]
         [Authorize]
         public async Task<IActionResult> InsertarComentario([FromQuery] ComentarioDto comentarioDto)
