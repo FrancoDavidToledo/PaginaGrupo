@@ -123,34 +123,11 @@
                 }
             </ul>
         }
-        <div>
-            <InputFile OnChange="@CargarArchivoImagen"  />
-                @if (!string.IsNullOrEmpty(selectedFileName))
-                {
-                    <p>Archivo seleccionado: @selectedFileName</p>
-                }
-        </div>
+
         
 
 
-@*            <div class="form-flex-column">
-                <button class="btn btn-primary" onclick="@GuardarCambios()">@boton</button>
-               <br />
-               <button class="btn btn-success">Publicar noticia</button>
-               <br />
-               <button class="btn btn-danger">Borrar noticia</button>
-               <br />
-
-
-             <AuthorizeView>
-                <Authorized>
-                    <!--Esto solo se deberia mostrar si se accede como admin-->
-               <button class="btn btn-warning text-light">Autorizar Noticia</button>
-               </Authorized>
-            </AuthorizeView>
-            </div>
-         </div>*@
-                     <div class="mt-3 mb-5">
+            <div class="mt-3 mb-5">
                 <button type="submit" class="btn btn-primary" style="width:130px">@boton</button>
                 <a href="/Noticias/p/1" class="btn btn-secondary" style="width:130px">Volver</a>
             </div>
@@ -158,13 +135,7 @@
         </EditForm>
 
 
-@*        <EditForm Model="modelo" OnValidSubmit="GuardarCambios">
-        <div class="mt-3">
-            <button type="submit" class="btn btn-primary" style="width:130px">@boton</button>
-            <a href="/Noticias" class="btn btn-secondary" style="width:130px">Volver</a>
-        </div>
 
-    </EditForm>*@
 </div>
 
 @code {
@@ -176,11 +147,6 @@
     //private IEnumerable<AdjuntosDto> adjuntosAux;
     private List<string> linksImgs = new List<string>();
     private List<string> linksImgsAux = new List<string>();
-    private string selectedFileName;
-    private List<byte[]> archivosImgs = new List<byte[]>();
-
-    private InputFileChangeEventArgs inputFile;
-
     private string nuevoLink;
 
     [CascadingParameter]
@@ -266,34 +232,7 @@
             toastService.ShowWarning(mensaje);
     }
 
-    //private List<IBrowserFile> archivosSeleccionados = new List<IBrowserFile>();
-    //private string carpetaImagenes = "Imgs";
-    ////Este metodo se ejecuta al momento de seleccionar los archivos de manera automatica.
-    //private async Task HandleFileSelection(InputFileChangeEventArgs e)
-    //{
-    //    archivosSeleccionados.AddRange(e.GetMultipleFiles());
 
-    //    foreach (var archivoSeleccionado in archivosSeleccionados)
-    //    {
-    //        if (archivoSeleccionado != null)
-    //        {
-    //            // Genera nombre único
-    //            string nombreArchivo = $"{Guid.NewGuid()}_{archivoSeleccionado.Name}";
-
-    //            // Genera ruta completa 
-    //            string rutaCompleta = Path.Combine(carpetaImagenes, nombreArchivo);
-
-    //            // Guardar la imagen en wwwroot/Imgs
-    //            await using (var stream = new FileStream(Path.Combine("wwwroot", rutaCompleta), FileMode.Create))
-    //            {
-    //                await archivoSeleccionado.OpenReadStream().CopyToAsync(stream);
-    //            }
-
-
-    //            // faltaria pasarle estas rutas a la noticia, podria ser por un metodo o por un return de este mismo.
-    //        }
-    //    }
-    //}
 
     private async Task CargarListaImg()
     {
@@ -348,23 +287,12 @@
             Adjuntos adjuntoAux = new Adjuntos
                 {
                     Adjunto = item.ToString(),
-                    DataImagen =new byte[0], //Le asigna un DataImagen vacio para coincidir con el model
                     IdNoticia = idNoticia
                 };
 
             adjuntoServicio.InsertarAdjunto(adjuntoAux, token);
         }
-        foreach (var item in archivosImgs)
-        {
-            Adjuntos adjuntoAux = new Adjuntos
-                {
-                    Adjunto = " ", //Le asigna un Adjunto vacio para coincidir con el model
-                    DataImagen = item,
-                    IdNoticia = idNoticia
-                };
 
-            adjuntoServicio.InsertarAdjunto(adjuntoAux, token);
-        }
     }
 
     private async Task EliminarDeListaImg(string link)
@@ -389,17 +317,4 @@
         modelo.Cuerpo = cuerpo + "<s></s>";
     }
 
-    private async Task CargarArchivoImagen(InputFileChangeEventArgs e)
-    {
-        selectedFileName = e.File.Name;
-
-        using (var stream = e.File.OpenReadStream())
-        {
-            var buffer = new byte[e.File.Size];
-            await stream.ReadAsync(buffer);
-
-            archivosImgs.Add(buffer);
-			
-        }
-    }
 }

@@ -33,15 +33,8 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         {
             string url;
 
-            if (modelo.Adjunto ==" ")
-            {
-                string dataImagenBase64 = Encoding.UTF8.GetString(modelo.DataImagen);
-                url = $"api/Adjunto/InsertarAdjuntoArchivo?&IdNoticia={modelo.IdNoticia}&DataImagen={dataImagenBase64}";
-            }
-            else
-            {
-                url = $"api/Adjunto/InsertarAdjunto?Adjunto={modelo.Adjunto}&IdNoticia={modelo.IdNoticia}&DataImagen={modelo.DataImagen}";
-            }
+             url = $"api/Adjunto/InsertarAdjunto?Adjunto={modelo.Adjunto}&IdNoticia={modelo.IdNoticia}";
+      
            
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);

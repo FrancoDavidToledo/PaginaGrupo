@@ -8,7 +8,6 @@ public class Adjuntos : BaseEntity
 
     public string Adjunto { get; set; }
     public int IdNoticia { get; set; }
-    public byte[] DataImagen { get; set; } = new byte[0];
     public virtual Noticias IdNoticiaNavigation { get; set; } = null!;
 
 }

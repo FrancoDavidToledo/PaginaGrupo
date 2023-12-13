@@ -11,6 +11,4 @@ public class AdjuntosDto
     public int IdNoticia {  get; set; }
 
 
-    public byte[] DataImagen { get; set; } = new byte[0];
-
 }

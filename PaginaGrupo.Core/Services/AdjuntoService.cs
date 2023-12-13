@@ -30,8 +30,6 @@ namespace PaginaGrupo.Core.Services
             }
             else
             {
-
-
                 await _unitOfWork.AdjuntosRepository.Add(adjunto);
                 await _unitOfWork.SaveChangesAsync();
                 return adjunto;
