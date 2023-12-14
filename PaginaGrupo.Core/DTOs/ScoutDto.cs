@@ -7,9 +7,9 @@ public class ScoutDto
 
     public string Apellido { get; set; } = null!;
 
-    public int Dni { get; set; }
+    public int? Dni { get; set; }
 
-    public DateTime? FechaNacimiento { get; set; }
+    public DateTime FechaNacimiento { get; set; }
 
     public string? Sexo { get; set; }
 

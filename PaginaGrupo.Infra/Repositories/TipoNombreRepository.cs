@@ -24,11 +24,11 @@ namespace PaginaGrupo.Infra.Repositories
         }
 
         //devuelve un usuario
-        public async Task<TipoNombre> GetTipoNombre(int id)
+        public async Task<string> GetTipoNombre(int id)
         {
             var tipoNombre = await _context.TipoNombres.FirstOrDefaultAsync(x => x.Id == id);
 
-            return tipoNombre;
+            return tipoNombre.Tipo;
         }
 
 

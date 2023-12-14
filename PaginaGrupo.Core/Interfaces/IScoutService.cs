@@ -9,6 +9,6 @@ namespace PaginaGrupo.Core.Interfaces
         //Task<IEnumerable<Scout>> GetScoutsEstado(int estado, int? idNoticia);
         Task<Scout> InsertarScout(Scout Scout);
         Task<bool> ActualizarScout(Scout Scout);
-        Task<IEnumerable<Scout>> GetScouts(string? codigo, char? estado);
+        IEnumerable<Scout> GetScouts(string? codigo, char? estado);
     }
 }

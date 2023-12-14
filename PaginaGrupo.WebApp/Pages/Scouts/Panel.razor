@@ -1,0 +1,369 @@
+﻿@page "/Scouts/panel"
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+@using CurrieTechnologies.Razor.SweetAlert2;
+
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+@using PaginaGrupo.Core.Enumerations
+
+@inject SweetAlertService Swal;
+@inject IScoutServicio scoutServicio
+@inject IUnidadServicio unidadServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+
+@*los 2 renglones siguientes son para restringir la pantalla a un rol en especial*@
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Administrador, Dirigente, Hormiga")];
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grupo Scout San Patricio</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+
+</head>
+
+<div>
+
+    <h1>Panel de Scouts</h1>
+    <div class="flex-buttons">
+        <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
+            <div class="input-group mb-3">
+                <button class="btn btn-success fw-bold col-3"><NavLink class="nav-link text-white" href="/Scouts/Nuevo">+ Cargar nuevo Scout</NavLink></button>
+            </div>
+
+            <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
+                @* <button class="btn btn-success fw-bold"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button> *@
+
+                <div class="input-group mb-3">
+                    <label for="colFormLabel">Unidad: </label>
+                    <select class="form-control-sm col-9 btn border-black" @bind="codigo" @onclick="(async()=> await ObtenerScouts(codigo,buscar))">
+
+                        @if (listaUnidad is null)
+                        {
+                            <option value="CCAG">Colonia de Castores Ángel de la Guarda</option>
+                        }
+                        else
+                        {
+                            @if (listaUnidad != null)
+                            {
+                                @foreach (var codigos in listaUnidad)
+                                {
+                                    <option value="@codigos.Codigo"> @codigos.Nombre</option>
+                                }
+                            }
+                        }
+
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label for="colFormLabel">Estado: </label>
+                    <select class="form-control-sm col-4 btn border-black" @bind="buscar" @onclick="(async()=> await ObtenerScouts(codigo,buscar))">
+                        <option value="A">Activo</option>
+                        <option value="B">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex-options">
+
+           
+            <div class="flex-options-details">
+                <button type="button" class="btn btn-warning text-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="oi oi-pencil-fill" viewBox="0 0 16 16">
+                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                    </svg>
+                </button>
+                <span> Editar Scout</span>
+
+            </div>
+            
+            <div class="flex-options-details">
+
+                <button type="button" class="btn btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                    </svg>
+                </button>
+                <span> Pasar a Inactivo</span>
+            </div>
+            
+            <div class="flex-options-details">
+                <button type="button" class="btn btn-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z" />
+                    </svg>
+                </button>
+                <span> Rehabilitar</span>
+            </div>
+            
+            <div class="flex-options-details">
+                <button type="button" class="btn btn-primary text-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                        <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                        <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12z" />
+                    </svg>
+                </button>
+                <span>Nombres Scouts</span>
+            </div>
+
+            <div class="flex-options-details">
+                <button type="button" class="btn btn-info text-light">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                        </svg>
+                    </button>
+                    <span> Migrar Scout</span>
+            </div>
+        </div>
+    </div>
+
+    @if (lista is null)
+    {
+        <div class="d-flex justify-content-center align-items-center loading mb-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Natalicio</th>
+                    <th scope="col">Sexo</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Correo Electronico</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Unidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (lista != null)
+                {
+                    foreach (var item in lista)
+                    {
+                        <tr>
+                            <td class="col-0,5">@item.Id</td>@* aca poner un contador*@
+                            <td class="col-1">@item.Nombre</td>
+                            <td class="col-1">@item.Apellido</td>
+                            <td class="col-1">@item.Dni</td>
+                            <td class="col-1">@item.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                            <td class="col-0,5">@item.Sexo</td>
+                            <td class="col-2">@item.Telefono</td>
+                            <td class="col-2">@item.Correo</td>
+                            <td class="col-2">@item.Direccion</td>
+                            <td class="col-0,5">@item.CodigoUnidad</td>
+
+                            <td class="col-8">
+                                <a class="col-4 btn btn-sm btn-warning text-light mt-auto" href="/Scouts/editar/@item.Id">
+                                    <i class="oi oi-pencil fs-5"></i>
+                                </a>
+                                @if (item.Estado == 'A')
+                                {
+                                    <button class="col-4 btn btn-sm btn-danger mt-auto" @onclick="(() => Borrar(item.Id))">
+                                        <i class="oi oi-trash fs-5"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button class="col-4 btn btn-sm btn-success mt-auto" @onclick="(() => Rehabilitar(item.Id))">
+                                        <i class="bi bi-arrow-repeat fs-5"></i>
+                                    </button>
+                                }
+                                <br />
+                                <a class="col-4 btn btn-sm btn-primary mt-auto" href="/Scouts/Nombres/@item.Id">
+                                    <i class="bi bi-person-vcard fs-5"></i>
+                                </a>
+                                <a class="col-4 btn btn-sm btn-info mt-auto text-light" href="/Scouts/Migrar/@item.Id">
+                                    <i class="bi bi-arrow-right fs-5"></i>
+                                </a>
+                            </td>
+
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+
+
+@code {
+    private ScoutDto modelo = new ScoutDto();
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+
+    private List<ScoutDto>? lista = null;
+    bool respuesta = false;
+    string mensaje = string.Empty;
+    private char buscar = Convert.ToChar("A");
+    private string filtro = "";
+    private string codigo = "USMP";
+    private List<UnidadDto>? listaUnidad = null;
+
+    private async Task ObtenerScouts(string codigo, char estado)
+    {
+        filtro = "";
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await scoutServicio.ObtenerListadoScouts(codigo, estado, token);
+        if (response.EsCorrecto)
+        {
+            lista = (List<ScoutDto>)response.Resultado!;
+        }
+        else
+        {
+            lista = new List<ScoutDto>();
+        }
+
+    }
+
+    private async Task ObtenerUnidades()
+    {
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await unidadServicio.ObtenerListadoUnidades(token);
+        if (response.EsCorrecto)
+        {
+            listaUnidad = (List<UnidadDto>)response.Resultado!;
+        }
+        else
+        {
+            listaUnidad = new List<UnidadDto>();
+        }
+
+    }
+
+    //private async Task Autorizar(NoticiaDto noticia)
+    //{
+    //    var authState = await authencationState;
+    //    noticia.IdUsuarioBaja = Convert.ToInt32(authState.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+
+    //    var resultado = await Swal.FireAsync(new SweetAlertOptions
+    //        {
+    //            Title = "Autorizar Noticia",
+    //            Text = "Deseas autorizar la noticia? Una vez hecho esto, la noticia se publicará definitivamente.",
+    //            Icon = SweetAlertIcon.Question,
+    //            ShowCancelButton = true
+    //        });
+
+    //    if (resultado.IsConfirmed)
+    //    {
+    //        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+    //        var publicado = await noticiaServicio.Autorizar(noticia, token);
+
+
+    //        mensaje = publicado.Mensaje;
+    //        if (publicado.EsCorrecto)
+    //        {
+    //            respuesta = true;
+    //            await ObtenerScouts(buscar);
+    //        }
+
+    //    }
+
+    //    if (respuesta)
+    //    {
+    //        toastService.ShowSuccess(mensaje);
+    //        _navServicio.NavigateTo("/Noticias/p/1");
+    //    }
+    //    else
+    //        toastService.ShowWarning(mensaje);
+    //}
+
+    private async Task Borrar(int id)
+    {
+        var authState = await authencationState;
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Baja Scout",
+                Text = "Deseas dar de baja al scout? el mismo pasará a Inactivo",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var eliminado = await scoutServicio.Eliminar(id, token);
+
+
+            mensaje = eliminado.Mensaje;
+            if (eliminado.EsCorrecto)
+            {
+                respuesta = true;
+                await ObtenerScouts(codigo, buscar);
+            }
+
+        }
+
+    }
+    private async Task Rehabilitar(int id)
+    {
+        var authState = await authencationState;
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Rehabilitar Scout",
+                Text = "Deseas rehabilitar scout? el mismo pasará a Activo",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var eliminado = await scoutServicio.Rehabilitar(id, token);
+
+
+            mensaje = eliminado.Mensaje;
+            if (eliminado.EsCorrecto)
+            {
+                respuesta = true;
+                await ObtenerScouts(codigo, buscar);
+            }
+
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerUnidades();
+        await ObtenerScouts(codigo, buscar);
+    }
+
+
+}

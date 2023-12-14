@@ -1,0 +1,249 @@
+﻿@page "/Scouts/Nuevo"
+@page "/Scouts/editar/{Id:int}"
+
+@using Microsoft.AspNetCore.Components.Authorization;
+@using System.Security.Claims;
+
+@using PaginaGrupo.WebApp.Extensiones
+@using PaginaGrupo.WebApp.Servicios.Contrato;
+@using PaginaGrupo.Core.DTOs
+@using PaginaGrupo.Core.Entities
+
+@inject IScoutServicio scoutServicio
+@inject IUnidadServicio unidadServicio
+@inject IToastService toastService
+@inject NavigationManager _navServicio
+@inject AuthenticationStateProvider autencacionProvider;
+
+@*los 2 renglones siguientes son para restringir la pantalla a un rol en especial*@
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Administrador, Dirigente, Hormiga")];
+
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grupo Scout San Patricio</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+
+</head>
+
+
+<div class="card-header">
+    <h3 class="text-center font-weight-light my-4">@Titulo</h3>
+</div>
+<!------ Include the above in your HEAD tag ---------->
+<div>
+
+
+
+
+    <EditForm Model="modelo" OnValidSubmit="GuardarCambios">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="form-group row mt-5">
+            <div class="col-sm-10">
+                <label for="colFormLabeL">Nombre</label>
+                <input type="text" class="form-control form-control-sm" id="colFormLabel" @bind-value="modelo.Nombre">
+            </div>
+            <div class="col-sm-10">
+                <label for="colFormLabeL">Apellido</label>
+                <input type="text" class="form-control form-control-sm" id="colFormLabel" @bind-value="modelo.Apellido">
+            </div>
+        </div>
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <!--Aca se cargaria el autor por codigo(usuario conectado)-->
+                <label for="colFormLabel">Documento</label>
+                <input type="text" class="form-control form-control-sm" id="colFormLabel" @bind-value="modelo.Dni">
+            </div>
+        </div>
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Fecha de Nacimiento</label>
+                <br />
+                <InputDate class="form-control-sm" @bind-Value="modelo.FechaNacimiento"></InputDate>
+            </div>
+        </div>
+
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Sexo</label>
+                <select class="form-control-sm col-4 btn border-black" @bind="sexo">
+                    <option value="F">Femenino</option>
+                    <option value="M">Masculino</option>
+                    <option value="X">Otro</option>
+                </select>
+            </div>
+        </div>
+
+        @*        <div class="form-group row mt-3">
+        <div class="col-sm-10">
+        <label for="colFormLabel">Sexo</label>
+        <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Sexo">
+        </div>
+        </div>*@
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Telefono</label>
+                <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Telefono">
+            </div>
+        </div>
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Correo Electronico</label>
+                <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Correo">
+            </div>
+        </div>
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Dirección</label>
+                <input type="text" class="form-control" id="colFormLabel" @bind-value="modelo.Direccion">
+            </div>
+        </div>
+
+
+        <div class="form-group row mt-3">
+            <div class="col-sm-10">
+                <label for="colFormLabel">Unidad</label>
+                <select class="form-control-sm col-9 btn border-black" @bind="codigo">
+
+                    @if (listaUnidad is null)
+                    {
+                        <option value="USMP">Unidad Scout Mártires Palotinos</option>
+                    }
+                    else
+                    {
+                        @if (listaUnidad != null)
+                        {
+                            @foreach (var codigos in listaUnidad)
+                            {
+                                <option value="@codigos.Codigo" disabled="@IsDisabled"> @codigos.Nombre</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-3 mb-5">
+            <button type="submit" class="btn btn-primary" style="width:130px">@boton</button>
+            <a href="/Scouts/Panel" class="btn btn-secondary" style="width:130px">Volver</a>
+        </div>
+
+    </EditForm>
+
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private string Titulo = "Cargar Scout";
+    private string boton = "Cargar";
+    private ScoutDto modelo = new ScoutDto();
+    private InputFileChangeEventArgs inputFile;
+    [CascadingParameter]
+    private Task<AuthenticationState> authencationState { get; set; }
+    private string codigo = "USMP";
+    private List<UnidadDto>? listaUnidad = null;
+    private bool IsDisabled;
+    private string sexo = "F";
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var authState = await authencationState;
+        if (Id != 0)
+        {
+            IsDisabled = true;
+            Titulo = "Editar Scout";
+            boton = "Guardar";
+            var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+            var response = await scoutServicio.ObtenerById(Id, token);
+            if (response.EsCorrecto!)
+            {
+                modelo = (ScoutDto)response.Resultado!;
+            }
+            else
+                toastService.ShowWarning(response.Mensaje);
+        }
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await ObtenerUnidades();
+        modelo.FechaNacimiento = DateTime.Today;
+    }
+
+    private async Task GuardarCambios()
+    {
+        modelo.Sexo = sexo;
+        modelo.CodigoUnidad = codigo;
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+        bool respuesta = true;
+        string mensaje = string.Empty;
+        if (modelo.Nombre == null | modelo.Apellido == null | modelo.Sexo == null | modelo.CodigoUnidad == null)
+        {
+
+            respuesta = false;
+            mensaje = "Faltan cargar campos obligatorios";
+
+        }
+        else
+        {
+            if (Id != 0)
+            {
+                var response = await scoutServicio.Editar(modelo, token);
+                mensaje = response.Mensaje;
+                if (!response.EsCorrecto)
+                {
+                    respuesta = false;
+                }
+
+            }
+            else
+            {
+                //modelo.Rol = "Administrador";
+                var response = await scoutServicio.Crear(modelo, token);
+                mensaje = response.Mensaje;
+                if (!response.EsCorrecto)
+                {
+                    respuesta = false;
+                }
+
+            }
+        }
+        if (respuesta)
+        {
+            toastService.ShowSuccess(mensaje);
+            _navServicio.NavigateTo("/Scouts/panel");
+        }
+        else
+            toastService.ShowWarning(mensaje);
+    }
+
+    private async Task ObtenerUnidades()
+    {
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await unidadServicio.ObtenerListadoUnidades(token);
+        if (response.EsCorrecto)
+        {
+            listaUnidad = (List<UnidadDto>)response.Resultado!;
+        }
+        else
+        {
+            listaUnidad = new List<UnidadDto>();
+        }
+
+    }
+
+}

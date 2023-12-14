@@ -71,12 +71,11 @@ builder.Services.AddBlazoredToast();
 builder.Services.AddScoped<IAdjuntoServicio, AdjuntoServicio>();
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 builder.Services.AddScoped<INoticiaServicio, NoticiaServicio>();
+builder.Services.AddScoped<IScoutServicio, ScoutServicio>();
+builder.Services.AddScoped<IUnidadServicio, UnidadServicio>();
 builder.Services.AddScoped<IComentarioServicio, ComentarioServicio>();
-///builder.Services.AddScoped<ICategoriaServicio, CategoriaServicio>();
-//builder.Services.AddScoped<IProductoServicio, ProductoServicio>();
-//builder.Services.AddScoped<ICarritoServicio, CarritoServicio>();
-//builder.Services.AddScoped<IVentaServicio, VentaServicio>();
-//builder.Services.AddScoped<IDashboarServicio, DashboardServicio>();
+builder.Services.AddScoped<ITipoNombreServicio, TipoNombreServicio>();
+builder.Services.AddScoped<INombreScoutServicio, NombreScoutServicio>();
 
 builder.Services.AddSweetAlert2();
 

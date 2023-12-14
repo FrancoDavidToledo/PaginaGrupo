@@ -5,6 +5,6 @@ namespace PaginaGrupo.Core.Interfaces
     public interface ITipoNombreRepository
     {
         Task<IEnumerable<TipoNombre>> GetTiposNombres();
-        Task<TipoNombre> GetTipoNombre(int id);
+        Task<string> GetTipoNombre(int id);
     }
 }

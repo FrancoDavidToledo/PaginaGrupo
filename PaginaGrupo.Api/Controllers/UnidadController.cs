@@ -9,6 +9,8 @@ using PaginaGrupo.Core.Services;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UnidadController : Controller
     {
         private readonly IUnidadRepository _unidadRepository;

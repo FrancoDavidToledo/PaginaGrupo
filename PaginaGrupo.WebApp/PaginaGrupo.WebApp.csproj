@@ -34,6 +34,11 @@
 
   <ItemGroup>
     <None Include="Pages\Noticias\Index.razor" />
+    <None Include="Pages\Scouts\Alta.razor" />
+    <None Include="Pages\Scouts\Migrar.razor" />
+    <None Include="Pages\Scouts\Nombres\Alta.razor" />
+    <None Include="Pages\Scouts\Nombres\Listado.razor" />
+    <None Include="Pages\Scouts\Panel.razor" />
     <None Include="wwwroot\Imgs\banner1.jpeg" />
     <None Include="wwwroot\Imgs\banner2.jpeg" />
     <None Include="wwwroot\Imgs\banner3.jpeg" />

@@ -6,6 +6,7 @@ public class NombreScoutDto
     public int IdTipo { get; set; }
 
     public string Nombre { get; set; } = null!;
+    public string? TipoNombre { get; set; }
 
     public DateTime Fecha { get; set; }
 

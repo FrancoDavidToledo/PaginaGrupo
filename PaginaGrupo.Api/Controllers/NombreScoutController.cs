@@ -8,27 +8,79 @@ using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.Services;
+using PaginaGrupo.Infra.Repositories;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class NombreScoutController : Controller
     {
         private readonly INombreScoutService _nombreScoutService;
+        private readonly ITipoNombreRepository _tipoNombreRepository;
         private readonly IMapper _mapper;
-        public NombreScoutController(INombreScoutService nombreScoutService, IMapper mapper)
+        public NombreScoutController(INombreScoutService nombreScoutService, IMapper mapper, ITipoNombreRepository tipoNombreRepository)
         {
             _nombreScoutService = nombreScoutService;
             _mapper = mapper;
+            _tipoNombreRepository = tipoNombreRepository;
         }
+
+        [HttpGet("GetNombreScout/{id}")]
+        [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
+
+        public async Task<IActionResult> GetNombreScout(int id)
+        {
+            var nombreScout = _nombreScoutService.GetNombreScoutById(id);
+            var nombreScoutDto = _mapper.Map<IEnumerable<NombreScoutDto>>(nombreScout);
+
+            foreach (var i in nombreScoutDto)
+            {
+                i.TipoNombre = await _tipoNombreRepository.GetTipoNombre(i.IdTipo);
+            }
+            var response = new ResponseDTO<IEnumerable<NombreScoutDto>>();
+
+            if (nombreScoutDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = nombreScoutDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al obtener los nombres del scout";
+            }
+
+            return Ok(response);
+        }
+
+
         [HttpGet("GetNombresScouts/{idScout}")]
         [Authorize(Roles = nameof(RolType.Administrador) + "," + nameof(RolType.Dirigente) + "," + nameof(RolType.Hormiga))]
 
-        public async Task<IActionResult> GetNombresScouts(int idScout)
+        public async Task<IActionResult> GetNombreScouts(int idScout)
         {
             var nombreScout = _nombreScoutService.GetNombreScout(idScout);
             var nombreScoutDto = _mapper.Map<IEnumerable<NombreScoutDto>>(nombreScout);
 
-            return Ok(nombreScoutDto);
+            foreach (var i in nombreScoutDto)
+            {
+                i.TipoNombre = await _tipoNombreRepository.GetTipoNombre(i.IdTipo);
+            }
+            var response = new ResponseDTO<IEnumerable<NombreScoutDto>>();
+
+            if (nombreScoutDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = nombreScoutDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al obtener los nombres del scout";
+            }
+
+            return Ok(response);
         }
 
         [HttpPost("InsertarNombreScout")]
@@ -41,7 +93,21 @@ namespace PaginaGrupo.Api.Controllers
             var nombreScout = _mapper.Map<NombreScout>(nombreScoutDto);
             await _nombreScoutService.InsertarNombreScout(nombreScout);
 
-            return Ok(nombreScout);
+            nombreScoutDto = _mapper.Map<NombreScoutDto>(nombreScout);
+            var response = new ResponseDTO<NombreScoutDto>();
+
+            if (nombreScoutDto != null)
+            {
+                response.EsCorrecto = true;
+                response.Resultado = nombreScoutDto;
+            }
+            else
+            {
+                response.EsCorrecto = false;
+                response.Mensaje = "Error al obtener los nombres del scout";
+            }
+
+            return Ok(response);
 
         }
 

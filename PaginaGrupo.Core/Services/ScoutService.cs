@@ -49,7 +49,7 @@ namespace PaginaGrupo.Core.Services
         //Crea una noticia
         public async Task<Scout> InsertarScout(Scout scout)
         {
-            scout.Estado = Convert.ToChar("1");
+            scout.Estado = Convert.ToChar("A");
             await _unitOfWork.ScoutRepository.Add(scout);
             await _unitOfWork.SaveChangesAsync();
             return scout;
@@ -63,7 +63,7 @@ namespace PaginaGrupo.Core.Services
         }
 
 
-        public async Task<IEnumerable<Scout>> GetScouts(string? codigo, char? estado)
+        public IEnumerable<Scout> GetScouts(string? codigo, char? estado)
         {
             var scouts = _unitOfWork.ScoutRepository.GetAll();
 
