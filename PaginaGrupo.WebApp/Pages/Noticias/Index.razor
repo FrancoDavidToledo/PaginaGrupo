@@ -1,4 +1,3 @@
-
 @page "/Noticias/p/{paginado:int}"
 @using Microsoft.AspNetCore.Components.Authorization
 @using PaginaGrupo.Core.DTOs
@@ -17,19 +16,19 @@
     <title>Grupo Scout San Patricio</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-
+    <link href="https://unpkg.com/css.gg@2.0.0/icons/css/chevron-right.css" rel="stylesheet">
 </head>
 <body>
 
     <h1>Nuestras ultimas noticias</h1>
-    
 
-    @if (lista is null)
+
+    @if (lista is null || paginadoMeta is null)
     {
         <div class="d-flex justify-content-center align-items-center loading">
             <div class="spinner-border" role="status">
@@ -38,7 +37,8 @@
         </div>
 
     }
-    else {
+    else
+    {
 
         @foreach (var item in lista)
         {
@@ -77,50 +77,88 @@
 
         }
 
+    }   
+@*
+                             <h2>
+                        @if (paginadoModel == 1)
+                        {
+                        <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
+                        <b style="color:#0A592A">@(paginado+" ") </b>
+                        @for (int i = 1; i < 5; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                        }
+                        <span>...</span>
+                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
+
+                        }else if(paginadoModel == 2) {
+                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none"> @(paginado - 1 + " ")</a>
+                        <b style="color:#0A592A">@(paginado+" ") </b>
+                        @for (int i = 1; i < 3; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                        }
+                        <span>...</span>
+                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
+                        }
+                        else
+                        {
+                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
+                        <a href="/Noticias/p/@(paginadoModel-2)" class="text-black text-decoration-none">@(paginado - 2 + " ") </a>
+                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">@(paginado - 1 + " ") </a>
+                        <b style="color:#0A592A">@(paginado+" ") </b>
+                        @for (int i = 1; i < 2; i++) {
+                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
+                        }
+                        <span>...</span>
+                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
+                        }
+
+
+                        </h2>*@
+        
+    
         <div class="paginado">
-            <h2>
-                @if (paginadoModel == 1)
-                {
-                    <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
-                    <b style="color:#0A592A">@(paginado+" ") </b>
-                    @for (int i = 1; i < 5; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                    }
-                    <span>...</span> 
-                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a> 
 
-                }else if(paginadoModel == 2) {
-                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
-                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none"> @(paginado - 1 + " ")</a>
-                    <b style="color:#0A592A">@(paginado+" ") </b>
-                    @for (int i = 1; i < 3; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                    }
-                    <span>...</span> 
-                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
-                }
-                else
-                {
-                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
-                    <a href="/Noticias/p/@(paginadoModel-2)" class="text-black text-decoration-none">@(paginado - 2 + " ") </a>
-                    <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">@(paginado - 1 + " ") </a>
-                    <b style="color:#0A592A">@(paginado+" ") </b>
-                    @for (int i = 1; i < 2; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                    }
-                    <span>...</span> 
-                    <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
-                }
 
-            
-            </h2>
+            <div class="row">
+                <div>
+                @if (paginadoMeta != null)
+                {
+                    @if (paginadoMeta["actual"] == 1)
+                    {
+                        <a class="btn btn-outline-secondary no-click"   disabled><i class="bi bi-chevron-double-left"></i></a>
+                        <a class="btn btn-outline-secondary no-click"  disabled><i class="bi bi-chevron-left"></i></a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-secondary" href= "/Noticias/p/1"><i class="bi bi-chevron-double-left"></i></a>
+                        <a class="btn btn-outline-secondary" href= "/Noticias/p/@(paginaSeleccionada-1)" ><i class="bi bi-chevron-left"></i></a>
+                    }
+
+                    <select class="form-control-sm col-sm-1 btn border-black" @bind="paginaSeleccionada" onselect="@CambiarPagina(paginaSeleccionada)">
+                        @for (var i = 1; i <= ultimaPagina; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    @if (paginadoMeta["actual"] == ultimaPagina)
+                    {
+                        <a class="btn btn-outline-secondary no-click" disabled><i class="bi bi-chevron-right"></i></a>
+                        <a class="btn btn-outline-secondary no-click" disabled><i class="bi bi-chevron-double-right"></i></a>
+                    }
+                    else{
+                    <a class="btn btn-outline-secondary" href= "/Noticias/p/@(paginaSeleccionada+1)" ><i class="bi bi-chevron-right"></i></a>
+                    <a class="btn btn-outline-secondary" href= "/Noticias/p/@(ultimaPagina)" ><i class="bi bi-chevron-double-right"></i></a>
+                    }
+                }
+            </div>
+            </div>
         </div>
-    }
 
-</body>
-</html>
+    </body>
+    </html>
 
-@code{
+@code {
     //getNoticia(id)
     [Parameter]
     public int paginado { get; set; }
@@ -128,8 +166,9 @@
     public bool invert = false;
 
     private List<NoticiaActivaImagenDto>? lista = null;
-    public int paginadoModel = 0;
-
+    public int paginaSeleccionada = 0;
+    public int ultimaPagina = 0;
+    public Dictionary<string, int> paginadoMeta;
 
     [CascadingParameter]
     private Task<AuthenticationState> authencationState { get; set; }
@@ -140,24 +179,34 @@
         if (paginado > 0)
         {
             NoticiasQueryFilter noticiaQF = new NoticiasQueryFilter
-            {
-                PageNumber = paginado,
-                PageSize = 3
-            };
+                {
+                    PageNumber = paginado,
+                    PageSize = 3
+                };
 
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
 
-            lista = (List<NoticiaActivaImagenDto>)response.Data;
-            if(lista.Count == 0)
+            paginadoMeta = new Dictionary<string, int>()
             {
-                CargaSinNoticias(response.Meta.TotalPages);
+                { "paginasTotales", response.Meta.TotalPages },
+                { "actual", response.Meta.CurrentPage }
+            };
+
+
+
+
+            lista = (List<NoticiaActivaImagenDto>)response.Data;
+            if (lista.Count == 0)
+            {
+                await CargaSinNoticias(1);
             }
             foreach (var item in lista)
             {
                 item.Copete = item.Copete + ". Entrá para saber mas...";
             }
 
-            paginadoModel = response.Meta.CurrentPage;
+            paginaSeleccionada = response.Meta.CurrentPage;
+            ultimaPagina = response.Meta.TotalPages;
 
         }
         else
@@ -200,7 +249,22 @@
     protected async Task CargaSinNoticias(int link)
     {
         toastService.ShowWarning("No se encontraron noticias que cargar...");
-        _navServicio.NavigateTo($"/Noticias/p/{link}");
-        
+        _navServicio.NavigateTo($"/Noticias/p/1");
+
+    }
+
+    private async Task CambiarPagina(int paginaSeleccionada)
+    {
+        if (paginaSeleccionada != paginadoMeta["actual"])
+        {
+            if(paginaSeleccionada > paginadoMeta["paginasTotales"])
+            {
+                _navServicio.NavigateTo($"/Noticias/p/1");
+            }
+            else
+            {
+                _navServicio.NavigateTo($"/Noticias/p/{paginaSeleccionada}");
+            }
+        }
     }
 }
