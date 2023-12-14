@@ -41,10 +41,21 @@ table {
     pointer-events: none;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 750px) {
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+    }
+    .flex-buttons {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 990px) {
+    .main-flex-buttons{
+        flex-direction:column;
     }
 }

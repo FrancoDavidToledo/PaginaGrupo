@@ -28,7 +28,7 @@
     <title>Grupo Scout San Patricio</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,11 +37,24 @@
 </head>
 
 <div>
-    
+
     <h1>Borradores de noticias</h1>
-    <div class="flex-buttons">
-        <button class="btn btn-success fw-bold"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button>
-        <div class="flex-options">
+    <div class="flex-buttons main-flex-buttons row col-12">
+
+
+        <div class="col-6 mb-4 " >
+            <button class="btn btn-success fw-bold col-3 fit-content"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button>
+            <div class="col-sm-6 col-md-8 col-xl-9 mb-4 mt-1">
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control-sm" placeholder="Buscar..." @bind="filtro">
+                    <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerBorradoresFiltro(filtro))">
+                            <i class="oi oi-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex-options col-5">
 
             <div class="flex-options-details">
                 <div>
@@ -84,12 +97,13 @@
         </div>
     </div>
 
-    @if(lista is null){
-    <div class="d-flex justify-content-center align-items-center loading mb-5">
-        <div class="spinner-border" role="status">
-            <span class="sr-only"></span>
+    @if (lista is null)
+    {
+        <div class="d-flex justify-content-center align-items-center loading mb-5">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
         </div>
-    </div>
     }
     else
     {
@@ -112,23 +126,23 @@
                             <td>@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
                             <td>@item.Autor</td>
                             <td>
-                                 <div class="row">
+                                <div class="row">
                                     <div class="row flex-nowrap fit-content">
-                                <a class="col-5 btn btn-sm btn-primary mt-auto fit-content" href="/noticias/previsualizar/@item.Id">
-                                    <i class="bi bi-search fs-5"></i>
-                                </a>
-                                <button class="col-5 btn btn-sm btn-success mt-auto fit-content" @onclick="(() => Publicar(item))">
-                                    <i class="bi bi-check2 fs-5"></i>
-                                </button>
-                                </div>
-                                <div class="row flex-nowrap fit-content">
-                                <a class="col-5 btn btn-sm btn-warning text-light mt-auto fit-content" href="/noticias/editar/@item.Id">
-                                    <i class="oi oi-pencil fs-5"></i>
-                                </a>
-                                <button class="col-5 btn btn-sm btn-danger mt-auto fit-content" @onclick="(() => Borrar(item))">
-                                    <i class="oi oi-trash fs-5"></i>
-                                </button>
-                                 </div>
+                                        <a class="col-5 btn btn-sm btn-primary mt-auto fit-content" href="/noticias/previsualizar/@item.Id">
+                                            <i class="bi bi-search fs-5"></i>
+                                        </a>
+                                        <button class="col-5 btn btn-sm btn-success mt-auto fit-content" @onclick="(() => Publicar(item))">
+                                            <i class="bi bi-check2 fs-5"></i>
+                                        </button>
+                                    </div>
+                                    <div class="row flex-nowrap fit-content">
+                                        <a class="col-5 btn btn-sm btn-warning text-light mt-auto fit-content" href="/noticias/editar/@item.Id">
+                                            <i class="oi oi-pencil fs-5"></i>
+                                        </a>
+                                        <button class="col-5 btn btn-sm btn-danger mt-auto fit-content" @onclick="(() => Borrar(item))">
+                                            <i class="oi oi-trash fs-5"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -151,6 +165,7 @@
     private List<NoticiaDto>? lista = null;
     bool respuesta = false;
     string mensaje = string.Empty;
+    private string filtro = "";
 
     private async Task ObtenerNoticias(int estado)
     {
@@ -164,7 +179,25 @@
         }
         else
         {
-              lista = new List<NoticiaDto>();
+            lista = new List<NoticiaDto>();
+        }
+
+    }
+
+    private async Task ObtenerBorradoresFiltro(string filtro)
+    {
+        int estado = 1; //Solo borradores
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+
+        var response = await noticiaServicio.GetNoticiasEstadoFiltrado(estado, filtro, token);
+        if (response.EsCorrecto)
+        {
+            lista = (List<NoticiaDto>)response.Resultado!;
+        }
+        else
+        {
+            lista = new List<NoticiaDto>();
         }
 
     }
@@ -185,7 +218,7 @@
         {
             var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
             var publicado = await noticiaServicio.Publicar(noticia, token);
-            
+
             mensaje = publicado.Mensaje;
             if (publicado.EsCorrecto)
             {

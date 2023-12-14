@@ -37,13 +37,27 @@ table {
 .fit-content {
     min-width: fit-content;
 }
-@media (max-width: 1250px) {
-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-}
+
+
 .no-click {
     pointer-events: none;
+}
+@media (max-width: 954px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .main-flex-buttons {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 990px) {
+    .main-flex-buttons {
+        flex-direction: column;
+    }
 }

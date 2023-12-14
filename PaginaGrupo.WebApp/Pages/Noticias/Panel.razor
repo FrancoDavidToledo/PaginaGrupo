@@ -40,19 +40,18 @@
 <div>
 
     <h1>Panel de noticias</h1>
-    <div class="flex-buttons">
-        <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
-            <button class="btn btn-success fw-bold col-3"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button>
-                   <div class="col-sm-6 col-md-8 col-xl-9 mb-4">
-            @* <button class="btn btn-success fw-bold"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button> *@
+    <div class="flex-buttons main-flex-buttons row col-12">
+        <div class="col-6 mb-4 " >
+            <button class="btn btn-success fw-bold col-3 fit-content"><NavLink class="nav-link text-white" href="/Noticias/Nuevo">+ Crear nueva noticia</NavLink></button>
+            <div class="col-sm-6 col-md-8 col-xl-9 mb-4 mt-1">
 
-            <div class="input-group mb-3">
-                <select class="form-control-sm col-4 btn border-black" @bind="buscar" @onclick="(async()=> await ObtenerNoticiasFiltro(buscar, filtro))">
+                <div class="input-group mb-3">
+                <select class="form-control-sm col-4 btn border-black fit-content" @bind="buscar" @onclick="(async()=> await ObtenerNoticiasFiltro(buscar, filtro))">
                 <option value="1">Borrador</option>
                 <option value="2">Pendiente Autorizar</option>
                 <option value="3">Autorizada</option>
                 <option value="4">Eliminada</option>
-            </select>
+                </select>
             <input type="text" class="form-control-sm" placeholder="Buscar..." @bind="filtro">
             <button class="btn btn-outline-secondary" type="button" @onclick="(async()=> await ObtenerNoticiasFiltro(buscar, filtro))">
                 <i class="oi oi-magnifying-glass"></i>
@@ -79,7 +78,7 @@
             </div>*@
         </div>
 
-        <div class="flex-options">
+        <div class="flex-options col-5">
 
             <div class="flex-options-details">
                 <div>
