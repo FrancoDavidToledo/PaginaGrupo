@@ -258,8 +258,8 @@
 
     private async Task EliminarAdjuntoRepetido(IEnumerable<AdjuntosDto> adjuntos)
     {
-         var authState = await authencationState;
-         var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
+        var authState = await authencationState;
+        var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
         foreach (var item in adjuntos)
         {
             if(linksImgs.Contains(item.Adjunto))
@@ -282,7 +282,8 @@
     {
         var authState = await authencationState;
         var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
-        foreach (var item in linksImgs)
+        List<string> linksFiltrados = await EliminarDuplicadoListaLinks();
+        foreach (var item in linksFiltrados)
         {
             Adjuntos adjuntoAux = new Adjuntos
                 {
@@ -315,6 +316,18 @@
     private async Task InsertarTachado(string cuerpo)
     {
         modelo.Cuerpo = cuerpo + "<s></s>";
+    }
+
+    private async Task<List<string>> EliminarDuplicadoListaLinks()
+    {
+
+        List<string> linksFiltrados = linksImgs
+            .Select(item => item.ToLower())
+            .Distinct()
+            .ToList();
+
+        return linksFiltrados;
+
     }
 
 }

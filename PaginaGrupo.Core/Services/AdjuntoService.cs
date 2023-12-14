@@ -28,6 +28,11 @@ namespace PaginaGrupo.Core.Services
             {
                 throw new BusinessException("Error al guardar el adjunto.");
             }
+            else if(await VerificarDuplicado(adjunto))
+            {
+                //TODO manejar el caso en el que el adjunto esté duplicado.
+                return adjunto;
+            }
             else
             {
                 await _unitOfWork.AdjuntosRepository.Add(adjunto);
@@ -74,6 +79,28 @@ namespace PaginaGrupo.Core.Services
             await _unitOfWork.SaveChangesAsync();
             return true;
 
+        }
+
+        private async Task<bool> VerificarDuplicado(Adjuntos adjunto)
+        {
+            //Verifica si el adjunto ya existe para la noticia. Si existe devuelve true, si no false.
+
+            var adjuntos = await _unitOfWork.AdjuntosRepository.GetAdjuntosNoticia(adjunto.IdNoticia);
+            if (adjuntos.Any())
+            {
+                foreach(var item in adjuntos)
+                {
+                    if(item.Adjunto.ToLower().Trim()==adjunto.Adjunto.ToLower().Trim())
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
