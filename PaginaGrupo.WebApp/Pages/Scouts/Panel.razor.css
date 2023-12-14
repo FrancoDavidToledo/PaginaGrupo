@@ -30,3 +30,22 @@ tr
     justify-content: space-between;
 
 }
+table {
+    /*max-height: 80vh ;  Esto sería para hacer scroll vertical tambien*/
+}
+
+.fit-content {
+    min-width: fit-content;
+
+}
+
+@media (max-width: 1250px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+.no-click {
+    pointer-events: none;
+}
