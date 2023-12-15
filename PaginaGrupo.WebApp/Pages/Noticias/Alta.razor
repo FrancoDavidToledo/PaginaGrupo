@@ -315,10 +315,10 @@
     private async Task<List<string>> EliminarDuplicadoListaLinks()
     {
 
-        List<string> linksFiltrados = linksImgs;
-        //    .Select(item => item.ToLower())
-        //    .Distinct()
-        //    .ToList();
+        List<string> linksFiltrados = linksImgs
+            .Select(x =>x)
+            .Distinct()
+            .ToList();
 
         return linksFiltrados;
 
