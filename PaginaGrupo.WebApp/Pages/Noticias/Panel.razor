@@ -149,9 +149,9 @@
                     foreach (var item in lista)
                     {
                         <tr>
-                            <td class="col-3">@item.Titulo</td>
+                            <td class="col-4">@item.Titulo</td>
                             <td class="col-2">@item.FechaNoticia.ToString("dd/MM/yyyy")</td>
-                            <td class="col-2">@item.Autor</td>
+                            <td class="col-3">@item.Autor</td>
                             <td class="col-2">@Enum.GetName(typeof(EstadoNoticias), item.Estado)</td>
                             @if (item.Estado != 4)
                             {

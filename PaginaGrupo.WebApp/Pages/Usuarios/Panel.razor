@@ -96,11 +96,11 @@
                     foreach (var item in lista)
                     {
                         <tr>
-                            <td class="col-3">@item.Id</td>
-                            <td class="col-2">@item.Nombre</td>
-                            <td class="col-2">@item.Correo</td>
+                            <td class="col-1">@item.Id</td>
+                            <td class="col-4">@item.Nombre</td>
+                            <td class="col-4">@item.Correo</td>
                             <td class="col-2">@item.Rol</td>
-                            <td><a class="col-5 btn btn-sm btn-warning text-light mt-auto" href="/Usuarios/editar/@item.Id"><i class="oi oi-pencil fs-5"></i</a></td>
+                            <td><a class="col-2 btn btn-sm btn-warning text-light mt-auto" href="/Usuarios/editar/@item.Id"><i class="oi oi-pencil fs-5"></i</a></td>
                          </tr>
                     }
                 }

@@ -67,25 +67,19 @@
          </div>
       </div>
 
-        <div class="row">
-            <table class="col-5">
-                <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarNegrita(modelo.Cuerpo))">b</button></th>
-                <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarCursiva(modelo.Cuerpo))">em</button></th>
-                <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarSubrayado(modelo.Cuerpo))">u</button></th>
-                <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarTachado(modelo.Cuerpo))">s</button></th>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
-                <th class="col-1"></th>
-
-
-            </table>
-        </div>
         <div class="form-group row mt-3">
             <div class="col-sm-10">
                 <label for="colFormLabel">Cuerpo de la noticia</label>
+
+
+                <div class="row">
+                    <table class="col-4">
+                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarNegrita(modelo.Cuerpo))">Negrita</button></th>
+                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarCursiva(modelo.Cuerpo))">Cursiva</button></th>
+                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarSubrayado(modelo.Cuerpo))">Subrayado</button></th>
+                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarTachado(modelo.Cuerpo))">Tachado</button></th>
+                    </table>
+                </div>
                 <textarea class="form-control" id="colFormLabel" rows="15" @bind="modelo.Cuerpo"></textarea>
             </div>
         </div>
