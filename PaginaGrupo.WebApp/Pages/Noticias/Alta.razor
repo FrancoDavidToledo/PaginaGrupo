@@ -316,9 +316,9 @@
     {
 
         List<string> linksFiltrados = linksImgs
-            .Select(x =>x)
-            .Distinct()
-            .ToList();
+           .Select(item => item)
+           .Distinct()
+           .ToList();
 
         return linksFiltrados;
 
