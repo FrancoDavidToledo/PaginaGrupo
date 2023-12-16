@@ -5,6 +5,7 @@ using PaginaGrupo.Core.DTOs;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.QueryFilters;
 using PaginaGrupo.WebApp.Servicios.Contrato;
+using System;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -35,10 +36,10 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
                 return await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
-             {
-              _navigationManager.NavigateTo("/logout");
+            {
+                _navigationManager.NavigateTo("/logout");
                 return null;
-             }
+            }
             else
             {
                 return null;
@@ -76,7 +77,7 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
 
         }
 
-        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> GetNoticiasEstadoFiltrado(int estado,string filtro, string token)
+        public async Task<ResponseDTO<IEnumerable<NoticiaDto>>> GetNoticiasEstadoFiltrado(int estado, string filtro, string token)
         {
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"api/Noticia/GetNoticiasEstadoFiltrado?Estado={estado}&Filtro={filtro}");
@@ -101,12 +102,22 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
         //listo
         public async Task<ResponseDTO<NoticiaAltaDto>> Crear(NoticiaAltaDto modelo, string token)
         {
+            var url = $"api/Noticia/InsertarNoticia?Titulo={modelo.Titulo}&Autor={modelo.Autor}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}";
 
-            //var response = await _httpClient.PostAsJsonAsync("api/Noticia/InsertarNoticia", modelo);
-            //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<NoticiaAltaDto>>();
-            //return result!;
+            if (modelo.Copete != null)
+            {
+                url = url + $"&Copete={modelo.Copete}";
+            }
+            if (modelo.Cuerpo != null)
+            {
+                if (modelo.Cuerpo != "")
 
-            var request = new HttpRequestMessage(HttpMethod.Post, $"api/Noticia/InsertarNoticia?Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo.Replace("\n", "<br/>")}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
+                {
+                    url = url + $"&Cuerpo={modelo.Cuerpo.Replace("\n", "<br/>")}";
+                }
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
@@ -130,9 +141,25 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
             //var response = await _httpClient.PutAsJsonAsync("api/Noticia/ActualizarNoticia", modelo);
             //var result = await response.Content.ReadFromJsonAsync<ResponseDTO<bool>>();
             //return result!;
+            var url = $"api/Noticia/ActualizarNoticia?Id={modelo.Id}&Titulo={modelo.Titulo}&Autor={modelo.Autor}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}";
 
-            var request = new HttpRequestMessage(HttpMethod.Put, $"api/Noticia/ActualizarNoticia?Id={modelo.Id}&Titulo={modelo.Titulo}&Autor={modelo.Autor}&Copete={modelo.Copete}&Cuerpo={modelo.Cuerpo}&FechaNoticia={modelo.FechaNoticia.ToString("MM/dd/yyyy")}&IdUsuario={modelo.IdUsuario}");
+            if (modelo.Copete != null)
+            {
+                url = url + $"&Copete={modelo.Copete}";
+            }
+            if (modelo.Cuerpo != null)
+            {
+               if (modelo.Cuerpo != "")
+             
+               {
+                   url = url + $"&Cuerpo={modelo.Cuerpo.Replace("\n", "<br/>")}";
+               }
+
+            } 
+
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var mensaje2 = request.RequestUri.ToString();
             var response = await _httpClient.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
@@ -157,8 +184,8 @@ namespace PaginaGrupo.WebApp.Servicios.Implementacion
                     $"api/Noticia/GetNoticiasActivasImagen?PageSize={filters.PageSize}&PageNumber={filters.PageNumber}&Titulo={filters.Titulo}&IdUsuario={filters.IdUsuario}&FechaNoticia={filters.FechaNoticia}"
                 );
 
-                return response ?? new ApiResponse<IEnumerable<NoticiaActivaImagenDto>>(null);
-           
+            return response ?? new ApiResponse<IEnumerable<NoticiaActivaImagenDto>>(null);
+
 
         }
 

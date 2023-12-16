@@ -6,7 +6,7 @@
 
         public string Titulo { get; set; } = null!;
 
-        public string Copete { get; set; } = null!;
+        public string? Copete { get; set; } = null!;
 
         public short Estado { get; set; }
 

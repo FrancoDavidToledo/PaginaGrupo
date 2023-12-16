@@ -179,11 +179,11 @@
         var token = Convert.ToString(authState.User.Claims.Where(c => c.Type == ClaimTypes.Authentication).Select(c => c.Value).SingleOrDefault());
         bool respuesta = true;
         string mensaje = string.Empty;
-        if (modelo.Titulo == null | modelo.Copete == null | modelo.Cuerpo == null | modelo.Autor == null)
+        if (modelo.Titulo == null | modelo.Autor == null)
         {
 
             respuesta = false;
-            mensaje = "Debes completar todos los campos";
+            mensaje = "Debes completar todos los campos obligatorios";
 
         }
         else

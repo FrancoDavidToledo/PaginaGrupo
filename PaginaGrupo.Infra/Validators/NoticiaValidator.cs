@@ -28,22 +28,6 @@ namespace PaginaGrupo.Infra.Validators
                 .Length(1, 50)
                 .WithMessage("El campo 'Autor' debe tener entre 1 y 50 caracteres");
 
-            RuleFor(noticia => noticia.Copete)
-                .NotNull()
-                .WithMessage("El campo 'Copete' no debe ser nulo");
-
-            RuleFor(noticia => noticia.Copete)
-                .Length(1, 155)
-                .WithMessage("El campo 'Copete' debe tener entre 1 y 155 caracteres");
-
-            RuleFor(noticia => noticia.Cuerpo)
-                .NotNull()
-                .WithMessage("El campo 'Cuerpo' no debe ser nulo");
-
-            RuleFor(noticia => noticia.Cuerpo)
-                .Length(1, 3000)
-                .WithMessage("El campo 'Cuerpo' debe tener entre 1 y 3000 caracteres");
-
             RuleFor(noticia => noticia.FechaNoticia)
                 .NotNull()
                 .WithMessage("El campo 'FechaNoticia' no debe ser nulo");
@@ -51,14 +35,6 @@ namespace PaginaGrupo.Infra.Validators
             RuleFor(noticia => noticia.Estado)
                 .NotNull()
                 .WithMessage("El campo 'Estado' no debe ser nulo");
-
-            //TODO comentado para coincidir con la DTO. Chequear.
-
-            //RuleFor(noticia => noticia.IdUsuario)
-            //    .NotNull()
-            //    .WithMessage("El campo 'IDUsuario' no debe ser nulo");
-
-            // Se usó el estado 4 segun las Enum
 
             RuleFor(noticia => noticia.FechaBaja)
                 .NotEmpty()
