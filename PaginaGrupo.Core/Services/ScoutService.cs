@@ -77,7 +77,7 @@ namespace PaginaGrupo.Core.Services
                 scouts = scouts.Where(x => x.Estado == estado);
             }
 
-            scouts = scouts.OrderByDescending(x => x.Apellido);
+            scouts = scouts.OrderBy(x => x.Apellido);
             return scouts;
         }
 

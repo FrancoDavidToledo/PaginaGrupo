@@ -174,7 +174,7 @@
         {
 
             var response = await nombreScoutServicio.Crear(modeloNombreScout, token);
-                mensaje = response.Mensaje;
+                mensaje = "Nombre scout cargado con exito.";
                 if (!response.EsCorrecto)
                 {
                     respuesta = false;

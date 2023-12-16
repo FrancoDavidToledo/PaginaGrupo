@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.BusinessData.MetadataModel;
 using PaginaGrupo.Core.DTOs;
+using PaginaGrupo.Core.Entities;
 using PaginaGrupo.Core.Enumerations;
 using PaginaGrupo.Core.Interfaces;
 using PaginaGrupo.Core.Services;
@@ -27,7 +28,7 @@ namespace PaginaGrupo.Api.Controllers
 
             var unidad = await _unidadRepository.GetUnidades();
             var unidadDto = _mapper.Map<IEnumerable<UnidadDto>>(unidad);
-
+            unidadDto = unidadDto.OrderBy(x => x.Orden);
             var response = new ResponseDTO<IEnumerable<UnidadDto>>();
 
             if (unidadDto != null)
