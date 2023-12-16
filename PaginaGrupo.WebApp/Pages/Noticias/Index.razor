@@ -202,6 +202,9 @@
             }
             foreach (var item in lista)
             {
+                if (item.Copete==null)
+                    item.Copete = item.Copete + "Entrá para saber mas...";
+                else
                 item.Copete = item.Copete + ". Entrá para saber mas...";
             }
 

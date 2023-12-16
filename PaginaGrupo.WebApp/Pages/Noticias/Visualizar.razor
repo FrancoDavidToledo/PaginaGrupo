@@ -19,7 +19,7 @@
 
 
 
-@if (modelo.Cuerpo is null)
+@if (modelo.Titulo is null)
 {
    <div class="d-flex justify-content-center align-items-center loading">
       <div class="spinner-border" role="status">
@@ -34,9 +34,12 @@ else
     
     <div class="flex-encabezado">
         <h1>@modelo.Titulo</h1>
-        <h3>
-            @modelo.Copete
-        </h3>
+            @if (modelo.Copete != null)
+            {
+                <h3>
+                    @modelo.Copete
+                </h3>
+            }
 
         <div id="carouselExampleCaptions" class="carousel slide carousel-dark">
     @*        <div class="carousel-indicators">
@@ -119,9 +122,12 @@ else
 @*    <h3>
        @modelo.Copete
     </h3>*@
-    <p class="text-left">
-        @((MarkupString)modelo.Cuerpo.Replace("\n", "<br />"))
-    </p>
+        @if (modelo.Cuerpo != null)
+        {
+            <p class="text-left">
+                @((MarkupString)modelo.Cuerpo.Replace("\n", "<br />"))
+            </p>
+        }
 
         <p class="autor">Escrito por: @modelo.Autor - @modelo.FechaNoticia.ToString("dd/MM/yyyy")</p>
 
