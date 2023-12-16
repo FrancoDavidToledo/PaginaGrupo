@@ -74,10 +74,10 @@
 
                 <div class="row">
                     <table class="col-4">
-                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarNegrita(modelo.Cuerpo))">Negrita</button></th>
-                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarCursiva(modelo.Cuerpo))">Cursiva</button></th>
-                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarSubrayado(modelo.Cuerpo))">Subrayado</button></th>
-                        <th class="col-1"><button type="button" @onclick="(async ()=> await InsertarTachado(modelo.Cuerpo))">Tachado</button></th>
+                        <th class="col-1"><button class="btn btn-outline-secondary" type="button" @onclick="(async ()=> await InsertarNegrita(modelo.Cuerpo))">Negrita</button></th>
+                        <th class="col-1"><button class="btn btn-outline-secondary" type="button" @onclick="(async ()=> await InsertarCursiva(modelo.Cuerpo))">Cursiva</button></th>
+                        <th class="col-1"><button class="btn btn-outline-secondary" type="button" @onclick="(async ()=> await InsertarSubrayado(modelo.Cuerpo))">Subrayado</button></th>
+                        <th class="col-1"><button class="btn btn-outline-secondary" type="button" @onclick="(async ()=> await InsertarTachado(modelo.Cuerpo))">Tachado</button></th>
                     </table>
                 </div>
                 <textarea class="form-control" id="colFormLabel" rows="15" @bind="modelo.Cuerpo"></textarea>
@@ -316,7 +316,7 @@
     {
 
         List<string> linksFiltrados = linksImgs
-           .Select(item => item)
+           .Select(x => x)
            .Distinct()
            .ToList();
 
