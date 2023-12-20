@@ -78,44 +78,7 @@
         }
 
     }   
-@*
-                             <h2>
-                        @if (paginadoModel == 1)
-                        {
-                        <a href="/Noticias/p/@(paginadoModel)" class="text-black text-decoration-none">⪡</a>
-                        <b style="color:#0A592A">@(paginado+" ") </b>
-                        @for (int i = 1; i < 5; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                        }
-                        <span>...</span>
-                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
-
-                        }else if(paginadoModel == 2) {
-                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
-                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none"> @(paginado - 1 + " ")</a>
-                        <b style="color:#0A592A">@(paginado+" ") </b>
-                        @for (int i = 1; i < 3; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                        }
-                        <span>...</span>
-                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
-                        }
-                        else
-                        {
-                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">⪡</a>
-                        <a href="/Noticias/p/@(paginadoModel-2)" class="text-black text-decoration-none">@(paginado - 2 + " ") </a>
-                        <a href="/Noticias/p/@(paginadoModel-1)" class="text-black text-decoration-none">@(paginado - 1 + " ") </a>
-                        <b style="color:#0A592A">@(paginado+" ") </b>
-                        @for (int i = 1; i < 2; i++) {
-                        <a href="/Noticias/p/@(paginadoModel+i)" class="text-black text-decoration-none"> @(paginado+i+" ")</a>
-                        }
-                        <span>...</span>
-                        <a href="/Noticias/p/@(paginadoModel+1)" class="text-black text-decoration-none">⪢</a>
-                        }
-
-
-                        </h2>*@
-        
+     
     
         <div class="paginado">
 
@@ -181,7 +144,7 @@
             NoticiasQueryFilter noticiaQF = new NoticiasQueryFilter
                 {
                     PageNumber = paginado,
-                    PageSize = 3
+                    PageSize = 10
                 };
 
             var response = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
@@ -219,35 +182,6 @@
 
     }
 
-    //protected override async Task OnInitializedAsync()
-    //{
-
-
-    //    if (paginado != 0)
-    //    {
-    //        //NoticiasQueryFilter noticiaQF = new NoticiasQueryFilter
-    //        //    {
-    //        //        PageNumber = 1,
-    //        //        PageSize = 6
-
-    //        //    };
-
-    //        //var response2 = await noticiaServicio.ObtenerNoticiasActivas(noticiaQF);
-
-    //        //toastService.ShowWarning($"{response2.Resultado} || {response2.Mensaje} || {response2.EsCorrecto}");
-
-    //        var response = await noticiaServicio.ObtenerListadoNoticias(3);
-    //            if (response.EsCorrecto)
-    //            {
-    //                lista = (List<NoticiaDto>)response.Resultado!;
-    //            }
-    //            else
-    //            {
-    //                  lista = new List<NoticiaDto>();
-    //            }
-
-    //    }
-    //}
 
     protected async Task CargaSinNoticias(int link)
     {
