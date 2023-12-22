@@ -43,5 +43,10 @@ namespace PaginaGrupo.Core.Services
             return true;
         }
 
+
+        public async Task<AsistenciaScout> GetAsistenciaScoutFecha(int fecha, int idScout)
+        {
+            return await _unitOfWork.AsistenciaScoutRepository.GetByFechaScout(fecha, idScout);
+        }
     }
 }

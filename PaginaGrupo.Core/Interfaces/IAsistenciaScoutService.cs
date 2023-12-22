@@ -10,5 +10,6 @@ namespace PaginaGrupo.Core.Interfaces
         Task<AsistenciaScout> InsertarAsistenciaScout(AsistenciaScout AsistenciaScout);
         Task<bool> ActualizarAsistenciaScout(AsistenciaScout AsistenciaScout);
         IEnumerable<AsistenciaScout> GetAsistenciasScouts(int idFecha);
+        Task<AsistenciaScout> GetAsistenciaScoutFecha(int fecha, int idScout);
     }
 }

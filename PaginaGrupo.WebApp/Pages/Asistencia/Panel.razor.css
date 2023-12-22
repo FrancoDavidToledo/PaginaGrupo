@@ -1,0 +1,53 @@
+﻿table {
+    margin-top: 1rem;
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin: 5rem 0 2rem 0;
+}
+
+tr {
+    border-radius: 15px;
+}
+
+.flex-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-options-details {
+    display: flex;
+    flex-direction: row;
+}
+
+    .flex-options-details div {
+        min-width: 200px;
+    }
+
+.flex-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+table {
+    /*max-height: 80vh ;  Esto sería para hacer scroll vertical tambien*/
+}
+
+.btn {
+    width: fit-content;
+}
+
+.no-click {
+    pointer-events: none;
+}
+
+@media (max-width: 3300px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

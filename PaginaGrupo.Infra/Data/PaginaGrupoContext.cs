@@ -57,6 +57,8 @@ public partial class PaginaGrupoContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<AsistenciaView> AsistenciaView { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 

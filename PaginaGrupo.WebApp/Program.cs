@@ -61,9 +61,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://www.gruposcout.somee.com/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://www.gruposcout.somee.com/") });
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7105/") });
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://scoutsanpatricio.com.ar/api/") });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://scoutsanpatricio.com.ar/api/") });
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddBlazoredToast();
@@ -76,6 +76,9 @@ builder.Services.AddScoped<IUnidadServicio, UnidadServicio>();
 builder.Services.AddScoped<IComentarioServicio, ComentarioServicio>();
 builder.Services.AddScoped<ITipoNombreServicio, TipoNombreServicio>();
 builder.Services.AddScoped<INombreScoutServicio, NombreScoutServicio>();
+builder.Services.AddScoped<IFechaServicio, FechaServicio>();
+builder.Services.AddScoped<IAsistenciaServicio, AsistenciaServicio>();
+
 
 builder.Services.AddSweetAlert2();
 

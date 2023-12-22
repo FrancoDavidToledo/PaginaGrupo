@@ -30,8 +30,6 @@
             </ul>
 
 
-
-            @*barra para admin*@
             <AuthorizeView Roles="Administrador">
                 <Authorized>
                     
@@ -43,11 +41,12 @@
                     </DropdownToggleButton>
                     <DropdownMenu>
                          <DropdownItem To="/Noticias/Nuevo" Type="ButtonType.Link">Crear nueva noticia</DropdownItem>
-                        <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>
+                    @*    <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>*@
                         <DropdownItem To="/Noticias/Panel" Type="ButtonType.Link">Panel de noticias</DropdownItem>
                         <DropdownItem To="/Comentarios/Panel" Type="ButtonType.Link">Panel de comentarios</DropdownItem>
                          <DropdownItem To="/Usuarios/Panel" Type="ButtonType.Link">Gestion de Usuarios</DropdownItem>
                             <DropdownItem To="/Scouts/Panel" Type="ButtonType.Link">Gestion de Scouts</DropdownItem>
+                            <DropdownItem To="/Asistencia/Panel" Type="ButtonType.Link">Carga de asistencia</DropdownItem>
                         <DropdownDivider></DropdownDivider>
                         <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
                     </DropdownMenu>
@@ -75,6 +74,7 @@
                         <DropdownItem To="/Noticias/Nuevo" Type="ButtonType.Link">Crear nueva noticia</DropdownItem>
                         <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>
                         <DropdownItem To="/Scouts/Panel" Type="ButtonType.Link">Gestion de Scouts</DropdownItem>
+                            <DropdownItem To="/Asistencia/Panel" Type="ButtonType.Link">Carga de asistencia</DropdownItem>
                         <DropdownDivider></DropdownDivider>
                         <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
                     </DropdownMenu>
@@ -101,6 +101,7 @@
                             <DropdownItem To="/Noticias/Nuevo" Type="ButtonType.Link">Crear nueva noticia</DropdownItem>
                             <DropdownItem To="/Noticias/Borradores" Type="ButtonType.Link">Borradores</DropdownItem>
                             <DropdownItem To="/Scouts/Panel" Type="ButtonType.Link">Gestion de Scouts</DropdownItem>
+                            <DropdownItem To="/Asistencia/Panel" Type="ButtonType.Link">Carga de asistencia</DropdownItem>
                             <DropdownDivider></DropdownDivider>
                             <DropdownItem To="#" Type="ButtonType.Button" @onclick="CerrarSesion">Cerrar sesión</DropdownItem>
                         </DropdownMenu>

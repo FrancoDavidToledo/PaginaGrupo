@@ -50,6 +50,12 @@
     <None Include="wwwroot\Imgs\o3.jpeg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\Asistencia\Panel.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

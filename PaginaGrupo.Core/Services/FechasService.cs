@@ -21,6 +21,7 @@ namespace PaginaGrupo.Core.Services
         {
             var fechasPorAnio = _unitOfWork.FechaRepository.GetByAnio(anio);
 
+            fechasPorAnio = fechasPorAnio.OrderBy(x => x.Fecha);
             return fechasPorAnio;
         }
 

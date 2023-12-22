@@ -68,6 +68,7 @@ namespace PaginaGrupo.Infra.Mappings
             CreateMap<Scout, ScoutEstadoDto>().ReverseMap();
             CreateMap<Scout, ScoutUnidadDto>().ReverseMap();
             CreateMap<Scout, ScoutNombreDto>().ReverseMap();
+            CreateMap<Scout, ScoutAsistenciaDto>().ReverseMap();
             //CreateMap<ScoutDto, Scout>();
 
             CreateMap<TipoAdjunto, TipoAdjuntoDto>().ReverseMap();

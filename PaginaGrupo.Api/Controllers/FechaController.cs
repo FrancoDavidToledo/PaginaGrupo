@@ -9,6 +9,8 @@ using PaginaGrupo.Core.Services;
 
 namespace PaginaGrupo.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FechaController : Controller
     {
         private readonly IFechasService _fechaService;

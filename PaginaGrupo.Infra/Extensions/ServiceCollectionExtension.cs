@@ -54,6 +54,8 @@ namespace PaginaGrupo.Infra.Extensions
             builder.Services.AddScoped<IUnidadRepository, UnidadRepository>();
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
+            builder.Services.AddScoped<IAsistenciaViewRepository, AsistenciaViewRepository>();
+
             builder.Services.AddScoped<INoticiasService, NoticiasService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -68,6 +70,7 @@ namespace PaginaGrupo.Infra.Extensions
             builder.Services.AddScoped<IAsistenciaScoutService, AsistenciaScoutService>();
             builder.Services.AddScoped<INombreScoutService, NombreScoutService>();
             builder.Services.AddScoped<IFechasService, FechasService>();
+
             return builder;
         }
     }

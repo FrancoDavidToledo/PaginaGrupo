@@ -17,6 +17,13 @@ namespace PaginaGrupo.Infra.Repositories
             return asistencia;
         }
 
+        public async Task<AsistenciaScout> GetByFechaScout(int fecha, int idScout)
+        {
+
+            return await _entities.FirstOrDefaultAsync(x => x.IdFecha == fecha && x.IdScout == idScout);
+         
+        }
+
     }
 
 }
